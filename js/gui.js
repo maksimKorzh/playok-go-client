@@ -71,10 +71,12 @@ function userInput(event) {
 }
 
 function resizeCanvas() {
-  if (window.innerWidth >= window.innerHeight) window.innerWidth = window.innerHeight-16;
-  canvas.width = window.innerWidth;
+  canvas.width = window.innerHeight-34;
   canvas.height = canvas.width;
   drawBoard();
+  document.getElementById('panel').innerHTML = `
+    <div id="lobby" style="margin: 4px; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height) + `px; border: 2px solid black;"></div>
+  `;
 }
 
 function downloadSgf() {
@@ -87,77 +89,12 @@ function downloadSgf() {
   document.body.removeChild(element);
 }
 
-function handleGo() {
-  if (!gameOver) {
-    if (editMode) handleMode();
-    alert('Please press "PASS" to finish the game first');
-    return;
-  }
-  initGoban();
-  drawBoard();
-  gameOver = 0;
-  editMode = 0;
-  document.getElementById('stats').innerHTML = 'AI(dan), Chinese rules, Komi 7.5';
-}
-
-function handlePass() {
-  if (!gameOver) {
-    if (editMode) passMove();
-    else {
-      (async () => {
-        let result = await evaluatePosition()
-        if (!moveHistory.slice(-1).move) {
-          passMove();
-          if (!moveHistory.slice(-1).move && !moveHistory.slice(-2).move) {
-            result = result.replace('leads', 'wins');
-            document.getElementById('stats').innerHTML = 'Press GO to play again';
-            setTimeout(function() { alert('Game is finished\n' + result); }, 100);
-            gameOver = 1;
-          }
-        }
-      })();    
-    }
-  }
-}
-
-function handleMove() {
-  if (!gameOver) playMove(1)
-}
-
-function handleUndo() {
-  if (!gameOver) {
-    undoMove();
-    drawBoard();
-  }
-}
-
-function handleMode() {
-  if (!gameOver) {
-    editMode ^= 1;
-    document.getElementById('stats').innerHTML = editMode ? 'EDIT' : 'PLAY';
-    drawBoard();
-  }
-}
-
-function handleEval() {
-  if (!gameOver) {
-    (async () => { alert(await evaluatePosition()); })();
-  }
-}
-
 function handleSave() {
   if (gameOver) downloadSgf();
   else {
     editMode = 0;
     handlePass();
     downloadSgf();
-  }
-}
-
-function handleAI() {
-  if (!gameOver) {
-    level ^= 1;
-    document.getElementById('stats').innerHTML = level ? 'AI (dan)' : 'AI (kyu)';
   }
 }
 
@@ -168,18 +105,7 @@ function initGUI() {
   container.appendChild(canvas);
   canvas.addEventListener('click', userInput);
   ctx = canvas.getContext('2d');
-  document.getElementById('controls').innerHTML = `
-    <button onclick="handleGo();">GO</button>
-    <button onclick="handlePass();">PASS</button>
-    <button onclick="handleMove();">MOVE</button>
-    <button onclick="handleUndo();">UNDO</button>
-    <button onclick="handleMode();">MODE</button>
-    <button onclick="handleEval();">EVAL</button>
-    <button onclick="handleSave();">SAVE</button>
-    <button onclick="handleAI();">AI</button>
-  `;
   window.addEventListener('resize', resizeCanvas);
   initGoban();
   resizeCanvas();
-  document.getElementById('stats').innerHTML = 'AI(dan), Chinese rules, Komi 7.5';
 }

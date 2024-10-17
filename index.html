@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+    <script>
+      const { ipcRenderer } = require('electron');
+        ipcRenderer.on('websocket-message', (event, message) => {
+          console.log(message);
+          let response = JSON.parse(message);
+        });
+    </script>
+  </body>
+</html>

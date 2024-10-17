@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const WebSocket = require('ws');
 
 function createWindow() {
@@ -39,6 +39,12 @@ function createWindow() {
     });
 
     socket.send(initialMessage);
+
+    ipcMain.on('main', (event, messageData) => {
+      console.log('UI:', messageData)
+      socket.send(JSON.stringify(JSON.parse(messageData)));
+    });
+
     setInterval(function() {
       const keepAliveMessage = JSON.stringify({ "i": [] }); // Sending an empty array as a heartbeat
       socket.send(keepAliveMessage);

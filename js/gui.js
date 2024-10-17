@@ -70,12 +70,22 @@ function userInput(event) {
   setTimeout(function() { playMove(); }, 100)
 }
 
+function sendMessage() {
+  let message = document.getElementById('command').value;
+  ipcRenderer.send('main', message);
+  document.getElementById('command').value = '';
+}
+
 function resizeCanvas() {
   canvas.width = window.innerHeight-34;
   canvas.height = canvas.width;
   drawBoard();
   document.getElementById('panel').innerHTML = `
-    <div id="lobby" style="margin: 4px; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height) + `px; border: 2px solid black;"></div>
+    <div id="lobby" style="margin: 4px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
+    <div style="display: flex; width: ` + (canvas.width-198) + `px;">
+      <input id="command" type="text" style="width: 100%;"/>
+      <button onclick="sendMessage();">SEND</button>
+    </div>
   `;
 }
 

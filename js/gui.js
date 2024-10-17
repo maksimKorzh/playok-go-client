@@ -71,11 +71,10 @@ function userInput(event) {
 }
 
 function resizeCanvas() {
-  if (window.innerWidth >= window.innerHeight) window.innerWidth = 800;
-  canvas.width = window.innerWidth-20;
+  if (window.innerWidth >= window.innerHeight) window.innerWidth = window.innerHeight-16;
+  canvas.width = window.innerWidth;
   canvas.height = canvas.width;
   drawBoard();
-  document.getElementById('controls').style = 'display: flex; height: 6vh; gap: 5px; width: ' + (canvas.width+4) + 'px;';
 }
 
 function downloadSgf() {
@@ -165,7 +164,7 @@ function handleAI() {
 function initGUI() {
   let container = document.getElementById('goban');
   canvas = document.createElement('canvas');
-  canvas.style = 'border: 2px solid black;';
+  canvas.style = 'border: 2px solid black; margin: 4px;';
   container.appendChild(canvas);
   canvas.addEventListener('click', userInput);
   ctx = canvas.getContext('2d');

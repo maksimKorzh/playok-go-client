@@ -57,6 +57,7 @@ function drawBoard() {
 }
 
 function userInput(event) {
+  return;
   if (gameOver) return;
   let rect = canvas.getBoundingClientRect();
   let mouseX = event.clientX - rect.left;
@@ -73,6 +74,13 @@ function userInput(event) {
 function sendMessage() {
   let message = document.getElementById('command').value;
   ipcRenderer.send('main', message);
+  let parseMessage = JSON.parse(message);
+  if (parseMessage.i[0] == 72) document.title = 'PlayOK Go Client #' + parseMessage.i[1];
+  if (parseMessage.i[0] == 73) {
+    document.title = 'PlayOK Go Client';
+    initGoban();
+    drawBoard();
+  }
   document.getElementById('command').value = '';
 }
 

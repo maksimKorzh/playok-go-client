@@ -2,11 +2,17 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World</title>
+    <title>PlayOK Go Client</title>
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <h1>Hello World!</h1>
+    <div id="controls"></div>
+    <div class="container"><div id="goban"></div></div>
+    <div id="stats" style="font-size: 38px; margin-bottom: 2%;"></div>
+    <script src="js/goban.js"></script>
+    <script src="js/gui.js"></script>
     <script>
+      initGUI();
       const { ipcRenderer } = require('electron');
         ipcRenderer.on('websocket-message', (event, message) => {
           console.log(message);

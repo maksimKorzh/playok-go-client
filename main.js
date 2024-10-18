@@ -1,19 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const WebSocket = require('ws');
+var socket;
 
-function createWindow() {
-  let win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
-    }
-  });
-
-  win.loadFile('index.html');
-  win.webContents.openDevTools();
-
+function connect(win) {
   const socket = new WebSocket('wss://x.playok.com:17003/ws/', {
     headers: {
      'Origin': 'null',
@@ -21,6 +10,7 @@ function createWindow() {
   });
 
   socket.on('open', function () {
+    win.webContents.send('websocket-message', 'open');
     console.log('Connected to the WebSocket server.');
     const initialMessage = JSON.stringify({
       "i": [1721],
@@ -39,11 +29,6 @@ function createWindow() {
     });
 
     socket.send(initialMessage);
-
-    ipcMain.on('main', (event, messageData) => {
-      socket.send(JSON.stringify(JSON.parse(messageData)));
-    });
-
     setInterval(function() {
       const keepAliveMessage = JSON.stringify({ "i": [] }); // Sending an empty array as a heartbeat
       socket.send(keepAliveMessage);
@@ -52,11 +37,32 @@ function createWindow() {
 
   socket.on('message', function (data) { win.webContents.send('websocket-message', data.toString()); });
   socket.on('error', function (error) { console.error('WebSocket error:', error); });
-  socket.on('close', function () { console.log('WebSocket connection closed.'); });
+  socket.on('close', function () {
+    win.webContents.send('websocket-message', 'close');
+    console.log('WebSocket connection closed.');
+  }); return socket;
+}
+
+function createWindow() {
+  let win = new BrowserWindow({
+    width: 1500,
+    height: 900,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+  win.loadFile('index.html');
+  win.webContents.openDevTools();
+  ipcMain.on('main', (event, messageData) => {
+    if (messageData == 'connect') {
+      socket = connect(win);
+      console.log('created new socket');
+    } else socket.send(JSON.stringify(JSON.parse(messageData)));
+  });
 }
 
 app.whenReady().then(createWindow);
-
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();

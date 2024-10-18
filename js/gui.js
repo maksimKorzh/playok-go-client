@@ -72,6 +72,10 @@ function userInput(event) {
 }
 
 function sendMessage(action) {
+  if (action == 'connect') {
+    ipcRenderer.send('main', action);
+    return;
+  }
   let goban = parseInt(document.getElementById('table').value);
   let command = {"i": []};
   switch (action) {
@@ -88,7 +92,6 @@ function sendMessage(action) {
   }
   let message = JSON.stringify(command);
   ipcRenderer.send('main', message);
-  document.getElementById('table').value = '';
 }
 
 function resizeCanvas() {
@@ -106,6 +109,7 @@ function resizeCanvas() {
       <button onclick="sendMessage();">PASS</button>
       <button onclick="sendMessage();">START</button>
       <button onclick="sendMessage();">RESIGN</button>
+      <button onclick="sendMessage('connect');">CONNECT</button>
     </div>
   `;
 }

@@ -26,6 +26,7 @@ var ranks = [
 
 var players = {};
 var games = {};
+var me = '';
 var logs = '';
 
 function getRank(rating) {
@@ -35,8 +36,11 @@ function getRank(rating) {
 }
 
 ipcRenderer.on('websocket-message', (event, message) => {
+  if (message == 'open') { logs += '&nbsp;New web socket connection is established<br>'; return; }
+  if (message == 'close') { return; logs += '&nbsp;Old web socket connection is closed<br>'; return; }
   let response = JSON.parse(message);
-  
+
+  if (response.i[0] == 18) { me = response.s[0]; }
   if (response.i[0] == 70) {
     if (parseInt(response.s[0].split(', ')[1]) != 19) return;
     if (response.i[3] == 1 && response.i[4] == 1) {
@@ -51,12 +55,14 @@ ipcRenderer.on('websocket-message', (event, message) => {
     if (response.i[3] == 1 && response.i[4] == 0) {
       if (players[response.s[1]] != undefined) {
         let player1 = response.s[1] + '[' + players[response.s[1]] + ']';
+        games[response.i[1]] = player1 + ' VS ';
         logs += '&nbsp;<strong>#' + response.i[1] + ' play white against '  + player1 + ', ' + response.s[0] + '</strong><br>';
       }
     }
     if (response.i[3] == 0 && response.i[4] == 1) {
       if (players[response.s[2]] != undefined) {
         let player2 = response.s[2] + '[' + players[response.s[2]] + ']';
+        games[response.i[1]] = ' VS ' + player2;
         logs += '&nbsp;<strong>#' + response.i[1] + ' play black against '  + player2 + ', ' + response.s[0] + '</strong><br>';
       }
     }
@@ -66,6 +72,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
     let player = response.s[0];
     let rating = response.i[3];
     players[player] = getRank(rating);
+    if (player == me) me = player + '[' + players[player] + ']';
   }
 
   if (response.i[0] == 91) {
@@ -96,9 +103,10 @@ ipcRenderer.on('websocket-message', (event, message) => {
       }
     }
   }
-
-  logs = logs.split('<br>').slice(-30,).join('<br>');
-  document.getElementById('lobby').innerHTML = logs;
+  
+  let lobby = document.getElementById('lobby');
+  lobby.innerHTML = logs;
+  lobby.scrollTop = lobby.scrollHeight;
 });
 
 initGUI();

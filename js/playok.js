@@ -108,7 +108,9 @@ ipcRenderer.on('websocket-message', (event, message) => {
 
   if (response.i[0] == 81 && response.i[1] == table) {
     logs += '&nbsp;' + response.s[0] + '<br>';
-    if (response.s[0].includes('resigns') || response.s[0].includes('territory')) alert(response.s[0]);
+    if (response.s[0].includes('resigns') ||
+        response.s[0].includes('territory') ||
+        response.s[0].includes('exceeded')) alert(response.s[0]);
   }
   let lobby = document.getElementById('lobby');
   lobby.innerHTML = logs;

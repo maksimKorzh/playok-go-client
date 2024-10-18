@@ -47,14 +47,16 @@ function createWindow() {
   let win = new BrowserWindow({
     width: 1500,
     minWidth:1000,
-    height: 900,
+    height: 860,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
     }
   });
+  //win.removeMenu();
+  win.setResizable(false);
   win.loadFile('index.html');
-  //win.webContents.openDevTools();
+  socket = connect(win);
   ipcMain.on('main', (event, messageData) => {
     if (messageData == 'connect') {
       socket = connect(win);

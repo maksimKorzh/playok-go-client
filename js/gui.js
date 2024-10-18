@@ -129,10 +129,10 @@ function resizeCanvas() {
       <button onclick="sendMessage('leave');">↑</button>
       <button onclick="sendMessage('black');">●</button>
       <button onclick="sendMessage('white');">○</button>
-      <button onclick="sendMessage('pass');">PASS</button>
-      <button onclick="sendMessage('start');">START</button>
-      <button onclick="sendMessage('resign');">RESIGN</button>
-      <button onclick="sendMessage('connect');">CONNECT</button>
+      <button onclick="sendMessage('start');">></button>
+      <button onclick="sendMessage('pass');">□</button>
+      <button onclick="sendMessage('resign');">❌</button>
+      <button onclick="sendMessage('connect');">RECONNECT</button>
     </div>
   `;
 }

@@ -1,6 +1,7 @@
 var canvas, ctx, cell;
 var editMode = 0;
 var gameOver = 1;
+var userSide = BLACK;
 
 function drawBoard() {
   cell = canvas.width / (size-2);
@@ -57,19 +58,19 @@ function drawBoard() {
 }
 
 function userInput(event) {
-  //if (gameOver) return;
+  if (gameOver || side != userSide) return;
   let rect = canvas.getBoundingClientRect();
   let mouseX = event.clientX - rect.left;
   let mouseY = event.clientY - rect.top;
   let col = Math.floor(mouseX / cell);
   let row = Math.floor(mouseY / cell);
   let sq = (row+1) * size + (col+1);
-  if (board[sq]) return;
-  if (!setStone(sq, side, true)) return;
+  //if (board[sq]) return;
+  //if (!setStone(sq, side, true)) return;
+  setStone(sq, side, false);
   drawBoard();
   let move = {"i": [92, table, 0, (row * 19 + col), 0]};
   let message = JSON.stringify(move);
-  console.log(message);
   ipcRenderer.send('main', message);
 }
 
@@ -93,9 +94,11 @@ function sendMessage(action) {
       table = 0;
       break;
     case 'black':
+      userSide = BLACK;
       command.i = [83, table, 0];
       break;
     case 'white':
+      userSide = WHITE;
       command.i = [83, table, 1];
       break;
     case 'start':
@@ -103,10 +106,11 @@ function sendMessage(action) {
       gameOver = 0;
       break;
     case 'pass':
-      command.i = [92, table, (side == BLACK ? 1 : 0), 400, 0];
+      command.i = [92, table, 0, 400, 0];
       break;
     case 'resign':
       command.i = [93, table, 4, 0];
+      gameOver = 1;
       break;
   }
   let message = JSON.stringify(command);
@@ -118,7 +122,7 @@ function resizeCanvas() {
   canvas.height = canvas.width;
   drawBoard();
   document.getElementById('panel').innerHTML = `
-    <div id="lobby" style="margin: 4px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
+    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
       <input id="table" type="number" style="width: 100%; font-size: 20px;"/>
       <button onclick="sendMessage('join');">↓</button>
@@ -155,7 +159,7 @@ function handleSave() {
 function initGUI() {
   let container = document.getElementById('goban');
   canvas = document.createElement('canvas');
-  canvas.style = 'border: 2px solid black; margin: 4px;';
+  canvas.style = 'border: 2px solid black; margin: 4px; margin-top: 16px;';
   container.appendChild(canvas);
   canvas.addEventListener('click', userInput);
   ctx = canvas.getContext('2d');

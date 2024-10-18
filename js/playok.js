@@ -88,6 +88,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
         setStone(sq, side);
       }
     } drawBoard();
+    alert('Game ready');
   }
 
   if (response.i[0] == 92) {
@@ -104,7 +105,11 @@ ipcRenderer.on('websocket-message', (event, message) => {
       }
     }
   }
-  
+
+  if (response.i[0] == 81 && response.i[1] == table) {
+    logs += '&nbsp;' + response.s[0] + '<br>';
+    if (response.s[0].includes('resigns') || response.s[0].includes('territory')) alert(response.s[0]);
+  }
   let lobby = document.getElementById('lobby');
   lobby.innerHTML = logs;
   lobby.scrollTop = lobby.scrollHeight;

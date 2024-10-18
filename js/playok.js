@@ -28,12 +28,14 @@ ipcRenderer.on('websocket-message', (event, message) => {
 
   // Update game
   if (response.i[0] == 92) {
-    let move = response.s;
-    let col = 'abcdefghjklmnopqrst'.indexOf(move.split('-')[0]);
-    let row = 19-parseInt(move.split('-')[1]);
-    let sq = (row+1) * 21 + (col+1);
-    setStone(sq, side);
-    drawBoard();
+    let move = response.s[0];
+    if (move != undefined) {
+      let col = 'abcdefghjklmnopqrst'.indexOf(move.split('-')[0]);
+      let row = 19-parseInt(move.split('-')[1]);
+      let sq = (row+1) * 21 + (col+1);
+      setStone(sq, side);
+      drawBoard();
+    }
   }
 
   logs = logs.split('<br>').slice(-30,).join('<br>');

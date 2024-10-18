@@ -71,17 +71,35 @@ function userInput(event) {
   setTimeout(function() { playMove(); }, 100)
 }
 
-function sendMessage() {
-  let message = document.getElementById('command').value;
+function sendMessage(action) {
+  let goban = parseInt(document.getElementById('table').value);
+  let command = {"i": []};
+  switch (action) {
+    case 'join':
+      command.i = [72, goban];
+      document.title = 'Goban #' + goban;
+      break;
+    case 'leave':
+      command.i = [73, goban];
+      document.title = 'Lobby';
+      initGoban();
+      drawBoard();
+      break;
+  }
+  let message = JSON.stringify(command);
+  console.log(message);
   ipcRenderer.send('main', message);
-  let parseMessage = JSON.parse(message);
+  
+
+
+  /*let parseMessage = JSON.parse(message);
   if (parseMessage.i[0] == 72) document.title = 'PlayOK Go Client #' + parseMessage.i[1];
   if (parseMessage.i[0] == 73) {
     document.title = 'PlayOK Go Client';
     initGoban();
     drawBoard();
   }
-  document.getElementById('command').value = '';
+  document.getElementById('table').value = '';*/
 }
 
 function resizeCanvas() {
@@ -90,9 +108,15 @@ function resizeCanvas() {
   drawBoard();
   document.getElementById('panel').innerHTML = `
     <div id="lobby" style="margin: 4px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
-    <div style="display: flex; width: ` + (canvas.width-198) + `px;">
-      <input id="command" type="text" style="width: 100%;"/>
-      <button onclick="sendMessage();">SEND</button>
+    <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
+      <input id="table" type="number" style="width: 100%; font-size: 20px;"/>
+      <button onclick="sendMessage('join');">↓</button>
+      <button onclick="sendMessage('leave');">↑</button>
+      <button onclick="sendMessage();">●</button>
+      <button onclick="sendMessage();">○</button>
+      <button onclick="sendMessage();">PASS</button>
+      <button onclick="sendMessage();">START</button>
+      <button onclick="sendMessage();">RESIGN</button>
     </div>
   `;
 }

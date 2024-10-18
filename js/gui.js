@@ -1,6 +1,6 @@
 var canvas, ctx, cell;
 var editMode = 0;
-var gameOver = 0;
+var gameOver = 1;
 
 function drawBoard() {
   cell = canvas.width / (size-2);
@@ -57,8 +57,7 @@ function drawBoard() {
 }
 
 function userInput(event) {
-  return;
-  if (gameOver) return;
+  //if (gameOver) return;
   let rect = canvas.getBoundingClientRect();
   let mouseX = event.clientX - rect.left;
   let mouseY = event.clientY - rect.top;
@@ -68,7 +67,10 @@ function userInput(event) {
   if (board[sq]) return;
   if (!setStone(sq, side, true)) return;
   drawBoard();
-  setTimeout(function() { playMove(); }, 100)
+  let move = {"i": [92, table, 0, (row * 19 + col), 0]};
+  let message = JSON.stringify(move);
+  console.log(message);
+  ipcRenderer.send('main', message);
 }
 
 function sendMessage(action) {
@@ -76,18 +78,35 @@ function sendMessage(action) {
     ipcRenderer.send('main', action);
     return;
   }
-  let goban = parseInt(document.getElementById('table').value);
+  table = parseInt(document.getElementById('table').value);
   let command = {"i": []};
   switch (action) {
     case 'join':
-      command.i = [72, goban];
-      document.title = 'Goban #' + goban + ' ' + games[goban];
+      command.i = [72, table];
+      document.title = 'Goban #' + table + ' ' + games[table];
       break;
     case 'leave':
-      command.i = [73, goban];
+      command.i = [73, table];
       document.title = 'Lobby';
       initGoban();
       drawBoard();
+      table = 0;
+      break;
+    case 'black':
+      command.i = [83, table, 0];
+      break;
+    case 'white':
+      command.i = [83, table, 1];
+      break;
+    case 'start':
+      command.i = [85, table];
+      gameOver = 0;
+      break;
+    case 'pass':
+      command.i = [92, table, (side == BLACK ? 1 : 0), 400, 0];
+      break;
+    case 'resign':
+      command.i = [93, table, 4, 0];
       break;
   }
   let message = JSON.stringify(command);
@@ -104,11 +123,11 @@ function resizeCanvas() {
       <input id="table" type="number" style="width: 100%; font-size: 20px;"/>
       <button onclick="sendMessage('join');">↓</button>
       <button onclick="sendMessage('leave');">↑</button>
-      <button onclick="sendMessage();">●</button>
-      <button onclick="sendMessage();">○</button>
-      <button onclick="sendMessage();">PASS</button>
-      <button onclick="sendMessage();">START</button>
-      <button onclick="sendMessage();">RESIGN</button>
+      <button onclick="sendMessage('black');">●</button>
+      <button onclick="sendMessage('white');">○</button>
+      <button onclick="sendMessage('pass');">PASS</button>
+      <button onclick="sendMessage('start');">START</button>
+      <button onclick="sendMessage('resign');">RESIGN</button>
       <button onclick="sendMessage('connect');">CONNECT</button>
     </div>
   `;

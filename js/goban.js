@@ -264,10 +264,6 @@ function saveSgf() {
   return sgf;
 }
 
-function playMove() {
-  console.log('response');
-}
-
 function initGoban() {
   clearBoard();
   moveHistory.push({

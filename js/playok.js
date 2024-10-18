@@ -26,6 +26,7 @@ var ranks = [
 
 var players = {};
 var games = {};
+var table = 0;
 var me = '';
 var logs = '';
 
@@ -55,14 +56,14 @@ ipcRenderer.on('websocket-message', (event, message) => {
     if (response.i[3] == 1 && response.i[4] == 0) {
       if (players[response.s[1]] != undefined) {
         let player1 = response.s[1] + '[' + players[response.s[1]] + ']';
-        games[response.i[1]] = player1 + ' VS ';
+        games[response.i[1]] = player1 + ' VS ' + me;
         logs += '&nbsp;<strong>#' + response.i[1] + ' play white against '  + player1 + ', ' + response.s[0] + '</strong><br>';
       }
     }
     if (response.i[3] == 0 && response.i[4] == 1) {
       if (players[response.s[2]] != undefined) {
         let player2 = response.s[2] + '[' + players[response.s[2]] + ']';
-        games[response.i[1]] = ' VS ' + player2;
+        games[response.i[1]] = me + ' VS ' + player2;
         logs += '&nbsp;<strong>#' + response.i[1] + ' play black against '  + player2 + ', ' + response.s[0] + '</strong><br>';
       }
     }

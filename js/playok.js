@@ -88,14 +88,13 @@ ipcRenderer.on('websocket-message', (event, message) => {
         setStone(sq, side);
       }
     } drawBoard();
-    alert('Game ready');
   }
 
   if (response.i[0] == 92) {
     let move = response.s[0];
     if (move != undefined) {
       if (move == '-') {
-        passMove(); alert('Player passed');
+        passMove();
       } else {
         let col = 'abcdefghjklmnopqrst'.indexOf(move.split('-')[0]);
         let row = 19-parseInt(move.split('-')[1]);

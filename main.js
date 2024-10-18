@@ -41,7 +41,6 @@ function createWindow() {
     socket.send(initialMessage);
 
     ipcMain.on('main', (event, messageData) => {
-      console.log('UI:', messageData)
       socket.send(JSON.stringify(JSON.parse(messageData)));
     });
 

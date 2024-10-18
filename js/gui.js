@@ -77,7 +77,7 @@ function sendMessage(action) {
   switch (action) {
     case 'join':
       command.i = [72, goban];
-      document.title = 'Goban #' + goban;
+      document.title = 'Goban #' + goban + ' ' + games[goban];
       break;
     case 'leave':
       command.i = [73, goban];
@@ -87,19 +87,8 @@ function sendMessage(action) {
       break;
   }
   let message = JSON.stringify(command);
-  console.log(message);
   ipcRenderer.send('main', message);
-  
-
-
-  /*let parseMessage = JSON.parse(message);
-  if (parseMessage.i[0] == 72) document.title = 'PlayOK Go Client #' + parseMessage.i[1];
-  if (parseMessage.i[0] == 73) {
-    document.title = 'PlayOK Go Client';
-    initGoban();
-    drawBoard();
-  }
-  document.getElementById('table').value = '';*/
+  document.getElementById('table').value = '';
 }
 
 function resizeCanvas() {

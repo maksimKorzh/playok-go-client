@@ -24,9 +24,9 @@ var ranks = [
   {'min':    0, 'max': 790,  'rank': '12k'},
 ];
 
-var players = [];
+var players = {};
+var games = {};
 var logs = '';
-var watch = '';
 
 function getRank(rating) {
   for (let entry of ranks) {
@@ -35,25 +35,45 @@ function getRank(rating) {
 }
 
 ipcRenderer.on('websocket-message', (event, message) => {
-  logs += '<small>' + message + '</small><br>';
   let response = JSON.parse(message);
   
-  // Games in progress
-  //if (response.i[0] == 70 && response.i[3] == 1 && response.i[4] == 1) {
-  //  watch += '&nbsp;WATCH: #' + message + ' ' + response.s.slice(1,).join(' VS ') + '<br>';
-  //}
+  if (response.i[0] == 70) {
+    if (parseInt(response.s[0].split(', ')[1]) != 19) return;
+    if (response.i[3] == 1 && response.i[4] == 1) {
+      if (players[response.s[1]] != undefined && players[response.s[2]] != undefined) {
+        let player1 = response.s[1] + '[' + players[response.s[1]] + ']';
+        let player2 = response.s[2] + '[' + players[response.s[2]] + ']';
+        let pair = player1 + ' VS ' + player2;
+        games[response.i[1]] = pair;
+        logs += '&nbsp;#' + response.i[1] + ' watch game '  + pair + '<br>';
+      }
+    }
+    if (response.i[3] == 1 && response.i[4] == 0) {
+      if (players[response.s[1]] != undefined) {
+        let player1 = response.s[1] + '[' + players[response.s[1]] + ']';
+        logs += '&nbsp;<strong>#' + response.i[1] + ' play white against '  + player1 + ', ' + response.s[0] + '</strong><br>';
+      }
+    }
+    if (response.i[3] == 0 && response.i[4] == 1) {
+      if (players[response.s[2]] != undefined) {
+        let player2 = response.s[2] + '[' + players[response.s[2]] + ']';
+        logs += '&nbsp;<strong>#' + response.i[1] + ' play black against '  + player2 + ', ' + response.s[0] + '</strong><br>';
+      }
+    }
+
+  }
   if (response.i[0] == 25) {
     let player = response.s[0];
     let rating = response.i[3];
     players[player] = getRank(rating);
   }
 
-  // Load game {"i": [72, table]}
-  if (response.i[0] == 91) { console.log(response)
+  if (response.i[0] == 91) {
     initGoban();
     let moves = response.s;
     if (moves != undefined) {
       for (let move of moves) {
+        if (move == '-') { passMove(); continue; }
         let col = 'abcdefghjklmnopqrst'.indexOf(move.split('-')[0]);
         let row = 19-parseInt(move.split('-')[1]);
         let sq = (row+1) * 21 + (col+1);
@@ -62,21 +82,23 @@ ipcRenderer.on('websocket-message', (event, message) => {
     } drawBoard();
   }
 
-  // Update game
   if (response.i[0] == 92) {
     let move = response.s[0];
     if (move != undefined) {
-      let col = 'abcdefghjklmnopqrst'.indexOf(move.split('-')[0]);
-      let row = 19-parseInt(move.split('-')[1]);
-      let sq = (row+1) * 21 + (col+1);
-      setStone(sq, side);
-      drawBoard();
+      if (move == '-') {
+        passMove(); alert('Player passed');
+      } else {
+        let col = 'abcdefghjklmnopqrst'.indexOf(move.split('-')[0]);
+        let row = 19-parseInt(move.split('-')[1]);
+        let sq = (row+1) * 21 + (col+1);
+        setStone(sq, side);
+        drawBoard();
+      }
     }
   }
 
   logs = logs.split('<br>').slice(-30,).join('<br>');
-  watch = watch.split('<br>').slice(-11,).join('<br>');
-  document.getElementById('lobby').innerHTML = watch;
+  document.getElementById('lobby').innerHTML = logs;
 });
 
 initGUI();

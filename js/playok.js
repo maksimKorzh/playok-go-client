@@ -42,38 +42,64 @@ ipcRenderer.on('websocket-message', (event, message) => {
   let response = JSON.parse(message);
 
   if (response.i[0] == 18) { me = response.s[0]; }
-  if (response.i[0] == 70) {
-    if (parseInt(response.s[0].split(', ')[1]) != 19) return;
-    if (response.i[3] == 1 && response.i[4] == 1) {
-      if (players[response.s[1]] != undefined && players[response.s[2]] != undefined) {
-        let player1 = response.s[1] + '[' + players[response.s[1]] + ']';
-        let player2 = response.s[2] + '[' + players[response.s[2]] + ']';
-        let pair = player1 + ' VS ' + player2;
-        games[response.i[1]] = pair;
-        logs += '&nbsp;#' + response.i[1] + ' watch game '  + pair + '<br>';
-      }
-    }
-    if (response.i[3] == 1 && response.i[4] == 0) {
-      if (players[response.s[1]] != undefined) {
-        let player1 = response.s[1] + '[' + players[response.s[1]] + ']';
-        games[response.i[1]] = player1 + ' VS ' + me;
-        logs += '&nbsp;<strong>#' + response.i[1] + ' play white against '  + player1 + ', ' + response.s[0] + '</strong><br>';
-      }
-    }
-    if (response.i[3] == 0 && response.i[4] == 1) {
-      if (players[response.s[2]] != undefined) {
-        let player2 = response.s[2] + '[' + players[response.s[2]] + ']';
-        games[response.i[1]] = me + ' VS ' + player2;
-        logs += '&nbsp;<strong>#' + response.i[1] + ' play black against '  + player2 + ', ' + response.s[0] + '</strong><br>';
-      }
-    }
-
-  }
+  
   if (response.i[0] == 25) {
     let player = response.s[0];
     let rating = response.i[3];
-    players[player] = getRank(rating);
+    players[player] = player + '[' + getRank(rating) + ']';
     if (player == me) me = player + '[' + players[player] + ']';
+  }
+
+  if (response.i[0] == 70) {
+    if (parseInt(response.s[0].split(', ')[1]) != 19) return;
+    if ((table in games) && response.i[1] != table) return; 
+    let player1 = response.s[1];
+    let player2 = response.s[2];
+    let timeControl = response.s[0].split(',')[0];
+    let boardSize = response.s[0].split(',')[1];
+    let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked'; 
+    games[response.i[1]] = [player1, player2];
+    if (response.i[3] == 0 && response.i[4] == 0) {
+      logs += '<tr><td>#' + response.i[1] +
+              '</td><td>' + 'empty' +
+              '</td><td>' + 'empty' +
+              '</td><td>' + boardSize +
+              '</td><td>' + gameStatus + '</td></tr>';
+    }
+    else if (response.i[3] == 1 && response.i[4] == 0) {
+      if (players[player1] != undefined) {;
+        logs += '<tr><td>#' + response.i[1] +
+                '</td><td>' + players[player1] +
+                '</td><td>' + 'empty' +
+                '</td><td>' + boardSize +
+                '</td><td>' + gameStatus + '</td></tr>';
+      }
+    }
+    else if (response.i[3] == 0 && response.i[4] == 1) {
+      if (players[player2] != undefined) {
+        logs += '<tr><td>#' + response.i[1] +
+              '</td><td>' + 'empty' +
+              '</td><td>' + players[player2] +
+              '</td><td>' + boardSize +
+              '</td><td>' + gameStatus + '</td></tr>';
+      }
+    }
+    else if (response.i[3] == 1 && response.i[4] == 1) {
+      if (players[player1] != undefined && players[player2] != undefined) {
+        logs += '<tr><td>#' + response.i[1] +
+              '</td><td>' + players[player1] +
+              '</td><td>' + players[player2] +
+              '</td><td>' + boardSize +
+              '</td><td>' + gameStatus + '</td></tr>';
+      }
+    }
+  }
+  
+  if (response.i[0] == 81 && response.i[1] == table) {
+    logs += '<tr><td>' + response.s[0] + '</td></tr>';
+    if (response.s[0].includes('resigns') ||
+        response.s[0].includes('territory') ||
+        response.s[0].includes('exceeded')) alert(response.s[0]);
   }
 
   if (response.i[0] == 91) {
@@ -105,14 +131,8 @@ ipcRenderer.on('websocket-message', (event, message) => {
     }
   }
 
-  if (response.i[0] == 81 && response.i[1] == table) {
-    logs += '&nbsp;' + response.s[0] + '<br>';
-    if (response.s[0].includes('resigns') ||
-        response.s[0].includes('territory') ||
-        response.s[0].includes('exceeded')) alert(response.s[0]);
-  }
   let lobby = document.getElementById('lobby');
-  lobby.innerHTML = logs;
+  lobby.innerHTML = '<table style="width: 100%;">' + logs + '</table>';
   lobby.scrollTop = lobby.scrollHeight;
 });
 

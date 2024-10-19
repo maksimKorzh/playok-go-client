@@ -80,15 +80,18 @@ function sendMessage(action) {
     return;
   }
   table = parseInt(document.getElementById('table').value);
+  if (!(table in games)) {
+    alert('Choose valid table');
+    return;
+  }
   let command = {"i": []};
   switch (action) {
     case 'join':
       command.i = [72, table];
-      document.title = 'Goban #' + table + ' ' + games[table];
+
       break;
     case 'leave':
       command.i = [73, table];
-      document.title = 'Lobby';
       initGoban();
       drawBoard();
       table = 0;
@@ -124,14 +127,14 @@ function resizeCanvas() {
   document.getElementById('panel').innerHTML = `
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
-      <input id="table" type="number" style="width: 100%; font-size: 20px;"/>
-      <button onclick="sendMessage('join');">↓</button>
-      <button onclick="sendMessage('leave');">↑</button>
-      <button onclick="sendMessage('black');">●</button>
-      <button onclick="sendMessage('white');">○</button>
-      <button onclick="sendMessage('start');">></button>
-      <button onclick="sendMessage('pass');">□</button>
-      <button onclick="sendMessage('resign');">❌</button>
+      <input id="table" type="number" style="width: 100%; font-size: 18px;"/>
+      <button onclick="sendMessage('join');">JOIN</button>
+      <button onclick="sendMessage('leave');">EXIT</button>
+      <button onclick="sendMessage('black');">BLACK</button>
+      <button onclick="sendMessage('white');">WHITE</button>
+      <button onclick="sendMessage('start');">START</button>
+      <button onclick="sendMessage('pass');">PASS</button>
+      <button onclick="sendMessage('resign');">RESIGN</button>
       <button onclick="sendMessage('connect');">CONNECT</button>
     </div>
   `;

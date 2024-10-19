@@ -54,6 +54,7 @@ function createWindow() {
     }
   });
   //win.removeMenu();
+  //win.setFullScreen(!win.isFullScreen());
   win.setResizable(false);
   win.loadFile('index.html');
   socket = connect(win);

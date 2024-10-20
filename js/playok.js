@@ -37,8 +37,8 @@ function getRank(rating) {
 }
 
 ipcRenderer.on('websocket-message', (event, message) => {
-  if (message == 'open') { logs += '&nbsp;New web socket connection is established<br>'; return; }
-  if (message == 'close') { return; logs += '&nbsp;Old web socket connection is closed<br>'; return; }
+  if (message == 'open') { setTimeout(function() { logs = '&nbsp;Web socket connection is open<br>'}, 100); return; }
+  if (message == 'close') { logs = '&nbsp;Web socket connection is closed<br>'; return; }
   let response = JSON.parse(message);
 
   if (response.i[0] == 18) { me = response.s[0]; }
@@ -99,9 +99,13 @@ ipcRenderer.on('websocket-message', (event, message) => {
     logs += response.s[0] + '<br>';
     if (response.s[0].includes('resigns') ||
         response.s[0].includes('territory') ||
-        response.s[0].includes('exceeded')) alert(response.s[0]);
+        response.s[0].includes('exceeded')) {
+          gameOver = 1;
+          alert(response.s[0]);
+        }
   }
 
+  if (response.i[0] == 90 && response.i.length > 30) logs += '+ game state is updated<br>';
   if (response.i[0] == 91) {
     initGoban();
     let moves = response.s;
@@ -121,12 +125,14 @@ ipcRenderer.on('websocket-message', (event, message) => {
     if (move != undefined) {
       if (move == '-') {
         passMove();
+        userSide = side;
       } else {
         let col = 'abcdefghjklmnopqrst'.indexOf(move.split('-')[0]);
         let row = 19-parseInt(move.split('-')[1]);
         let sq = (row+1) * 21 + (col+1);
         setStone(sq, side);
         drawBoard();
+        logs += '+ ' + response.s[0] + '<br>';
       }
     }
   }

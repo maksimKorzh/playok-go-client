@@ -66,8 +66,6 @@ function userInput(event) {
   let col = Math.floor(mouseX / cell);
   let row = Math.floor(mouseY / cell);
   let sq = (row+1) * size + (col+1);
-  //if (board[sq]) return;
-  //if (!setStone(sq, side, true)) return;
   setStone(sq, side, false);
   drawBoard();
   let move = {"i": [92, table, 0, (row * 19 + col), 0]};
@@ -97,6 +95,7 @@ function sendMessage(action) {
       drawBoard();
       table = 0;
       logs = '';
+      takePlace = 0;
       break;
     case 'black':
       userSide = BLACK;
@@ -113,6 +112,8 @@ function sendMessage(action) {
       gameOver = 0;
       break;
     case 'pass':
+      passMove();
+      userSide = side;
       command.i = [92, table, 0, 400, 0];
       break;
     case 'resign':

@@ -53,8 +53,7 @@ function createWindow() {
       contextIsolation: false
     }
   });
-  //win.removeMenu();
-  //win.setFullScreen(!win.isFullScreen());
+  win.removeMenu();
   win.setResizable(false);
   win.loadFile('index.html');
   socket = connect(win);

@@ -36,7 +36,7 @@ function connect(win) {
   });
 
   socket.on('message', function (data) { win.webContents.send('websocket-message', data.toString()); });
-  socket.on('error', function (error) { console.error('WebSocket error:', error); });
+  socket.on('error', function (error) { win.webContents.send('websocket-message', 'Web socket error: ' + data.toString()); });
   socket.on('close', function () {
     win.webContents.send('websocket-message', 'close');
     console.log('WebSocket connection closed.');

@@ -26,7 +26,7 @@ var ranks = [
 
 var players = {};
 var games = {};
-var table = 0;
+var table = 100;
 var me = '';
 var logs = '';
 
@@ -96,7 +96,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
   }
   
   if (response.i[0] == 81 && response.i[1] == table) {
-    logs += '<tr><td>' + response.s[0] + '</td></tr>';
+    logs += response.s[0] + '<br>';
     if (response.s[0].includes('resigns') ||
         response.s[0].includes('territory') ||
         response.s[0].includes('exceeded')) alert(response.s[0]);

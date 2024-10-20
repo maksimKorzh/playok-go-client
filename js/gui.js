@@ -1,5 +1,6 @@
 var canvas, ctx, cell;
 var editMode = 0;
+var takePlace = 0;
 var gameOver = 1;
 var userSide = BLACK;
 
@@ -88,21 +89,24 @@ function sendMessage(action) {
   switch (action) {
     case 'join':
       command.i = [72, table];
-
+      logs = '';
       break;
     case 'leave':
       command.i = [73, table];
       initGoban();
       drawBoard();
       table = 0;
+      logs = '';
       break;
     case 'black':
       userSide = BLACK;
-      command.i = [83, table, 0];
+      command.i = [(takePlace ? 84:83), table, 0];
+      takePlace ^= 1;
       break;
     case 'white':
       userSide = WHITE;
-      command.i = [83, table, 1];
+      command.i = [(takePlace ? 84:83), table, 1];
+      takePlace ^= 1;
       break;
     case 'start':
       command.i = [85, table];
@@ -127,9 +131,9 @@ function resizeCanvas() {
   document.getElementById('panel').innerHTML = `
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
-      <input id="table" type="number" style="width: 100%; font-size: 18px;"/>
+      <input id="table" type="number" value="` + table + `" style="width: 100%; font-size: 18px;"/>
       <button onclick="sendMessage('join');">JOIN</button>
-      <button onclick="sendMessage('leave');">EXIT</button>
+      <button onclick="sendMessage('leave');">QUIT</button>
       <button onclick="sendMessage('black');">BLACK</button>
       <button onclick="sendMessage('white');">WHITE</button>
       <button onclick="sendMessage('start');">START</button>

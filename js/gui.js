@@ -66,7 +66,7 @@ function userInput(event) {
   let col = Math.floor(mouseX / cell);
   let row = Math.floor(mouseY / cell);
   let sq = (row+1) * size + (col+1);
-  setStone(sq, side, false);
+  setStone(sq, side, true);
   drawBoard();
   let move = {"i": [92, table, 0, (row * 19 + col), 0]};
   let message = JSON.stringify(move);

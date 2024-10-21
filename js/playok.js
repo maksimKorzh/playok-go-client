@@ -51,18 +51,19 @@ ipcRenderer.on('websocket-message', (event, message) => {
   }
 
   if (response.i[0] == 70) {
-    if (parseInt(response.s[0].split(', ')[1]) != 19) return;
     if ((table in games) && response.i[1] != table) return; 
     let player1 = response.s[1];
     let player2 = response.s[2];
     let timeControl = response.s[0].split(',')[0];
     let boardSize = response.s[0].split(',')[1];
+    if (parseInt(boardSize) != 19) return;
     let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked'; 
     games[response.i[1]] = [player1, player2];
     if (response.i[3] == 0 && response.i[4] == 0) {
       logs += '<tr><td>#' + response.i[1] +
               '</td><td>' + 'empty' +
               '</td><td>' + 'empty' +
+              '</td><td>' + timeControl +
               '</td><td>' + boardSize +
               '</td><td>' + gameStatus + '</td></tr>';
     }
@@ -71,6 +72,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
         logs += '<tr><td>#' + response.i[1] +
                 '</td><td>' + players[player1] +
                 '</td><td>' + 'empty' +
+                '</td><td>' + timeControl +
                 '</td><td>' + boardSize +
                 '</td><td>' + gameStatus + '</td></tr>';
       }
@@ -80,6 +82,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
         logs += '<tr><td>#' + response.i[1] +
               '</td><td>' + 'empty' +
               '</td><td>' + players[player2] +
+              '</td><td>' + timeControl +
               '</td><td>' + boardSize +
               '</td><td>' + gameStatus + '</td></tr>';
       }
@@ -89,6 +92,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
         logs += '<tr><td>#' + response.i[1] +
               '</td><td>' + players[player1] +
               '</td><td>' + players[player2] +
+              '</td><td>' + timeControl +
               '</td><td>' + boardSize +
               '</td><td>' + gameStatus + '</td></tr>';
       }
@@ -105,7 +109,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
         }
   }
 
-  if (response.i[0] == 90 && response.i.length > 30) logs += '+ game state is updated<br>';
+  if (response.i[0] == 90 && response.i[2] == 53) logs += '+ dead stones removal phase<br>';
   if (response.i[0] == 91) {
     initGoban();
     let moves = response.s;
@@ -132,7 +136,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
         let sq = (row+1) * 21 + (col+1);
         setStone(sq, side);
         drawBoard();
-        logs += '+ ' + response.s[0] + '<br>';
       }
     }
   }

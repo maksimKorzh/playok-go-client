@@ -63,7 +63,12 @@ function printBoard() {
 
 function setStone(sq, color, user) {
   if (board[sq] != EMPTY) {
-    if (user) alert("Illegal move!");
+    if (user && confirm('Are you sure you want to remove dead stones at (' + (sq % 21) + ', ' + Math.floor(sq / 21) + ')?')) {
+      countLiberties(sq, color);
+      let deadStones = JSON.parse(JSON.stringify(block)); 
+      restoreBoard();
+      for (let stone of deadStones) board[stone] = EMPTY;
+    }
     return false;
   } else if (sq == ko) {
     if (user) alert("Ko!");

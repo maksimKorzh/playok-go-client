@@ -51,12 +51,12 @@ ipcRenderer.on('websocket-message', (event, message) => {
   }
 
   if (response.i[0] == 70) {
+    let boardSize = response.s[0].split(',')[1];
+    if (parseInt(boardSize) != 19) return;
     if ((table in games) && response.i[1] != table) return; 
     let player1 = response.s[1];
     let player2 = response.s[2];
     let timeControl = response.s[0].split(',')[0];
-    let boardSize = response.s[0].split(',')[1];
-    if (parseInt(boardSize) != 19) return;
     let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked'; 
     games[response.i[1]] = [player1, player2];
     if (response.i[3] == 0 && response.i[4] == 0) {
@@ -64,7 +64,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
               '</td><td>' + 'empty' +
               '</td><td>' + 'empty' +
               '</td><td>' + timeControl +
-              '</td><td>' + boardSize +
               '</td><td>' + gameStatus + '</td></tr>';
     }
     else if (response.i[3] == 1 && response.i[4] == 0) {
@@ -73,7 +72,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
                 '</td><td>' + players[player1] +
                 '</td><td>' + 'empty' +
                 '</td><td>' + timeControl +
-                '</td><td>' + boardSize +
                 '</td><td>' + gameStatus + '</td></tr>';
       }
     }
@@ -83,7 +81,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
               '</td><td>' + 'empty' +
               '</td><td>' + players[player2] +
               '</td><td>' + timeControl +
-              '</td><td>' + boardSize +
               '</td><td>' + gameStatus + '</td></tr>';
       }
     }
@@ -93,7 +90,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
               '</td><td>' + players[player1] +
               '</td><td>' + players[player2] +
               '</td><td>' + timeControl +
-              '</td><td>' + boardSize +
               '</td><td>' + gameStatus + '</td></tr>';
       }
     }
@@ -134,7 +130,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
         let col = 'abcdefghjklmnopqrst'.indexOf(move.split('-')[0]);
         let row = 19-parseInt(move.split('-')[1]);
         let sq = (row+1) * 21 + (col+1);
-        setStone(sq, side);
+        setStone(sq, side, false);
         drawBoard();
       }
     }

@@ -125,7 +125,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
     if (move != undefined) {
       if (move == '-') {
         passMove();
-        userSide = side;
       } else {
         let col = 'abcdefghjklmnopqrst'.indexOf(move.split('-')[0]);
         let row = 19-parseInt(move.split('-')[1]);

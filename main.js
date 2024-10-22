@@ -10,26 +10,7 @@ function connect(win) {
   });
 
   socket.on('open', function () {
-    win.webContents.send('websocket-message', 'open');
-    console.log('Connected to the WebSocket server.');
-
     const initialMessage = JSON.stringify({
-      "i":[1721],
-      "s":[
-        "f89ce72906101a62+9301980859678439|3268793637|14014197",
-        "en",
-        "b",
-        "",
-        "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0",
-        "/1729579000069/1",
-        "w",
-        "1920x1080 1",
-        "ref:https://www.playok.com/en/go/",
-        "ver:260"
-      ]
-    });
-
-    /*const initialMessage = JSON.stringify({
       "i": [1721],
       "s": [
         "+518832092133209216|1920951531|17676847",
@@ -43,9 +24,11 @@ function connect(win) {
         "ref:https://www.playok.com/en/go/",
         "ver:260"
       ]
-    });*/
+    });
 
     socket.send(initialMessage);
+    win.webContents.send('websocket-message', 'open');
+    console.log('Connected to the WebSocket server.');
     setInterval(function() {
       const keepAliveMessage = JSON.stringify({ "i": [] }); // Sending an empty array as a heartbeat
       socket.send(keepAliveMessage);

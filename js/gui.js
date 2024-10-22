@@ -59,13 +59,14 @@ function drawBoard() {
 }
 
 function userInput(event) {
-  if (gameOver || side != userSide) return;
   let rect = canvas.getBoundingClientRect();
   let mouseX = event.clientX - rect.left;
   let mouseY = event.clientY - rect.top;
   let col = Math.floor(mouseX / cell);
   let row = Math.floor(mouseY / cell);
   let sq = (row+1) * size + (col+1);
+  if (board[sq] != EMPTY) side = userSide; 
+  if (gameOver || side != userSide) return;
   setStone(sq, side, true);
   drawBoard();
   let move = {"i": [92, table, 0, (row * 19 + col), 0]};
@@ -112,8 +113,6 @@ function sendMessage(action) {
       gameOver = 0;
       break;
     case 'pass':
-      passMove();
-      userSide = side;
       command.i = [92, table, 0, 400, 0];
       break;
     case 'resign':

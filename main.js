@@ -56,7 +56,7 @@ function createWindow() {
 
   const template = [
     {
-      label: 'MENU',
+      label: 'View',
       submenu: [
         { label: 'Reload', role: 'reload' },
         { label: 'Toggle Developer Tools', role: 'toggleDevTools' },

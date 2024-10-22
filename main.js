@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const WebSocket = require('ws');
 var socket;
 
@@ -47,13 +47,28 @@ function createWindow() {
   let win = new BrowserWindow({
     width: 1500,
     minWidth:1000,
-    height: 860,
+    height: 900,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
     }
   });
-  win.removeMenu();
+
+  const template = [
+    {
+      label: 'MENU',
+      submenu: [
+        { label: 'Reload', role: 'reload' },
+        { label: 'Toggle Developer Tools', role: 'toggleDevTools' },
+        { label: 'Fullscreen', role: 'togglefullscreen' },
+        { label: 'Exit', role: 'quit' },
+      ]
+    }
+  ];
+
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+
   win.setResizable(false);
   win.loadFile('index.html');
   socket = connect(win);

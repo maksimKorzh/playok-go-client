@@ -124,6 +124,18 @@ function sendMessage(action) {
   ipcRenderer.send('main', message);
 }
 
+function handleEval() {
+ (async () => {
+   if(table in games) alert(await evaluatePosition());
+   else alert('Choose valid table');
+ })();
+}
+
+function handleAI() {
+  if (!gameOver && side == userSide) playMove();
+  else alert('Choose valid table')
+}
+
 function resizeCanvas() {
   canvas.width = window.innerHeight-34;
   canvas.height = canvas.width;
@@ -139,8 +151,8 @@ function resizeCanvas() {
       <button onclick="sendMessage('start');" style="font-size: 15px;">▷</button>
       <button onclick="sendMessage('pass');" style="font-size: 15px;">□</button>
       <button onclick="sendMessage('resign');" style="font-size: 15px;">❌</button>
-      <button onclick="(async () => { if(table in games) alert(await evaluatePosition()); })();">EVAL</button>
-      <button onclick="if (!gameOver && side == userSide) playMove();">AI</button>
+      <button onclick="handleEval();">🎛</button>
+      <button onclick="handleAI();" style="font-size: 15px;">⚙</button>
       <button onclick="sendMessage('connect');">CONNECT</button>
     </div>
   `;

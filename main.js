@@ -68,8 +68,6 @@ function createWindow() {
 
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
-
-  win.setResizable(false);
   win.loadFile('index.html');
   socket = connect(win);
   ipcMain.on('main', (event, messageData) => {

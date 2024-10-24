@@ -131,14 +131,16 @@ function resizeCanvas() {
   document.getElementById('panel').innerHTML = `
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
-      <input id="table" type="number" value="` + table + `" style="width: 100%; font-size: 18px;"/>
-      <button onclick="sendMessage('join');">JOIN</button>
-      <button onclick="sendMessage('leave');">QUIT</button>
-      <button onclick="sendMessage('black');">BLACK</button>
-      <button onclick="sendMessage('white');">WHITE</button>
-      <button onclick="sendMessage('start');">START</button>
-      <button onclick="sendMessage('pass');">PASS</button>
-      <button onclick="sendMessage('resign');">RESIGN</button>
+      <input id="table" type="number" value="` + table + `" style="width: 125%; font-size: 18px;"/>
+      <button onclick="sendMessage('join');" style="font-size: 15px;">▽</button>
+      <button onclick="sendMessage('leave');" style="font-size: 15px;">△</button>
+      <button onclick="sendMessage('black');" style="font-size: 20px;">●</button>
+      <button onclick="sendMessage('white');" style="font-size: 20px;">○</button>
+      <button onclick="sendMessage('start');" style="font-size: 15px;">▷</button>
+      <button onclick="sendMessage('pass');" style="font-size: 15px;">□</button>
+      <button onclick="sendMessage('resign');" style="font-size: 15px;">❌</button>
+      <button onclick="(async () => { if(table in games) alert(await evaluatePosition()); })();">EVAL</button>
+      <button onclick="if (!gameOver && side == userSide) playMove();">AI</button>
       <button onclick="sendMessage('connect');">CONNECT</button>
     </div>
   `;

@@ -118,7 +118,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
         let col = 'abcdefghjklmnopqrst'.indexOf(move.split('-')[0]);
         let row = 19-parseInt(move.split('-')[1]);
         let sq = (row+1) * 21 + (col+1);
-        setStone(sq, side);
+        setStone(sq, side, false);
       }
     } drawBoard();
   }

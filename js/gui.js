@@ -67,8 +67,6 @@ function userInput(event) {
   let sq = (row+1) * size + (col+1);
   if (board[sq] != EMPTY) side = userSide; 
   if (gameOver || side != userSide) return;
-  setStone(sq, side, true);
-  drawBoard();
   let move = {"i": [92, table, 0, (row * 19 + col), 0]};
   let message = JSON.stringify(move);
   ipcRenderer.send('main', message);

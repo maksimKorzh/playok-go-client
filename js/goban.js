@@ -63,7 +63,7 @@ function printBoard() {
 
 function setStone(sq, color, user) {
   if (board[sq] != EMPTY) {
-    if (user && confirm('Are you sure you want to mark dead stones at (' + (sq % 21) + ', ' + Math.floor(sq / 21) + ')?')) {
+    if (confirm('Are you sure you want to mark dead stones at (' + (sq % 21) + ', ' + Math.floor(sq / 21) + ')?')) {
       countLiberties(sq, color);
       let deadStones = JSON.parse(JSON.stringify(block)); 
       restoreBoard();

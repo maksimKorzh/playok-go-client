@@ -399,30 +399,16 @@ async function playMove(button) {
     let flatScores = scores.dataSync();
     let copyPolicy = JSON.parse(JSON.stringify(flatPolicyArray));
     let topPolicies = copyPolicy.sort((a, b) => b - a).slice(0, 3);
-    for (let move = 0; move < topPolicies.length; move++) {
-      let moveChoice = (moveHistory.length <= 6) ? Math.floor(Math.random() * 3) : move;
-      let best_19 = flatPolicyArray.indexOf(topPolicies[moveChoice]);
-      let row_19 = Math.floor(best_19 / 19);
-      let col_19 = best_19 % 19;
-      let scoreLead = (flatScores[2]*20).toFixed(2);
-      let katagoColor = side == BLACK ? 'Black' : 'White';
-      let playerColor = (3-side) == BLACK ? 'Black' : 'White';
-      let bestMove = 21 * (row_19+1) + (col_19+1);
-      if (!setStone(bestMove, side, false)) {
-        if (move == 0) continue;
-        if (typeof(document) != 'undefined') { alert('Pass'); }
-        else console.log('= PASS\n');
-        passMove();
-      }
-      if (typeof(document) != 'undefined') { 
-        drawBoard();
-        let move = {"i": [92, table, 0, best_19, 0]};
-        let message = JSON.stringify(move);
-        ipcRenderer.send('main', message);
-      }
-      else console.log('= ' + 'ABCDEFGHJKLMNOPQRST'[col_19] + (size-row_19-2) + '\n');
-      break;
-    }
+    let best_19 = flatPolicyArray.indexOf(topPolicies[0]);
+    let row_19 = Math.floor(best_19 / 19);
+    let col_19 = best_19 % 19;
+    let scoreLead = (flatScores[2]*20).toFixed(2);
+    let katagoColor = side == BLACK ? 'Black' : 'White';
+    let playerColor = (3-side) == BLACK ? 'Black' : 'White';
+    let bestMove = 21 * (row_19+1) + (col_19+1);
+    let move = {"i": [92, table, 0, best_19, 0]};
+    let message = JSON.stringify(move);
+    ipcRenderer.send('main', message);
   } catch (e) {console.log(e);}
 }
 

@@ -100,7 +100,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
               '</td><td>' + timeControl +
               '</td><td>' + gameStatus + '</td></tr>';
       }
-    }
+    } document.getElementById('table').value = response.i[1];
   }
   
   if (response.i[0] == 81 && response.i[1] == table) {

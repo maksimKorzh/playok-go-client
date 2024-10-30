@@ -36,7 +36,7 @@ function connect(win) {
   });
 
   socket.on('message', function (data) { win.webContents.send('websocket-message', data.toString()); });
-  socket.on('error', function (error) { win.webContents.send('websocket-message', 'Web socket error: ' + data.toString()); });
+  socket.on('error', function (error) { win.webContents.send('websocket-message', 'Web socket error: ' + error.toString()); });
   socket.on('close', function () {
     win.webContents.send('websocket-message', 'close');
     console.log('WebSocket connection closed.');
@@ -45,9 +45,9 @@ function connect(win) {
 
 function createWindow() {
   let win = new BrowserWindow({
-    width: 1500,
-    minWidth:1000,
-    height: 900,
+    width: 1720,
+    minWidth:1720,
+    height: 1000,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false

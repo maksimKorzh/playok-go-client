@@ -30,7 +30,6 @@ var ranks = [
 var players = {};
 var games = {};
 var table = 100;
-var me = '';
 var logs = '';
 
 function getRank(rating) {
@@ -43,14 +42,10 @@ ipcRenderer.on('websocket-message', (event, message) => {
   if (message == 'open') { setTimeout(function() { logs = '&nbsp;Web socket connection is open<br>'}, 100); return; }
   if (message == 'close') { logs = '&nbsp;Web socket connection is closed<br>'; return; }
   let response = JSON.parse(message);
-
-  if (response.i[0] == 18) { me = response.s[0]; }
-  
   if (response.i[0] == 25) {
     let player = response.s[0];
     let rating = response.i[3];
     players[player] = player + '[' + getRank(rating) + ']';
-    if (player == me) me = player + '[' + players[player] + ']';
   }
 
   if (response.i[0] == 70) {
@@ -59,6 +54,13 @@ ipcRenderer.on('websocket-message', (event, message) => {
     if ((table in games) && response.i[1] != table) return; 
     let player1 = response.s[1];
     let player2 = response.s[2];
+    let rank1 = 'N/A';
+    let rank2 = 'N/A';
+    try {
+      rank1 = '[' + players[player1].split('[').slice(-1);
+      rank2 = '[' + players[player2].split('[').slice(-1);
+    } catch(e) {}
+    let rankLimit = '[' + document.getElementById('rank').value + ']';
     let timeControl = response.s[0].split(',')[0];
     let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked'; 
     games[response.i[1]] = [player1, player2];
@@ -70,6 +72,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
               '</td><td>' + gameStatus + '</td></tr>';
     }
     else if (response.i[3] == 1 && response.i[4] == 0) {
+      if (rankLimit != '[All]' && rank1 != rankLimit) return;
       if (players[player1] != undefined) {;
         logs += '<tr><td>#' + response.i[1] +
                 '</td><td>' + players[player1] +
@@ -79,6 +82,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
       }
     }
     else if (response.i[3] == 0 && response.i[4] == 1) {
+      if (rankLimit != '[All]' && rank2 != rankLimit) return;
       if (players[player2] != undefined) {
         logs += '<tr><td>#' + response.i[1] +
               '</td><td>' + 'empty' +
@@ -88,6 +92,7 @@ ipcRenderer.on('websocket-message', (event, message) => {
       }
     }
     else if (response.i[3] == 1 && response.i[4] == 1) {
+      if (rankLimit != '[All]') return;
       if (players[player1] != undefined && players[player2] != undefined) {
         logs += '<tr><td>#' + response.i[1] +
               '</td><td>' + players[player1] +

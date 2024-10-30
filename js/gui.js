@@ -85,6 +85,7 @@ function sendMessage(action) {
   let command = {"i": []};
   switch (action) {
     case 'join':
+      document.getElementById('rank').value = 'All';
       command.i = [72, table];
       logs = '';
       break;
@@ -142,6 +143,33 @@ function resizeCanvas() {
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
       <input id="table" type="number" value="` + table + `" style="width: 125%; font-size: 18px;"/>
+      <select id="rank" type="number" onchange="logs=''" style="width: 125%; font-size: 18px;">
+        <option>All</option>
+        <option>9d</option>
+        <option>8d</option>
+        <option>7d</option>
+        <option>6d</option>
+        <option>5d</option>
+        <option>4d</option>
+        <option>3d</option>
+        <option>2d</option>
+        <option>1d</option>
+        <option>1k</option>
+        <option>2k</option>
+        <option>3k</option>
+        <option>4k</option>
+        <option>5k</option>
+        <option>6k</option>
+        <option>7k</option>
+        <option>8k</option>
+        <option>9k</option>
+        <option>10k</option>
+        <option>11k</option>
+        <option>12k</option>
+        <option>13k</option>
+        <option>14k</option>
+        <option>15k</option>
+      </select>
       <button onclick="sendMessage('join');" style="font-size: 15px;">▽</button>
       <button onclick="sendMessage('leave');" style="font-size: 15px;">△</button>
       <button onclick="sendMessage('black');" style="font-size: 20px;">●</button>

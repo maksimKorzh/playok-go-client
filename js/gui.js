@@ -144,31 +144,18 @@ function resizeCanvas() {
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
       <input id="table" type="number" value="` + table + `" style="width: 125%; font-size: 18px;"/>
       <select id="rank" type="number" onchange="logs=''" style="width: 125%; font-size: 18px;">
-        <option>All</option>
-        <option>9d</option>
-        <option>8d</option>
-        <option>7d</option>
-        <option>6d</option>
-        <option>5d</option>
-        <option>4d</option>
-        <option>3d</option>
-        <option>2d</option>
-        <option>1d</option>
-        <option>1k</option>
-        <option>2k</option>
-        <option>3k</option>
-        <option>4k</option>
-        <option>5k</option>
-        <option>6k</option>
-        <option>7k</option>
-        <option>8k</option>
-        <option>9k</option>
-        <option>10k</option>
-        <option>11k</option>
-        <option>12k</option>
-        <option>13k</option>
-        <option>14k</option>
-        <option>15k</option>
+        <option value="3000">All</option>
+        <option value="1450">1d</option>
+        <option value="1400">1k</option>
+        <option value="1350">2k</option>
+        <option value="1300">3k</option>
+        <option value="1250">4k</option>
+        <option value="1200">5k</option>
+        <option value="1150">6k</option>
+        <option value="1100">7k</option>
+        <option value="1050">8k</option>
+        <option value="1000">9k</option>
+        <option value="950">10k</option>
       </select>
       <button onclick="sendMessage('join');" style="font-size: 15px;">▽</button>
       <button onclick="sendMessage('leave');" style="font-size: 15px;">△</button>

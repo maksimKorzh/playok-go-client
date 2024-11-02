@@ -45,7 +45,11 @@ ipcRenderer.on('websocket-message', (event, message) => {
   if (response.i[0] == 25) {
     let player = response.s[0];
     let rating = response.i[3];
-    players[player] = player + '[' + getRank(rating) + ']';
+    players[player] = {
+      'name': player,
+      'rank': getRank(rating),
+      'rating': rating
+    }
   }
 
   if (response.i[0] == 70) {
@@ -54,15 +58,9 @@ ipcRenderer.on('websocket-message', (event, message) => {
     if ((table in games) && response.i[1] != table) return; 
     let player1 = response.s[1];
     let player2 = response.s[2];
-    let rank1 = 'N/A';
-    let rank2 = 'N/A';
-    try {
-      rank1 = '[' + players[player1].split('[').slice(-1);
-      rank2 = '[' + players[player2].split('[').slice(-1);
-    } catch(e) {}
-    let rankLimit = '[' + document.getElementById('rank').value + ']';
+    let ratingLimit = parseInt(document.getElementById('rank').value);
     let timeControl = response.s[0].split(',')[0];
-    let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked'; 
+    let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked';
     games[response.i[1]] = [player1, player2];
     if (response.i[3] == 0 && response.i[4] == 0) {
       logs += '<tr><td>#' + response.i[1] +
@@ -70,37 +68,41 @@ ipcRenderer.on('websocket-message', (event, message) => {
               '</td><td>' + 'empty' +
               '</td><td>' + timeControl +
               '</td><td>' + gameStatus + '</td></tr>';
+      document.getElementById('table').value = response.i[1];
     }
     else if (response.i[3] == 1 && response.i[4] == 0) {
-      if (rankLimit != '[All]' && rank1 != rankLimit) return;
-      if (players[player1] != undefined) {;
+      if (players[player1] != undefined) {
+        if (players[player1].rating > ratingLimit) return;
         logs += '<tr><td>#' + response.i[1] +
-                '</td><td>' + players[player1] +
+                '</td><td>' + players[player1].name + '[' + players[player1].rank + ']' +
                 '</td><td>' + 'empty' +
                 '</td><td>' + timeControl +
                 '</td><td>' + gameStatus + '</td></tr>';
+        document.getElementById('table').value = response.i[1];
       }
     }
     else if (response.i[3] == 0 && response.i[4] == 1) {
-      if (rankLimit != '[All]' && rank2 != rankLimit) return;
       if (players[player2] != undefined) {
+        if (players[player2].rating > ratingLimit) return;
         logs += '<tr><td>#' + response.i[1] +
               '</td><td>' + 'empty' +
-              '</td><td>' + players[player2] +
+              '</td><td>' + players[player2].name + '[' + players[player2].rank + ']' +
               '</td><td>' + timeControl +
               '</td><td>' + gameStatus + '</td></tr>';
+        document.getElementById('table').value = response.i[1];
       }
     }
     else if (response.i[3] == 1 && response.i[4] == 1) {
-      if (rankLimit != '[All]') return;
       if (players[player1] != undefined && players[player2] != undefined) {
+        if (players[player1].rating > ratingLimit || players[player2].rating > ratingLimit) return;
         logs += '<tr><td>#' + response.i[1] +
-              '</td><td>' + players[player1] +
-              '</td><td>' + players[player2] +
+              '</td><td>' + players[player1].name + '[' + players[player1].rank + ']' +
+              '</td><td>' + players[player2].name + '[' + players[player2].rank + ']' +
               '</td><td>' + timeControl +
               '</td><td>' + gameStatus + '</td></tr>';
+        document.getElementById('table').value = response.i[1];
       }
-    } document.getElementById('table').value = response.i[1];
+    }
   }
   
   if (response.i[0] == 81 && response.i[1] == table) {

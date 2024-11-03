@@ -85,7 +85,7 @@ function sendMessage(action) {
   let command = {"i": []};
   switch (action) {
     case 'join':
-      document.getElementById('rank').value = 'All';
+      document.getElementById('rank').value = '3000';
       command.i = [72, table];
       logs = '';
       break;
@@ -93,7 +93,6 @@ function sendMessage(action) {
       command.i = [73, table];
       initGoban();
       drawBoard();
-      table = 0;
       logs = '';
       takePlace = 0;
       break;

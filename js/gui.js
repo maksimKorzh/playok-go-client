@@ -94,6 +94,7 @@ function sendMessage(action) {
       initGoban();
       drawBoard();
       logs = '';
+      games = {};
       takePlace = 0;
       break;
     case 'black':

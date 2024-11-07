@@ -143,7 +143,7 @@ function resizeCanvas() {
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
       <input id="table" type="number" value="` + table + `" style="width: 125%; font-size: 18px;"/>
-      <select id="rank" type="number" onchange="logs=''" style="width: 125%; font-size: 18px;">
+      <select id="rank" type="number" onchange="logs=''; games={};" style="width: 125%; font-size: 18px;">
         <option value="3000">All</option>
         <option value="1450">1d</option>
         <option value="1400">1k</option>

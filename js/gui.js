@@ -129,11 +129,26 @@ function playerInfo() {
   .then(response => { return response.text(); })
   .then(html => {
     let rating = html.split('ranking: <b>').slice(-1)[0].split('</b>')[0];
+    if (rating.length > 4) {
+      alert('No such user');
+      return;
+    }
     let games = html.split('games played: <b>').slice(-1)[0].split('</b>')[0];
     let winrate = html.split('(<b>').slice(-1)[0].split('</b>')[0];
     let abandoned = html.split('abandoned: <b>').slice(-1)[0].split('</b>')[0];
     let streak = html.split('streak: <b>').slice(-1)[0].split('</b>')[0];
-    alert('Rank:\t\t' + getRank(parseInt(rating)) + '\nRating:\t\t' + rating + '\nGames:\t\t' + games + '\nWinrate:\t\t' + winrate + '\nStreak:\t\t' + streak + '\nAbandoned:\t' + abandoned);
+    let country = html.split(' - <a href="/en/go/">go</a>').slice(-1)[0].split('<b>').slice(-1)[0].split('</b>')[0].slice(1,-1);
+    let online = html.split('registered').slice(-1)[0].includes('online') ? 'online': 'offline';
+    alert(
+      'Rank:\t\t' + getRank(parseInt(rating)) +
+      '\nRating:\t\t' + rating +
+      '\nGames:\t\t' + games +
+      '\nWinrate:\t\t' + winrate +
+      '\nStreak:\t\t' + streak +
+      '\nAbandoned:\t' + abandoned +
+      '\nCountry:\t\t' + country +
+      '\nStatus:\t\t' + online
+    );
   })
 }
 
@@ -156,6 +171,8 @@ function resizeCanvas() {
   document.getElementById('panel').innerHTML = `
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
+      <button onclick="playerInfo();">?</button>
+      <input id="info" type="text" value="dkf1983g" style="width: 150%;"/>
       <input id="table" type="number" value="` + table + `" style="width: 125%; font-size: 18px;"/>
       <select id="rank" type="number" onchange="logs=''; games={};" style="width: 125%; font-size: 18px;">
         <option value="3000">All</option>
@@ -178,8 +195,6 @@ function resizeCanvas() {
       <button onclick="sendMessage('start');" style="font-size: 15px;">▷</button>
       <button onclick="sendMessage('pass');" style="font-size: 15px;">□</button>
       <button onclick="sendMessage('resign');" style="font-size: 15px;">❌</button>
-      <button onclick="playerInfo();">?</button>
-      <input id="info" type="text" value="dkf1983g" style="width: 100%;"/>
       <button onclick="handleEval();">🎛</button>
       <button onclick="handleAI();" style="font-size: 15px;">⚙</button>
       <button onclick="sendMessage('connect');">CONNECT</button>

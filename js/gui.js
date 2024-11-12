@@ -123,6 +123,20 @@ function sendMessage(action) {
   ipcRenderer.send('main', message);
 }
 
+function playerInfo() {
+  userName = document.getElementById('info').value;
+  fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go')
+  .then(response => { return response.text(); })
+  .then(html => {
+    let rating = html.split('ranking: <b>').slice(-1)[0].split('</b>')[0];
+    let games = html.split('games played: <b>').slice(-1)[0].split('</b>')[0];
+    let winrate = html.split('(<b>').slice(-1)[0].split('</b>')[0];
+    let abandoned = html.split('abandoned: <b>').slice(-1)[0].split('</b>')[0];
+    let streak = html.split('streak: <b>').slice(-1)[0].split('</b>')[0];
+    alert('Rank:\t\t' + getRank(parseInt(rating)) + '\nRating:\t\t' + rating + '\nGames:\t\t' + games + '\nWinrate:\t\t' + winrate + '\nStreak:\t\t' + streak + '\nAbandoned:\t' + abandoned);
+  })
+}
+
 function handleEval() {
  (async () => {
    if(table in games) alert(await evaluatePosition());
@@ -164,6 +178,8 @@ function resizeCanvas() {
       <button onclick="sendMessage('start');" style="font-size: 15px;">▷</button>
       <button onclick="sendMessage('pass');" style="font-size: 15px;">□</button>
       <button onclick="sendMessage('resign');" style="font-size: 15px;">❌</button>
+      <button onclick="playerInfo();">?</button>
+      <input id="info" type="text" value="dkf1983g" style="width: 100%;"/>
       <button onclick="handleEval();">🎛</button>
       <button onclick="handleAI();" style="font-size: 15px;">⚙</button>
       <button onclick="sendMessage('connect');">CONNECT</button>

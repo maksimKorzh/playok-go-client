@@ -206,7 +206,7 @@ function resizeCanvas() {
         <option value="950">10k</option>
       </select>
       <button onclick="playerInfo();">?</button>
-      <input id="info" type="text" value="dkf1983g" style="width: 150%;"/>
+      <input id="info" type="text" value="dkf1983g" spellcheck="false" style="width: 150%;"/>
       <input id="table" type="number" value="` + table + `" style="width: 125%; font-size: 18px;"/>
       <button onclick="sendMessage('join');" style="font-size: 15px;">▽</button>
       <button onclick="sendMessage('leave');" style="font-size: 15px;">△</button>

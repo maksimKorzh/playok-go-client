@@ -171,8 +171,6 @@ function resizeCanvas() {
   document.getElementById('panel').innerHTML = `
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-33) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
-      <button onclick="playerInfo();">?</button>
-      <input id="info" type="text" value="dkf1983g" style="width: 150%;"/>
       <select id="rank" type="number" onchange="logs=''; games={};" style="width: 125%; font-size: 18px;">
         <option value="3000">All</option>
         <option value="1450">1d</option>
@@ -187,6 +185,8 @@ function resizeCanvas() {
         <option value="1000">9k</option>
         <option value="950">10k</option>
       </select>
+      <button onclick="playerInfo();">?</button>
+      <input id="info" type="text" value="dkf1983g" style="width: 150%;"/>
       <input id="table" type="number" value="` + table + `" style="width: 125%; font-size: 18px;"/>
       <button onclick="sendMessage('join');" style="font-size: 15px;">▽</button>
       <button onclick="sendMessage('leave');" style="font-size: 15px;">△</button>

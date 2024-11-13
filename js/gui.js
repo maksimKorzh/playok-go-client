@@ -152,6 +152,26 @@ function playerInfo() {
   })
 }
 
+function copyGame() {
+  userName = document.getElementById('info').value;
+  fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2')
+  .then(response => { return response.text(); })
+  .then(html => {
+    let lastGame = html.split('.txt')[0].split('go').slice(-1)[0];
+    if (lastGame.length > 10) {
+      alert('No such user');
+      return;
+    }
+    let lastGameUrl = 'https://www.playok.com/p/?g=go' + lastGame + '.txt';
+    fetch(lastGameUrl)
+    .then( response => { return response.text(); })
+    .then(txt => {
+      navigator.clipboard.writeText(txt);
+      alert('Game copied to clipboard');
+    });
+  });
+}
+
 function handleEval() {
  (async () => {
    if(table in games) alert(await evaluatePosition());
@@ -197,7 +217,8 @@ function resizeCanvas() {
       <button onclick="sendMessage('resign');" style="font-size: 15px;">❌</button>
       <button onclick="handleEval();">🎛</button>
       <button onclick="handleAI();" style="font-size: 15px;">⚙</button>
-      <button onclick="sendMessage('connect');">CONNECT</button>
+      <button onclick="copyGame();">🏆</button>
+      <button onclick="sendMessage('connect');">🎮</button>
     </div>
   `;
 }

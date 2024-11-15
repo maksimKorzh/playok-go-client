@@ -62,15 +62,8 @@ function printBoard() {
 }
 
 function setStone(sq, color, user) {
-  if (board[sq] != EMPTY) {
-    if (confirm('Are you sure you want to mark dead stones at (' + (sq % 21) + ', ' + Math.floor(sq / 21) + ')?')) {
-      countLiberties(sq, color);
-      let deadStones = JSON.parse(JSON.stringify(block)); 
-      restoreBoard();
-      for (let stone of deadStones) board[stone] = EMPTY;
-    }
-    return false;
-  } else if (sq == ko) {
+  if (board[sq] != EMPTY) return false;
+  else if (sq == ko) {
     if (user) alert("Ko!");
     return false;
   } let old_ko = ko;
@@ -193,6 +186,7 @@ function loadHistoryMove() {
   side = move.side;
   ko = move.ko;
   userMove = move.move;
+  drawBoard();
 }
 
 function undoMove() {
@@ -252,7 +246,7 @@ function loadSgf(sgf) {
       let sq = (row+1) * 21 + (col+1);
       setStone(sq, player, false);
     }
-  } firstMove();
+  }
 }
 
 function saveSgf() {
@@ -406,9 +400,14 @@ async function playMove(button) {
     let katagoColor = side == BLACK ? 'Black' : 'White';
     let playerColor = (3-side) == BLACK ? 'Black' : 'White';
     let bestMove = 21 * (row_19+1) + (col_19+1);
-    let move = {"i": [92, table, 0, best_19, 0]};
-    let message = JSON.stringify(move);
-    ipcRenderer.send('main', message);
+    if (editMode) {
+      setStone(bestMove, side);
+      drawBoard();
+    } else {
+      let move = {"i": [92, table, 0, best_19, 0]};
+      let message = JSON.stringify(move);
+      ipcRenderer.send('main', message);
+    }
   } catch (e) {console.log(e);}
 }
 

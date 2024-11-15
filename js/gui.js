@@ -3,6 +3,7 @@ var editMode = 0;
 var takePlace = 0;
 var gameOver = 1;
 var userSide = BLACK;
+var editMode = 0;
 
 function drawBoard() {
   cell = canvas.width / (size-2);
@@ -65,11 +66,16 @@ function userInput(event) {
   let col = Math.floor(mouseX / cell);
   let row = Math.floor(mouseY / cell);
   let sq = (row+1) * size + (col+1);
-  if (board[sq] != EMPTY) side = userSide; 
-  if (gameOver || side != userSide) return;
-  let move = {"i": [92, table, 0, (row * 19 + col), 0]};
-  let message = JSON.stringify(move);
-  ipcRenderer.send('main', message);
+  if (editMode) {
+    setStone(sq, side);
+    drawBoard();
+  } else {
+    if (board[sq] != EMPTY) side = userSide;
+    if (gameOver || side != userSide) return;
+    let move = {"i": [92, table, 0, (row * 19 + col), 0]};
+    let message = JSON.stringify(move);
+    ipcRenderer.send('main', message);
+  }
 }
 
 function sendMessage(action) {
@@ -171,23 +177,29 @@ function copyGame() {
     let lastGameUrl = 'https://www.playok.com/p/?g=go' + lastGame + '.txt';
     fetch(lastGameUrl)
     .then( response => { return response.text(); })
-    .then(txt => {
-      navigator.clipboard.writeText(txt);
-      alert('Game copied to clipboard');
+    .then(sgf => {
+      navigator.clipboard.writeText(sgf);
+      loadSgf(sgf);
     });
   });
 }
 
 function handleEval() {
  (async () => {
-   if(table in games) alert(await evaluatePosition());
-   else alert('Choose valid table');
+   if (editMode) alert(await evaluatePosition());
+   else {
+     if(table in games) alert(await evaluatePosition());
+     else alert('Choose valid table');
+   }
  })();
 }
 
 function handleAI() {
-  if (!gameOver && side == userSide) playMove();
-  else alert('Choose valid table')
+  if (editMode) playMove();
+  else {
+    if (!gameOver && side == userSide) playMove();
+    else alert('Choose valid table');
+  }
 }
 
 function resizeCanvas() {
@@ -198,11 +210,19 @@ function resizeCanvas() {
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-59) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('chat');">Chat</button>
-      <input id="chat" type="text" value="" spellcheck="false" style="width: 448%;"/>
-      <input id="info" type="text" value="dkf1983g" spellcheck="false" style="width: 103%;"/>
-      <button onclick="playerInfo();" style="width: 41%;">Info</button>
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 675%;"/>
+      <button onclick="editMode ^= 1; alert('Edit mode ' + (editMode ? 'enabled' : 'disabled'));">%</button>
+      <button onclick="copyGame();">#</button>
+      <button onclick="firstMove();"><<<</button>
+      <button onclick="prevFewMoves(5);"><<</button>
+      <button onclick="prevMove();"><</button>
+      <button onclick="nextMove();">></button>
+      <button onclick="nextFewMoves(5);">>></button>
+      <button onclick="lastMove();">>></button>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
+      <button onclick="playerInfo();" style="width: 50%;">?</button>
+      <input id="info" type="text" value="dkf1983g" spellcheck="false" style="width: 140%;"/>
       <select id="rank" type="number" onchange="logs=''; games={};" style="width: 125%; font-size: 18px;">
         <option value="3000">All</option>
         <option value="1450">1d</option>
@@ -227,7 +247,6 @@ function resizeCanvas() {
       <button onclick="sendMessage('resign');" style="font-size: 15px;">❌</button>
       <button onclick="handleEval();">🎛</button>
       <button onclick="handleAI();" style="font-size: 15px;">⚙</button>
-      <button onclick="copyGame();">🏆</button>
       <button onclick="sendMessage('connect');">🎮</button>
     </div>
   `;

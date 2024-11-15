@@ -221,8 +221,7 @@ function resizeCanvas() {
       <button onclick="lastMove();">>></button>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
-      <button onclick="playerInfo();" style="width: 50%;">?</button>
-      <input id="info" type="text" value="dkf1983g" spellcheck="false" style="width: 140%;"/>
+      <input id="table" type="number" value="` + table + `" style="width: 118%; font-size: 18px;"/>
       <select id="rank" type="number" onchange="logs=''; games={};" style="width: 125%; font-size: 18px;">
         <option value="3000">All</option>
         <option value="1450">1d</option>
@@ -237,7 +236,8 @@ function resizeCanvas() {
         <option value="1000">9k</option>
         <option value="950">10k</option>
       </select>
-      <input id="table" type="number" value="` + table + `" style="width: 125%; font-size: 18px;"/>
+      <input id="info" type="text" value="dkf1983g" spellcheck="false" style="width: 146%;"/>
+      <button onclick="playerInfo();" style="width: 50%;">?</button>
       <button onclick="handleEval();">🎛</button>
       <button onclick="handleAI();" style="font-size: 15px;">⚙</button>
       <button onclick="sendMessage('join');" style="font-size: 15px;">▽</button>

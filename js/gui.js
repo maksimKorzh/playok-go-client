@@ -210,7 +210,7 @@ function resizeCanvas() {
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-59) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('chat');">Chat</button>
-      <input id="chat" type="text" value="" spellcheck="false" style="width: 675%;"/>
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 674%;"/>
       <button onclick="copyGame();">#</button>
       <button onclick="editMode ^= 1; alert('Edit mode ' + (editMode ? 'enabled' : 'disabled'));">%</button>
       <button onclick="firstMove();"><<<</button>

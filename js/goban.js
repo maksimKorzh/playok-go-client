@@ -176,8 +176,7 @@ function isLadder(sq, color) {
       if (isLadder(sq, color)) return move;
       board[move] = EMPTY;
     }
-  }
-  return 0;
+  };return 0;
 }
 
 function loadHistoryMove() {
@@ -237,6 +236,7 @@ function getHistory() {
 }
 
 function loadSgf(sgf) {
+  initGoban();
   for (let move of sgf.split(';')) {
     if (move.length) {
       if (move.charCodeAt(2) < 97 || move.charCodeAt(2) > 115) { continue; }
@@ -246,7 +246,7 @@ function loadSgf(sgf) {
       let sq = (row+1) * 21 + (col+1);
       setStone(sq, player, false);
     }
-  }
+  };lastMove();
 }
 
 function saveSgf() {

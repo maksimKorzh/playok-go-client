@@ -211,13 +211,13 @@ function resizeCanvas() {
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('chat');">Chat</button>
       <input id="chat" type="text" value="" spellcheck="false" style="width: 675%;"/>
-      <button onclick="editMode ^= 1; alert('Edit mode ' + (editMode ? 'enabled' : 'disabled'));">%</button>
       <button onclick="copyGame();">#</button>
+      <button onclick="editMode ^= 1; alert('Edit mode ' + (editMode ? 'enabled' : 'disabled'));">%</button>
       <button onclick="firstMove();"><<<</button>
-      <button onclick="prevFewMoves(5);"><<</button>
+      <button onclick="prevFewMoves(16);"><<</button>
       <button onclick="prevMove();"><</button>
       <button onclick="nextMove();">></button>
-      <button onclick="nextFewMoves(5);">>></button>
+      <button onclick="nextFewMoves(16);">>></button>
       <button onclick="lastMove();">>></button>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">

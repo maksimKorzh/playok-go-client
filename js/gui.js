@@ -238,6 +238,8 @@ function resizeCanvas() {
         <option value="950">10k</option>
       </select>
       <input id="table" type="number" value="` + table + `" style="width: 125%; font-size: 18px;"/>
+      <button onclick="handleEval();">🎛</button>
+      <button onclick="handleAI();" style="font-size: 15px;">⚙</button>
       <button onclick="sendMessage('join');" style="font-size: 15px;">▽</button>
       <button onclick="sendMessage('leave');" style="font-size: 15px;">△</button>
       <button onclick="sendMessage('black');" style="font-size: 20px;">●</button>
@@ -245,8 +247,6 @@ function resizeCanvas() {
       <button onclick="sendMessage('start');" style="font-size: 15px;">▷</button>
       <button onclick="sendMessage('pass');" style="font-size: 15px;">□</button>
       <button onclick="sendMessage('resign');" style="font-size: 15px;">❌</button>
-      <button onclick="handleEval();">🎛</button>
-      <button onclick="handleAI();" style="font-size: 15px;">⚙</button>
       <button onclick="sendMessage('connect');">🎮</button>
     </div>
   `;

@@ -211,14 +211,14 @@ function resizeCanvas() {
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('chat');">Chat</button>
       <input id="chat" type="text" value="" spellcheck="false" style="width: 674%;"/>
-      <button onclick="copyGame();">#</button>
+      <button onclick="if (editMode) { copyGame(); } else { alert('Switch to edit mode'); }">#</button>
       <button onclick="editMode ^= 1; alert('Edit mode ' + (editMode ? 'enabled' : 'disabled'));">%</button>
-      <button onclick="firstMove();"><<<</button>
-      <button onclick="prevFewMoves(16);"><<</button>
-      <button onclick="prevMove();"><</button>
-      <button onclick="nextMove();">></button>
-      <button onclick="nextFewMoves(16);">>></button>
-      <button onclick="lastMove();">>></button>
+      <button onclick="if (editMode) firstMove();"><<<</button>
+      <button onclick="if (editMode) prevFewMoves(16);"><<</button>
+      <button onclick="if (editMode) prevMove();"><</button>
+      <button onclick="if (editMode) nextMove();">></button>
+      <button onclick="if (editMode) nextFewMoves(16);">>></button>
+      <button onclick="if (editMode) lastMove();">>></button>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
       <input id="table" type="number" value="` + table + `" style="width: 118%; font-size: 18px;"/>

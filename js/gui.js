@@ -202,6 +202,19 @@ function handleAI() {
   }
 }
 
+function changeMode(btn) {
+  editMode ^= 1;
+  if (editMode) {
+    btn.style.backgroundColor = 'black';
+    btn.style.color = 'white';
+    alert('Edit mode enabled');
+  } else {
+    btn.style.backgroundColor = 'white';
+    btn.style.color = 'black';
+    alert('Edit mode disabled');
+  }
+}
+
 function resizeCanvas() {
   canvas.width = window.innerHeight-34;
   canvas.height = canvas.width;
@@ -209,10 +222,10 @@ function resizeCanvas() {
   document.getElementById('panel').innerHTML = `
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-59) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
-      <button onclick="sendMessage('chat');">Chat</button>
+      <button onclick="sendMessage('chat');">$</button>
       <input id="chat" type="text" value="" spellcheck="false" style="width: 674%;"/>
       <button onclick="if (editMode) { copyGame(); } else { alert('Switch to edit mode'); }">#</button>
-      <button onclick="editMode ^= 1; alert('Edit mode ' + (editMode ? 'enabled' : 'disabled'));">%</button>
+      <button onclick="changeMode(this);">%</button>
       <button onclick="if (editMode) firstMove();"><<<</button>
       <button onclick="if (editMode) prevFewMoves(16);"><<</button>
       <button onclick="if (editMode) prevMove();"><</button>

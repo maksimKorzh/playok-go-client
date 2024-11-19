@@ -249,7 +249,7 @@ function resizeCanvas() {
         <option value="1000">9k</option>
         <option value="950">10k</option>
       </select>
-      <input id="info" type="text" value="dkf1983g" spellcheck="false" style="width: 146%;"/>
+      <input id="info" type="text" value="cmkgo" spellcheck="false" style="width: 146%;"/>
       <button onclick="playerInfo();" style="width: 50%;">?</button>
       <button onclick="handleEval();">🎛</button>
       <button onclick="handleAI();" style="font-size: 15px;">⚙</button>

@@ -11,14 +11,14 @@ function connect(win) {
 
   socket.on('open', function () {
     const initialMessage = JSON.stringify({
-      "i": [1721],
-      "s": [
-        "+518832092133209216|1920951531|17676847",
+      "i":[1721],
+      "s":[
+        "463bbe137350d635+518832092133209216|3434463909|16404212",
         "en",
         "b",
         "",
-        "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-        "/1729071663145/1",
+        "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+        "/1732048087843/1",
         "w",
         "1920x1080 1",
         "ref:https://www.playok.com/en/go/",

@@ -13,18 +13,18 @@ function connect(win) {
     const initialMessage = JSON.stringify({
       "i":[1721],
       "s":[
-        "463bbe137350d635+518832092133209216|3434463909|16404212",
+        "+524199068774695233|1015759683|17056215",
         "en",
         "b",
         "",
         "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-        "/1732048087843/1",
+        "/1732055368318/1",
         "w",
         "1920x1080 1",
         "ref:https://www.playok.com/en/go/",
         "ver:260"
-      ]
-    });
+      ]}
+    );
 
     socket.send(initialMessage);
     win.webContents.send('websocket-message', 'open');

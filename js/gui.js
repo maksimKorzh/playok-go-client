@@ -142,7 +142,7 @@ function playerInfo() {
   .then(html => {
     let rating = html.split('ranking: <b>').slice(-1)[0].split('</b>')[0];
     if (rating.length > 4) {
-      alert('No such user');
+      alert('No info available');
       return;
     }
     let games = html.split('games played: <b>').slice(-1)[0].split('</b>')[0];
@@ -249,7 +249,7 @@ function resizeCanvas() {
         <option value="1000">9k</option>
         <option value="950">10k</option>
       </select>
-      <input id="info" type="text" value="cmkgo" spellcheck="false" style="width: 146%;"/>
+      <input id="info" type="text" value="cft7821g" spellcheck="false" style="width: 146%;"/>
       <button onclick="playerInfo();" style="width: 50%;">?</button>
       <button onclick="handleEval();">🎛</button>
       <button onclick="handleAI();" style="font-size: 15px;">⚙</button>

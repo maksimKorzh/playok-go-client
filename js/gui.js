@@ -146,6 +146,8 @@ function playerInfo() {
       return;
     }
     let games = html.split('games played: <b>').slice(-1)[0].split('</b>')[0];
+    let wins = html.split('wins: <b>').slice(-1)[0].split('</b>')[0];
+    let losses = html.split('losses: <b>').slice(-1)[0].split('</b>')[0];
     let winrate = html.split('(<b>').slice(-1)[0].split('</b>')[0];
     let abandoned = html.split('abandoned: <b>').slice(-1)[0].split('</b>')[0];
     let streak = html.split('streak: <b>').slice(-1)[0].split('</b>')[0];
@@ -155,6 +157,8 @@ function playerInfo() {
       'Rank:\t\t' + getRank(parseInt(rating)) +
       '\nRating:\t\t' + rating +
       '\nGames:\t\t' + games +
+      '\nWins:\t\t' + wins +
+      '\nLosses:\t\t' + losses +
       '\nWinrate:\t\t' + winrate +
       '\nStreak:\t\t' + streak +
       '\nAbandoned:\t' + abandoned +

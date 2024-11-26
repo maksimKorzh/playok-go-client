@@ -153,18 +153,32 @@ function playerInfo() {
     let streak = html.split('streak: <b>').slice(-1)[0].split('</b>')[0];
     let country = html.split(' - <a href="/en/go/">go</a>').slice(-1)[0].split('<b>').slice(-1)[0].split('</b>')[0].slice(1,-1);
     let online = html.split('registered').slice(-1)[0].includes('online') ? 'online': 'offline';
-    alert(
-      'Rank:\t\t' + getRank(parseInt(rating)) +
-      '\nRating:\t\t' + rating +
-      '\nGames:\t\t' + games +
-      '\nWins:\t\t' + wins +
-      '\nLosses:\t\t' + losses +
-      '\nWinrate:\t\t' + winrate +
-      '\nStreak:\t\t' + streak +
-      '\nAbandoned:\t' + abandoned +
-      '\nCountry:\t\t' + country +
-      '\nStatus:\t\t' + online
-    );
+    fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2')
+    .then(response => { return response.text(); })
+    .then(html => {
+      let results = html.split('td').slice(6,);
+      let recentResults = '';
+      for (let i in results) {
+        try {
+          if (i > 72) break;
+          let value = results[i].split('<b>')[1].split('</b>')[0];
+          recentResults += value.replace('win', '⭘').replace('loss', '❌');
+        } catch (e) {}
+      }
+      alert(
+        'Rank:\t\t' + getRank(parseInt(rating)) +
+        '\nRating:\t\t' + rating +
+        '\nGames:\t\t' + games +
+        '\nWins:\t\t' + wins +
+        '\nLosses:\t\t' + losses +
+        '\nWinrate:\t\t' + winrate +
+        '\nStreak:\t\t' + streak +
+        '\nAbandoned:\t' + abandoned +
+        '\nCountry:\t\t' + country +
+        '\nStatus:\t\t' + online +
+        '\nRecent:\t\t' + recentResults + '\n'
+      );
+    });
   })
 }
 

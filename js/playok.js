@@ -112,9 +112,16 @@ ipcRenderer.on('websocket-message', (event, message) => {
         response.s[0].includes('exceeded')) {
           gameOver = 1;
           alert(response.s[0]);
+          stopInterval();
         }
   }
 
+  if (response.i[0] == 90 && response.i.length == 25) {
+    blackTime = response.i[22];
+    whiteTime = response.i[24];
+    updateTimer();
+  }
+  
   if (response.i[0] == 90 && response.i[2] == 53) logs += '+ dead stones removal phase<br>';
   if (response.i[0] == 91) {
     initGoban();

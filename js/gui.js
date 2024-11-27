@@ -4,6 +4,9 @@ var takePlace = 0;
 var gameOver = 1;
 var userSide = BLACK;
 var editMode = 0;
+var blackTime = 0;
+var whiteTime = 0;
+var intervalId;
 
 function drawBoard() {
   cell = canvas.width / (size-2);
@@ -91,11 +94,13 @@ function sendMessage(action) {
   let command = {"i": [], "s": []};
   switch (action) {
     case 'join':
+      startInterval();
       document.getElementById('rank').value = '3000';
       command.i = [72, table];
       logs = '';
       break;
     case 'leave':
+      stopInterval();
       command.i = [73, table];
       initGoban();
       drawBoard();
@@ -233,15 +238,65 @@ function changeMode(btn) {
   }
 }
 
+function updateTimer() {
+  if (blackTime < 0 || whiteTime < 0) return;
+  document.getElementById('blackTime').innerHTML = secToMin(blackTime);
+  document.getElementById('whiteTime').innerHTML = secToMin(whiteTime);
+}
+
+function getTime(time) {
+  let totalSeconds = 0;
+  let currentNumber = '';
+  for (let char of time) {
+    if (char === '+' || char === '-') {
+      if (currentNumber) {
+        totalSeconds += parseInt(currentNumber, 10) * 60; // Convert to seconds
+        currentNumber = '';
+      };currentNumber += char;
+    } else if (!isNaN(char)) currentNumber += char;
+  }
+  if (currentNumber) totalSeconds += parseInt(currentNumber, 10) * 60;
+  return totalSeconds;
+}
+
+function secToMin(sec) {
+  const minutes = Math.floor(sec / 60);
+  const seconds = sec % 60;
+  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function startInterval() {
+  if (!intervalId) { // Prevent multiple intervals from being set
+    intervalId = setInterval(() => {
+      side == BLACK ? (blackTime -= 1) :(whiteTime -= 1);
+      updateTimer();
+    }, 1000);
+  }
+}
+
+function stopInterval() {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+      blackTime = 0;
+      whiteTime = 0;
+      updateTimer();
+    }
+}
+
 function resizeCanvas() {
   canvas.width = window.innerHeight-34;
   canvas.height = canvas.width;
   drawBoard();
   document.getElementById('panel').innerHTML = `
-    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-59) + `px; border: 2px solid black;"></div>
+    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-83) + `px; border: 2px solid black;"></div>
+    <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
+      <label id="blackTime" style="background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00</label>
+      <label id="whiteTime" style="width: 100%; border: 1px solid black; text-align: center">00:00</label>
+    </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('chat');">$</button>
-      <input id="chat" type="text" value="" spellcheck="false" style="width: 674%;"/>
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 700%;"/>
       <button onclick="if (editMode) { copyGame(); } else { alert('Switch to edit mode'); }">#</button>
       <button onclick="changeMode(this);">%</button>
       <button onclick="if (editMode) firstMove();"><<<</button>
@@ -252,7 +307,7 @@ function resizeCanvas() {
       <button onclick="if (editMode) lastMove();">>></button>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
-      <input id="table" type="number" value="` + table + `" style="width: 118%; font-size: 18px;"/>
+      <input id="table" type="number" value="` + table + `" style="width: 143%; font-size: 18px;"/>
       <select id="rank" type="number" onchange="logs=''; games={};" style="width: 125%; font-size: 18px;">
         <option value="3000">All</option>
         <option value="1450">1d</option>

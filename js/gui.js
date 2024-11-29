@@ -299,7 +299,7 @@ function resizeCanvas() {
       <input id="chat" type="text" value="" spellcheck="false" style="width: 408%;"/>
       <button onclick="changeMode(this);">%</button>
       <button onclick="if (editMode) { copyGame(); } else { alert('Switch to edit mode'); }">#</button>
-      <button onclick="if (editMode) replay = setInterval(function() { nextMove(); drawBoard(); }, 1000)">▷</button>
+      <button onclick="if (editMode) replay = setInterval(function() { nextMove(); drawBoard(); }, 2000)">▷</button>
       <button onclick="if (editMode) { clearInterval(replay); replay = null; }">□</button>
       <button onclick="if (editMode) firstMove();"><<<</button>
       <button onclick="if (editMode) prevFewMoves(16);"><<</button>

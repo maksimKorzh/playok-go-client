@@ -188,6 +188,7 @@ function playerInfo() {
 }
 
 function copyGame() {
+  loadSgf(document.getElementById('chat').value);
   userName = document.getElementById('info').value;
   fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2')
   .then(response => { return response.text(); })
@@ -202,7 +203,6 @@ function copyGame() {
     .then( response => { return response.text(); })
     .then(sgf => {
       navigator.clipboard.writeText(sgf);
-      loadSgf(sgf);
     });
   });
 }
@@ -296,15 +296,17 @@ function resizeCanvas() {
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('chat');">$</button>
-      <input id="chat" type="text" value="" spellcheck="false" style="width: 700%;"/>
-      <button onclick="if (editMode) { copyGame(); } else { alert('Switch to edit mode'); }">#</button>
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 408%;"/>
       <button onclick="changeMode(this);">%</button>
+      <button onclick="if (editMode) { copyGame(); } else { alert('Switch to edit mode'); }">#</button>
+      <button onclick="if (editMode) replay = setInterval(function() { nextMove(); drawBoard(); }, 1000)">▷</button>
+      <button onclick="if (editMode) { clearInterval(replay); replay = null; }">□</button>
       <button onclick="if (editMode) firstMove();"><<<</button>
       <button onclick="if (editMode) prevFewMoves(16);"><<</button>
       <button onclick="if (editMode) prevMove();"><</button>
       <button onclick="if (editMode) nextMove();">></button>
       <button onclick="if (editMode) nextFewMoves(16);">>></button>
-      <button onclick="if (editMode) lastMove();">>></button>
+      <button onclick="if (editMode) lastMove();">>>></button>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px;">
       <input id="table" type="number" value="` + table + `" style="width: 143%; font-size: 18px;"/>

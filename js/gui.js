@@ -165,7 +165,7 @@ function playerInfo() {
       let recentResults = '';
       for (let i in results) {
         try {
-          if (i > 72) break;
+          if (i > 80) break;
           let value = results[i].split('<b>')[1].split('</b>')[0];
           recentResults += value.replace('win', '⭘').replace('loss', '❌');
         } catch (e) {}

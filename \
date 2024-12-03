@@ -304,25 +304,25 @@ function resizeCanvas() {
   canvas.height = canvas.width;
   drawBoard();
   document.getElementById('panel').innerHTML = `
-    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-127) + `px; border: 2px solid black;"></div>
+    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-116) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
-      <label id="blackTime" style="font-size: 22px; background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00</label>
-      <label id="whiteTime" style="font-size: 22px; width: 100%; border: 1px solid black; text-align: center">00:00</label>
+      <label id="blackTime" style="background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00</label>
+      <label id="whiteTime" style="width: 100%; border: 1px solid black; text-align: center">00:00</label>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
-      <button style="font-size:18px;" onclick="changeMode(this);">%</button>
-      <button style="font-size:18px;" onclick="if (editMode) replay = setInterval(function() { nextMove(); drawBoard(); }, 2000)">▷</button>
-      <button style="font-size:18px;" onclick="if (editMode) { clearInterval(replay); replay = null; }">||</button>
-      <button style="font-size:18px;" onclick="if (editMode) firstMove();"><<<</button>
-      <button style="font-size:18px;" onclick="if (editMode) prevFewMoves(16);"><<</button>
-      <button style="font-size:18px;" onclick="if (editMode) prevMove();"><</button>
-      <button style="font-size:18px;" onclick="if (editMode) nextMove();">></button>
-      <button style="font-size:18px;" onclick="if (editMode) nextFewMoves(16);">>></button>
-      <button style="font-size:18px;" onclick="if (editMode) lastMove();">>>></button>
-      <button style="font-size:15px;" onclick="handleAI();" style="font-size: 15px;">⚙</button>
+      <button style="font-size:15px;" onclick="changeMode(this);">%</button>
+      <button style="font-size:15px;" onclick="if (editMode) replay = setInterval(function() { nextMove(); drawBoard(); }, 2000)">▷</button>
+      <button style="font-size:15px;" onclick="if (editMode) { clearInterval(replay); replay = null; }">||</button>
+      <button style="font-size:15px;" onclick="if (editMode) firstMove();"><<<</button>
+      <button style="font-size:15px;" onclick="if (editMode) prevFewMoves(16);"><<</button>
+      <button style="font-size:15px;" onclick="if (editMode) prevMove();"><</button>
+      <button style="font-size:15px;" onclick="if (editMode) nextMove();">></button>
+      <button style="font-size:15px;" onclick="if (editMode) nextFewMoves(16);">>></button>
+      <button style="font-size:15px;" onclick="if (editMode) lastMove();">>>></button>
+      <button style="font-size:20px;" onclick="handleAI();" style="font-size: 15px;">⚙</button>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
-      <button onclick="createGame();" style="font-size: 18px;">@</button>
+      <button onclick="createGame();">@</button>
       <button onclick="handleEval();">🎛</button>
       <button onclick="sendMessage('join');" style="font-size: 15px;">▽</button>
       <button onclick="sendMessage('leave');" style="font-size: 15px;">△</button>
@@ -334,7 +334,7 @@ function resizeCanvas() {
       <button onclick="sendMessage('connect');">🎮</button>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
-      <select id="tm" type="number" style="width: 56%; font-size: 14px;">
+      <select id="tm" type="number" style="width: 55%;">
         <option>1</option>
         <option>2</option>
         <option>3</option>
@@ -346,7 +346,7 @@ function resizeCanvas() {
         <option selected>30</option>
         <option>60</option>
       </select>
-      <select id="tg" type="number" style="width: 55%; font-size: 14px;">
+      <select id="tg" type="number" style="width: 55%;">
         <option>1</option>
         <option>2</option>
         <option>3</option>
@@ -370,11 +370,11 @@ function resizeCanvas() {
         <option value="1000">9k</option>
         <option value="950">10k</option>
       </select>
-      <input id="info" type="text" value="cft7821g" spellcheck="false" style="width: 163%; font-size: 18px;"/>
-      <button onclick="playerInfo();" style="width: 50%; font-size: 18px;">?</button>
-      <button onclick="sendMessage('chat');" style="font-size: 18px;">$</button>
+      <input id="info" type="text" value="cft7821g" spellcheck="false" style="width: 163%;"/>
+      <button onclick="playerInfo();" style="width: 50%;">?</button>
+      <button onclick="sendMessage('chat');">$</button>
       <input id="chat" type="text" value="" spellcheck="false" style="width: 371%;"/>
-      <button onclick="if (editMode) { copyGame(); } else { alert('Switch to edit mode'); }" style="font-size: 18px;">#</button>
+      <button onclick="if (editMode) { copyGame(); } else { alert('Switch to edit mode'); }">#</button>
     </div>
   `;
 }

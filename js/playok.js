@@ -105,6 +105,16 @@ ipcRenderer.on('websocket-message', (event, message) => {
     }
   }
   
+  if (response.i[0] == 73) {
+    games[response.i[1]] = ['', ''];
+    document.getElementById('table').value = response.i[1];
+    sendMessage('tg');
+    sendMessage('tm');
+    startInterval();
+    document.getElementById('rank').value = '3000';
+    logs = '';
+  }
+
   if (response.i[0] == 81 && response.i[1] == table) {
     logs += response.s[0] + '<br>';
     if (response.s[0].includes('resigns') ||

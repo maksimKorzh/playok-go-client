@@ -95,11 +95,11 @@ function sendMessage(action) {
   let command = {"i": [], "s": []};
   switch (action) {
     case 'tg':
-      command.i = [82, table, 30];
+      command.i = [82, table, parseInt(document.getElementById('tg').value)];
       command.s = ['tg'];
       break;
     case 'tm':
-      command.i = [82, table, 20];
+      command.i = [82, table, parseInt(document.getElementById('tm').value)];
       command.s = ['tm'];
       break;
     case 'join':
@@ -334,7 +334,7 @@ function resizeCanvas() {
       <button onclick="sendMessage('connect');">🎮</button>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
-      <select id="tm" type="number" style="width: 56%; font-size: 14px;">
+      <select id="tg" type="number" style="width: 56%; font-size: 14px;">
         <option>1</option>
         <option>2</option>
         <option>3</option>
@@ -346,7 +346,7 @@ function resizeCanvas() {
         <option selected>30</option>
         <option>60</option>
       </select>
-      <select id="tg" type="number" style="width: 55%; font-size: 14px;">
+      <select id="tm" type="number" style="width: 55%; font-size: 14px;">
         <option>1</option>
         <option>2</option>
         <option>3</option>

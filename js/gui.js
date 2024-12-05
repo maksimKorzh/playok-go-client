@@ -182,7 +182,6 @@ function userInput(event) {
   let col = Math.floor(mouseX / cell);
   let row = Math.floor(mouseY / cell);
   let sq = (row+1) * size + (col+1);
-  console.log(sq)
   if (editMode) {
     setStone(sq, side);
     drawBoard();

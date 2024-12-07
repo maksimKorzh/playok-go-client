@@ -8,25 +8,20 @@ var blackTime = 0;
 var whiteTime = 0;
 var intervalId;
 
-// Preload images
 const bgImage = new Image();
-bgImage.src = './img/board_fox.png';
-
 const blackStoneImage = new Image();
-blackStoneImage.src = './img/stone_b_fox.png';
-
 const whiteStoneImage = new Image();
+bgImage.src = './img/board_fox.png';
+blackStoneImage.src = './img/stone_b_fox.png';
 whiteStoneImage.src = './img/stone_w_fox.png';
 
-// Ensure images are fully loaded before drawing
 let imagesLoaded = false;
 bgImage.onload = blackStoneImage.onload = whiteStoneImage.onload = () => {
-    if (bgImage.complete && blackStoneImage.complete && whiteStoneImage.complete) {
-        imagesLoaded = true;
-        drawBoard(); // Draw the initial board
-    }
+  if (bgImage.complete && blackStoneImage.complete && whiteStoneImage.complete) {
+    imagesLoaded = true;
+    drawBoard();
+  }
 };
-
 
 function drawBoard() {
   cell = canvas.width / (size-2);
@@ -67,8 +62,8 @@ function drawBoard() {
           stoneImage,
           col * cell + cell / 2 - cell / 2 + 1,
           row * cell + cell / 2 - cell / 2 + 1,
-          cell - 2,
-          cell - 2
+          cell,
+          cell
         );
       }
       /*let color = board[sq] == 1 ? 'black' : 'white';
@@ -83,7 +78,7 @@ function drawBoard() {
       if (sq == userMove) {
         let color = board[sq] == 1 ? 'white' : 'black';
         ctx.beginPath();
-        ctx.arc(col * cell+(cell/4)*2, row * cell +(cell/4)*2, cell / 5 - 2, 0, 2 * Math.PI);
+        ctx.arc(col * cell+(cell/4)*2+1, row * cell+(cell/4)*2+1, cell / 5 - 2, 0, 2 * Math.PI);
         ctx.fillStyle = color;
         ctx.fill();
         ctx.lineWidth = 1;

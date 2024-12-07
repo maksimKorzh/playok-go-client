@@ -187,6 +187,7 @@ function loadHistoryMove() {
   ko = move.ko;
   userMove = move.move;
   drawBoard();
+  moveSound.play();
 }
 
 function undoMove() {

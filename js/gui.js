@@ -11,10 +11,10 @@ var intervalId;
 const bgImage = new Image();
 const blackStoneImage = new Image();
 const whiteStoneImage = new Image();
-bgImage.src = './img/board_fox.png';
-blackStoneImage.src = './img/stone_b_fox.png';
-whiteStoneImage.src = './img/stone_w_fox.png';
-
+const moveSound = new Audio('./assets/112-2052.wav');
+bgImage.src = './assets/board_fox.png';
+blackStoneImage.src = './assets/stone_b_fox.png';
+whiteStoneImage.src = './assets/stone_w_fox.png';
 let imagesLoaded = false;
 bgImage.onload = blackStoneImage.onload = whiteStoneImage.onload = () => {
   if (bgImage.complete && blackStoneImage.complete && whiteStoneImage.complete) {

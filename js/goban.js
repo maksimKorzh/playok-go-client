@@ -90,6 +90,7 @@ function setStone(sq, color, user) {
     'ko': ko
   });
   moveCount = moveHistory.length-1;
+  moveSound.play();
   return true;
 }
 

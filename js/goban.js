@@ -237,6 +237,30 @@ function getHistory() {
   return moveHistory;
 }
 
+async function performance() {
+  let blackScores = [];
+  let whiteScores = [];
+  firstMove();
+  for (let i = 1; i < moveHistory.length; i++) {
+    let move_21 = moveHistory[i].move; 
+    let row_21 = Math.floor(move_21 / 21);
+    let col_21 = move_21 % 21;
+    let move_19 = (row_21-1)*19+(col_21-1);
+    let score = await movePolicy(move_19);
+    console.log('Analyzing move #' + i);
+    if (i % 2) blackScores.push(score);
+    else whiteScores.push(score);
+    nextMove();
+  }
+  let blackPerformance = 0;
+  for (let i = 0; i < blackScores.length; i++) blackPerformance += blackScores[i];
+  blackPerformance = Math.floor(blackPerformance / blackScores.length);
+  let whitePerformance = 0;
+  for (let i = 0; i < whiteScores.length; i++) whitePerformance += whiteScores[i];
+  whitePerformance = Math.floor(whitePerformance / whiteScores.length);
+  console.log('Average black performance is move #' + blackPerformance + '\n' + 'Average white performance is move #' + whitePerformance);
+}
+
 function loadSgf(sgf) {
   initGoban();
   for (let move of sgf.split(';')) {
@@ -429,6 +453,29 @@ async function evaluatePosition(button) {
     let scoreString = (scoreLead > 0 ? (katagoColor + ' leads by ') : (playerColor + ' leads by ')) + Math.abs(scoreLead) + ' points';
     return scoreString;
   } catch (e) {}
+}
+
+async function movePolicy(move) {
+  const binInputs = inputTensor();
+  try {
+    const model = await danModel;
+    const results = await model.executeAsync({
+        "swa_model/bin_inputs": tf.tensor(binInputs, [batches, inputBufferLength, inputBufferChannels], 'float32'),
+        "swa_model/global_inputs": tf.tensor(globalInputs, [batches, inputGlobalBufferChannels], 'float32')
+    });
+    const policyTensor = level ? results[1]: results[3];
+    const policyArray = await policyTensor.slice([0, 0, 0], [1, 1, 361]).array();
+    const flatPolicyArray = policyArray[0][0];
+    let scores = level ? results[2] : results[1];
+    let flatScores = scores.dataSync();
+    let copyPolicy = JSON.parse(JSON.stringify(flatPolicyArray));
+    let topPolicies = copyPolicy.sort((a, b) => b - a);
+
+    for (let i = 0; i < topPolicies.length; i++) {
+      let policyMove = flatPolicyArray.indexOf(topPolicies[i]);
+      if (move == policyMove) return i+1;
+    }
+  } catch (e) {console.log(e);}
 }
 
 function initGoban() {

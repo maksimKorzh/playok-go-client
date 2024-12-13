@@ -482,7 +482,7 @@ function resizeCanvas() {
       <button onclick="playerInfo();" style="width: 50%; font-size: 18px;">?</button>
       <button onclick="sendMessage('chat');" style="font-size: 18px;">$</button>
       <input id="chat" type="text" value="" spellcheck="false" style="width: 371%;"/>
-      <button onclick="if (editMode) { copyGame(); } else { alert('Switch to edit mode'); }" style="font-size: 18px;">#</button>
+      <button onclick="copyGame();" style="font-size: 18px;">#</button>
     </div>
   `;
 }

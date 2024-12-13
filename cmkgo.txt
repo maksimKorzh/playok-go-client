@@ -1,1 +1,0 @@
-    //{"i":[1721],"s":["a7552601b403842c+518832092133209216|3607014402|21655727","en","b","","Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36","/1732054902455/1","w","1920x1080 1","ref:https://www.playok.com/en/go/","ver:260"]}

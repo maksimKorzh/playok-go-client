@@ -209,10 +209,10 @@ function playerInfo() {
         '\nGames:\t\t' + games +
         '\nWins:\t\t' + wins +
         '\nLosses:\t\t' + losses +
-        '\nWinrate:\t\t' + winrate +
+        '\nWinrate:\t' + winrate +
         '\nStreak:\t\t' + streak +
-        '\nAbandoned:\t' + abandoned +
-        '\nCountry:\t\t' + country +
+        '\nLeaft:\t\t' + abandoned +
+        '\nLanguage:\t' + country +
         '\nStatus:\t\t' + online +
         '\nRecent:\t\t' + recentResults + '\n'
       );

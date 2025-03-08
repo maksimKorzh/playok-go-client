@@ -423,6 +423,8 @@ function initGUI() {
   container.appendChild(canvas);
   canvas.addEventListener('click', userInput);
   ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
   window.addEventListener('resize', resizeCanvas);
   initGoban();
   resizeCanvas();

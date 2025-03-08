@@ -60,25 +60,17 @@ function drawBoard() {
       if (board[sq]) {
         ctx.drawImage(
           stoneImage,
-          col * cell + cell / 2 - cell / 2 + 1,
-          row * cell + cell / 2 - cell / 2 + 1,
+          col * cell + cell / 2 - cell / 2,
+          row * cell + cell / 2 - cell / 2,
           cell,
           cell
         );
       }
-      /*let color = board[sq] == 1 ? 'black' : 'white';
-      if (board[sq]) {
-        ctx.beginPath();
-        ctx.arc(col * cell + cell / 2, row * cell + cell / 2, cell / 2 - 2, 0, 2 * Math.PI);
-        ctx.fillStyle = color;
-        ctx.fill();
-        ctx.lineWidth = (color == 'white') ? 2 : 1;
-        ctx.stroke();
-      }*/
+      
       if (sq == userMove) {
         let color = board[sq] == 1 ? 'white' : 'black';
         ctx.beginPath();
-        ctx.arc(col * cell+(cell/4)*2+1, row * cell+(cell/4)*2+1, cell / 5 - 2, 0, 2 * Math.PI);
+        ctx.arc(col * cell+(cell/4)*2, row * cell+(cell/4)*2, cell / 5 - 2, 0, 2 * Math.PI);
         ctx.fillStyle = color;
         ctx.fill();
         ctx.lineWidth = 1;
@@ -87,88 +79,6 @@ function drawBoard() {
     }
   }
 }
-
-/*function drawBoard() {
-    //if (!imagesLoaded) return; // Ensure images are ready
-
-    const cell = canvas.width / (size - 2);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw background image
-    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-
-    // Draw grid lines
-    ctx.beginPath();
-    for (let i = 0; i < size - 2; i++) {
-        const x = i * cell + cell / 2;
-        const y = i * cell + cell / 2;
-        const offset = cell * 2 - cell / 2 - cell;
-        ctx.moveTo(offset, y);
-        ctx.lineTo(canvas.width - offset, y);
-        ctx.moveTo(x, offset);
-        ctx.lineTo(x, canvas.height - offset);
-    }
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-    // Star points
-    const starPoints = {
-        9: [36, 38, 40, 58, 60, 62, 80, 82, 84],
-        13: [64, 67, 70, 109, 112, 115, 154, 157, 160],
-        19: [88, 94, 100, 214, 220, 226, 340, 346, 352],
-    };
-
-    for (let row = 0; row < size - 2; row++) {
-        for (let col = 0; col < size - 2; col++) {
-            const sq = (row + 1) * size + (col + 1);
-
-            // Draw star points
-            if ([9, 13, 19].includes(size - 2) && starPoints[size - 2].includes(sq)) {
-                ctx.beginPath();
-                ctx.arc(
-                    col * cell + (cell / 4) * 2,
-                    row * cell + (cell / 4) * 2,
-                    cell / 6 - 2,
-                    0,
-                    2 * Math.PI
-                );
-                ctx.fillStyle = 'black';
-                ctx.fill();
-                ctx.stroke();
-            }
-
-            // Draw stones
-            if (board[sq] == 7) continue;
-            const stoneImage = board[sq] == 1 ? blackStoneImage : whiteStoneImage;
-            if (board[sq]) {
-                ctx.drawImage(
-                    stoneImage,
-                    col * cell + cell / 2 - cell / 2,
-                    row * cell + cell / 2 - cell / 2,
-                    cell - 4,
-                    cell - 4
-                );
-            }
-
-            // Highlight the user's move
-            if (sq == userMove) {
-                const color = board[sq] == 1 ? 'white' : 'black';
-                ctx.beginPath();
-                ctx.arc(
-                    col * cell + (cell / 4) * 2,
-                    row * cell + (cell / 4) * 2,
-                    cell / 5 - 2,
-                    0,
-                    2 * Math.PI
-                );
-                ctx.fillStyle = color;
-                ctx.fill();
-                ctx.lineWidth = 1;
-                ctx.stroke();
-            }
-        }
-    }
-}*/
 
 function userInput(event) {
   let rect = canvas.getBoundingClientRect();
@@ -290,7 +200,7 @@ function playerInfo() {
         try {
           if (i > 72) break;
           let value = results[i].split('<b>')[1].split('</b>')[0];
-          recentResults += value.replace('win', '⭘').replace('loss', '❌');
+          recentResults += value.replace('win', '🟢').replace('loss', '❌');
         } catch (e) {}
       }
       alert(

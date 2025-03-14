@@ -322,10 +322,10 @@ function resizeCanvas() {
   canvas.height = canvas.width;
   drawBoard();
   document.getElementById('panel').innerHTML = `
-    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: scroll; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-127) + `px; border: 2px solid black;"></div>
+    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-127) + `px; border: 2px solid black;"></div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <label id="blackTime" style="font-size: 22px; background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00</label>
-      <label id="whiteTime" style="font-size: 22px; width: 100%; border: 1px solid black; text-align: center">00:00</label>
+      <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00</label>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <button style="font-size:18px;" onclick="changeMode(this);">%</button>
@@ -348,7 +348,7 @@ function resizeCanvas() {
       <button onclick="sendMessage('white');" style="font-size: 20px;">○</button>
       <button onclick="sendMessage('start');" style="font-size: 15px;">▷</button>
       <button onclick="sendMessage('pass');" style="font-size: 15px;">□</button>
-      <button onclick="sendMessage('resign');" style="font-size: 15px;">❌</button>
+      <button onclick="sendMessage('resign');" style="font-size: 20px;">x</button>
       <button onclick="sendMessage('connect');">🎮</button>
     </div>
     <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">

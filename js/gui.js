@@ -3,7 +3,6 @@ var editMode = 0;
 var takePlace = 0;
 var gameOver = 1;
 var userSide = BLACK;
-var editMode = 0;
 var blackTime = 0;
 var whiteTime = 0;
 var intervalId;
@@ -260,15 +259,8 @@ function handleAI() {
 
 function changeMode(btn) {
   editMode ^= 1;
-  if (editMode) {
-    btn.style.backgroundColor = 'black';
-    btn.style.color = 'white';
-    alert('Edit mode enabled');
-  } else {
-    btn.style.backgroundColor = 'white';
-    btn.style.color = 'black';
-    alert('Edit mode disabled');
-  }
+  if (editMode) alert('Edit mode enabled');
+  else alert('Edit mode disabled');
 }
 
 function updateTimer() {

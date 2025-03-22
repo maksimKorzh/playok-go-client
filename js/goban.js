@@ -13,7 +13,7 @@ const LIBERTY = 8
 
 var board = [];
 var moveHistory = [];
-var komi = 5.5;
+var komi = 7.5;
 var size = 21;
 var side = BLACK;
 var liberties = [];

@@ -425,7 +425,7 @@ function initGUI() {
       <input id="info" type="text" value="cft7821g" spellcheck="false" style="width: 163%; font-size: 18px;"/>
       <button onclick="playerInfo();" style="width: 50%; font-size: 18px;">?</button>
       <button onclick="sendMessage('chat');" style="font-size: 18px;">$</button>
-      <input id="chat" type="text" value="" spellcheck="false" style="width: 371%;"/>
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 371%; font-size: 18px;"/>
       <button onclick="copyGame();" style="font-size: 18px;">#</button>
     </div>
   `;

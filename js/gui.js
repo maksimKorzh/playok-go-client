@@ -313,13 +313,55 @@ function resizeCanvas() {
   canvas.width = window.innerHeight-34;
   canvas.height = canvas.width;
   drawBoard();
+  try {
+    document.getElementById('lobby').style.width = (canvas.width-200) + 'px';
+    document.getElementById('lobby').style.height = (canvas.height-127) + 'px';
+    document.getElementById('time').style.width = (canvas.height-198) + 'px';
+    document.getElementById('navigation').style.width = (canvas.height-198) + 'px';
+    document.getElementById('actions').style.width = (canvas.height-198) + 'px';
+    document.getElementById('ranks').style.width = (canvas.height-198) + 'px';
+    document.getElementById('table').value = table;
+  } catch(e) {}
+}
+
+function downloadSgf() {
+  const element = document.createElement('a');
+  const file = new Blob([saveSgf()], { type: 'text/plain' });
+  element.href = URL.createObjectURL(file);
+  element.download = 'game.sgf';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
+
+function handleSave() {
+  if (gameOver) downloadSgf();
+  else {
+    editMode = 0;
+    handlePass();
+    downloadSgf();
+  }
+}
+
+function initGUI() {
+  let container = document.getElementById('goban');
+  canvas = document.createElement('canvas');
+  canvas.style = 'border: 2px solid black; margin: 4px; margin-top: 16px;';
+  container.appendChild(canvas);
+  canvas.addEventListener('click', userInput);
+  ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  window.addEventListener('resize', resizeCanvas);
+  initGoban();
+  resizeCanvas();
   document.getElementById('panel').innerHTML = `
     <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-127) + `px; border: 2px solid black;"></div>
-    <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
+    <div id="time" style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <label id="blackTime" style="font-size: 22px; background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00</label>
       <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00</label>
     </div>
-    <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
+    <div id="navigation" style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <button style="font-size:18px;" onclick="changeMode(this);">%</button>
       <button style="font-size:18px;" onclick="if (editMode) replay = setInterval(function() { nextMove(); drawBoard(); }, 2000)">▷</button>
       <button style="font-size:18px;" onclick="if (editMode) { clearInterval(replay); replay = null; }">||</button>
@@ -331,7 +373,7 @@ function resizeCanvas() {
       <button style="font-size:18px;" onclick="if (editMode) lastMove();">>>></button>
       <button style="font-size:15px;" onclick="handleAI();" style="font-size: 15px;">⚙</button>
     </div>
-    <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
+    <div id="actions" style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <button onclick="createGame();" style="font-size: 18px;">@</button>
       <button onclick="handleEval();">🎛</button>
       <button onclick="sendMessage('join');" style="font-size: 15px;">▽</button>
@@ -343,7 +385,7 @@ function resizeCanvas() {
       <button onclick="sendMessage('resign');" style="font-size: 20px;">x</button>
       <button onclick="sendMessage('connect');">🎮</button>
     </div>
-    <div style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
+    <div id="ranks" style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
       <select id="tg" type="number" style="width: 56%; font-size: 14px;">
         <option>1</option>
         <option>2</option>
@@ -387,37 +429,5 @@ function resizeCanvas() {
       <button onclick="copyGame();" style="font-size: 18px;">#</button>
     </div>
   `;
-}
 
-function downloadSgf() {
-  const element = document.createElement('a');
-  const file = new Blob([saveSgf()], { type: 'text/plain' });
-  element.href = URL.createObjectURL(file);
-  element.download = 'game.sgf';
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
-}
-
-function handleSave() {
-  if (gameOver) downloadSgf();
-  else {
-    editMode = 0;
-    handlePass();
-    downloadSgf();
-  }
-}
-
-function initGUI() {
-  let container = document.getElementById('goban');
-  canvas = document.createElement('canvas');
-  canvas.style = 'border: 2px solid black; margin: 4px; margin-top: 16px;';
-  container.appendChild(canvas);
-  canvas.addEventListener('click', userInput);
-  ctx = canvas.getContext('2d');
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
-  window.addEventListener('resize', resizeCanvas);
-  initGoban();
-  resizeCanvas();
 }

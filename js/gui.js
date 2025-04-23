@@ -169,6 +169,7 @@ function createGame() {
   let command = {"i": [71], "s": []};
   let message = JSON.stringify(command);
   ipcRenderer.send('main', message);
+  logs = '';
 }
 
 function playerInfo() {

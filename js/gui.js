@@ -121,7 +121,6 @@ function sendMessage(action) {
       break;
     case 'join':
       startInterval();
-      document.getElementById('rank').value = '3000';
       command.i = [72, table];
       logs = '';
       break;
@@ -130,9 +129,9 @@ function sendMessage(action) {
       command.i = [73, table];
       initGoban();
       drawBoard();
-      logs = '';
       games = {};
       takePlace = 0;
+      logs = '';
       break;
     case 'black':
       userSide = BLACK;
@@ -408,7 +407,7 @@ function initGUI() {
         <option>20</option>
       </select>
       <input id="table" type="number" value="` + table + `" style="width: 111%; font-size: 18px;"/>
-      <select id="rank" type="number" onchange="logs=''; games={};" style="width: 120%; font-size: 18px;">
+      <select id="rank" type="number" onchange="games={};" style="width: 120%; font-size: 18px;">
         <option value="3000">All</option>
         <option value="1450">1d</option>
         <option value="1400">1k</option>
@@ -429,5 +428,4 @@ function initGUI() {
       <button onclick="copyGame();" style="font-size: 18px;">#</button>
     </div>
   `;
-
 }

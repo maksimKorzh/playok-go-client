@@ -112,7 +112,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
     sendMessage('tm');
     startInterval();
     document.getElementById('rank').value = '3000';
-    logs = '';
   }
 
   if (response.i[0] == 81 && response.i[1] == table) {

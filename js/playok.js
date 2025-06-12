@@ -38,6 +38,27 @@ function getRank(rating) {
   } return 'N/A';
 }
 
+function joinGame(color, tableNum, info) {
+  let command = {"i": [], "s": []};
+  command.i = [72, tableNum];
+  ipcRenderer.send('main', JSON.stringify(command));
+  if (color == 'black') {
+    userSide = BLACK;
+    command.i = [(takePlace ? 84:83), tableNum, 0];
+    takePlace ^= 1;
+  } else if (color == 'white') {
+    userSide = WHITE;
+    command.i = [(takePlace ? 84:83), tableNum, 1];
+    takePlace ^= 1;
+  }
+  ipcRenderer.send('main', JSON.stringify(command));
+  if (confirm('Accept match "' + info + '" ?')) {
+    command.i = [85, tableNum];
+    gameOver = 0;
+    ipcRenderer.send('main', JSON.stringify(command));
+  }
+}
+
 ipcRenderer.on('websocket-message', (event, message) => {
   if (message == 'open') { setTimeout(function() { logs = '&nbsp;Web socket connection is open<br>'}, 100); return; }
   if (message == 'close') { logs = '&nbsp;Web socket connection is closed<br>'; return; }
@@ -73,23 +94,27 @@ ipcRenderer.on('websocket-message', (event, message) => {
     else if (response.i[3] == 1 && response.i[4] == 0) {
       if (players[player1] != undefined) {
         if (players[player1].rating > ratingLimit) return;
+        let opponent = players[player1].name + '[' + players[player1].rank + ']';
         logs += '<tr><td>#' + response.i[1] +
-                '</td><td>' + players[player1].name + '[' + players[player1].rank + ']' +
+                '</td><td>' + opponent +
                 '</td><td>' + 'empty' +
                 '</td><td>' + timeControl +
                 '</td><td>' + gameStatus + '</td></tr>';
         document.getElementById('table').value = response.i[1];
+        joinGame('white', response.i[1], timeControl + ' ' + opponent);
       }
     }
     else if (response.i[3] == 0 && response.i[4] == 1) {
       if (players[player2] != undefined) {
         if (players[player2].rating > ratingLimit) return;
+        let opponent = players[player2].name + '[' + players[player2].rank + ']';
         logs += '<tr><td>#' + response.i[1] +
               '</td><td>' + 'empty' +
-              '</td><td>' + players[player2].name + '[' + players[player2].rank + ']' +
+              '</td><td>' + opponent +
               '</td><td>' + timeControl +
               '</td><td>' + gameStatus + '</td></tr>';
         document.getElementById('table').value = response.i[1];
+        joinGame('black', response.i[1], timeControl + ' ' + opponent);
       }
     }
     else if (response.i[3] == 1 && response.i[4] == 1) {

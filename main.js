@@ -45,6 +45,7 @@ function connect(win) {
 
 function createWindow() {
   let win = new BrowserWindow({
+    fullscreen: true,
     width: 1720,
     minWidth:1720,
     height: 1000,

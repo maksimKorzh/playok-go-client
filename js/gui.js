@@ -99,11 +99,6 @@ function userInput(event) {
 }
 
 function sendMessage(action) {
-  if (action == 'connect') {
-    ipcRenderer.send('main', action);
-    return;
-  }
-
   table = parseInt(document.getElementById('table').value);
   if (!(table in games)) {
     alert('Choose valid table');
@@ -172,8 +167,29 @@ function createGame() {
   logs = '';
 }
 
+//const prompt = require('electron-prompt');
+
+/*prompt({
+    title: 'Prompt example',
+    label: 'URL:',
+    value: 'http://example.org',
+    inputAttrs: {
+        type: 'url'
+    },
+    type: 'input'
+})
+.then((r) => {
+    if(r === null) {
+        console.log('user cancelled');
+    } else {
+        console.log('result', r);
+    }
+})
+.catch(console.error);
+*/
+
 function playerInfo() {
-  userName = document.getElementById('info').value;
+  userName = 'cft7821g';//prompt('Enter user name:');
   fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go')
   .then(response => { return response.text(); })
   .then(html => {
@@ -361,72 +377,11 @@ function initGUI() {
       <label id="blackTime" style="font-size: 22px; background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00</label>
       <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00</label>
     </div>
-    <div id="navigation" style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
-      <button style="font-size:18px;" onclick="changeMode(this);">%</button>
-      <button style="font-size:18px;" onclick="if (editMode) replay = setInterval(function() { nextMove(); drawBoard(); }, 2000)">▷</button>
-      <button style="font-size:18px;" onclick="if (editMode) { clearInterval(replay); replay = null; }">||</button>
-      <button style="font-size:18px;" onclick="if (editMode) firstMove();"><<<</button>
-      <button style="font-size:18px;" onclick="if (editMode) prevFewMoves(16);"><<</button>
-      <button style="font-size:18px;" onclick="if (editMode) prevMove();"><</button>
-      <button style="font-size:18px;" onclick="if (editMode) nextMove();">></button>
-      <button style="font-size:18px;" onclick="if (editMode) nextFewMoves(16);">>></button>
-      <button style="font-size:18px;" onclick="if (editMode) lastMove();">>>></button>
-      <button style="font-size:15px;" onclick="handleAI();" style="font-size: 15px;">⚙</button>
-    </div>
     <div id="actions" style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
-      <button onclick="createGame();" style="font-size: 18px;">@</button>
-      <button onclick="handleEval();">🎛</button>
-      <button onclick="sendMessage('join');" style="font-size: 15px;">▽</button>
-      <button onclick="sendMessage('leave');" style="font-size: 15px;">△</button>
-      <button onclick="sendMessage('black');" style="font-size: 20px;">●</button>
-      <button onclick="sendMessage('white');" style="font-size: 20px;">○</button>
-      <button onclick="sendMessage('start');" style="font-size: 15px;">▷</button>
-      <button onclick="sendMessage('pass');" style="font-size: 15px;">□</button>
-      <button onclick="sendMessage('resign');" style="font-size: 20px;">x</button>
-      <button onclick="sendMessage('connect');">🎮</button>
-    </div>
-    <div id="ranks" style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
-      <select id="tg" type="number" style="width: 56%; font-size: 14px;">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>5</option>
-        <option>7</option>
-        <option>10</option>
-        <option>15</option>
-        <option>20</option>
-        <option selected>30</option>
-        <option>60</option>
-      </select>
-      <select id="tm" type="number" style="width: 55%; font-size: 14px;">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>5</option>
-        <option>7</option>
-        <option selected>10</option>
-        <option>20</option>
-      </select>
-      <input id="table" type="number" value="` + table + `" style="width: 111%; font-size: 18px;"/>
-      <select id="rank" type="number" onchange="games={};" style="width: 120%; font-size: 18px;">
-        <option value="3000">All</option>
-        <option value="1450">1d</option>
-        <option value="1400">1k</option>
-        <option value="1350">2k</option>
-        <option value="1300">3k</option>
-        <option value="1250">4k</option>
-        <option value="1200">5k</option>
-        <option value="1150">6k</option>
-        <option value="1100">7k</option>
-        <option value="1050">8k</option>
-        <option value="1000">9k</option>
-        <option value="950">10k</option>
-      </select>
-      <input id="info" type="text" value="cft7821g" spellcheck="false" style="width: 163%; font-size: 18px;"/>
-      <button onclick="playerInfo();" style="width: 50%; font-size: 18px;">?</button>
-      <button onclick="sendMessage('chat');" style="font-size: 18px;">$</button>
-      <input id="chat" type="text" value="" spellcheck="false" style="width: 371%; font-size: 18px;"/>
-      <button onclick="copyGame();" style="font-size: 18px;">#</button>
+      <button onclick="sendMessage('pass');" style="font-size: 20px;">PASS</button>
+      <button onclick="sendMessage('resign');" style="font-size: 20px;">RESIGN</button>
+      <button onclick="copyGame();" style="font-size: 20px;">DOWNLOAD</button>
+      <button onclick="playerInfo();" style="font-size: 20px;">STATS</button>
     </div>
   `;
 }

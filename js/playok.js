@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron');
+window.playokAPI.connect()
 
 var ranks = [
   {'min': 1800, 'max': 3000, 'rank': '9d'},
@@ -31,6 +31,7 @@ var players = {};
 var games = {};
 var table = 100;
 var logs = '';
+var ratingLimit = 1100;
 
 function getRank(rating) {
   for (let entry of ranks) {
@@ -41,7 +42,7 @@ function getRank(rating) {
 function joinGame(color, tableNum, info) {
   let command = {"i": [], "s": []};
   command.i = [72, tableNum];
-  ipcRenderer.send('main', JSON.stringify(command));
+  //window.playokAPI.send('main', JSON.stringify(command));
   if (color == 'black') {
     userSide = BLACK;
     command.i = [(takePlace ? 84:83), tableNum, 0];
@@ -51,15 +52,15 @@ function joinGame(color, tableNum, info) {
     command.i = [(takePlace ? 84:83), tableNum, 1];
     takePlace ^= 1;
   }
-  ipcRenderer.send('main', JSON.stringify(command));
-  if (confirm('Accept match "' + info + '" ?')) {
-    command.i = [85, tableNum];
-    gameOver = 0;
-    ipcRenderer.send('main', JSON.stringify(command));
-  }
+  //window.playokAPI.send('main', JSON.stringify(command));
+//  if (confirm('Accept match "' + info + '" ?')) {
+//    command.i = [85, tableNum];
+//    gameOver = 0;
+//    window.playokAPI.send('main', JSON.stringify(command));
+//  }
 }
 
-ipcRenderer.on('websocket-message', (event, message) => {
+window.playokAPI.onData((message) => {
   if (message == 'open') { setTimeout(function() { logs = '&nbsp;Web socket connection is open<br>'}, 100); return; }
   if (message == 'close') { logs = '&nbsp;Web socket connection is closed<br>'; return; }
   let response = JSON.parse(message);
@@ -79,7 +80,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
     if ((table in games) && response.i[1] != table) return; 
     let player1 = response.s[1];
     let player2 = response.s[2];
-    let ratingLimit = parseInt(document.getElementById('rank').value);
     let timeControl = response.s[0].split(',')[0];
     let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked';
     games[response.i[1]] = [player1, player2];
@@ -89,7 +89,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
               '</td><td>' + 'empty' +
               '</td><td>' + timeControl +
               '</td><td>' + gameStatus + '</td></tr>';
-      document.getElementById('table').value = response.i[1];
     }
     else if (response.i[3] == 1 && response.i[4] == 0) {
       if (players[player1] != undefined) {
@@ -100,7 +99,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
                 '</td><td>' + 'empty' +
                 '</td><td>' + timeControl +
                 '</td><td>' + gameStatus + '</td></tr>';
-        document.getElementById('table').value = response.i[1];
         joinGame('white', response.i[1], timeControl + ' ' + opponent);
       }
     }
@@ -113,7 +111,6 @@ ipcRenderer.on('websocket-message', (event, message) => {
               '</td><td>' + opponent +
               '</td><td>' + timeControl +
               '</td><td>' + gameStatus + '</td></tr>';
-        document.getElementById('table').value = response.i[1];
         joinGame('black', response.i[1], timeControl + ' ' + opponent);
       }
     }
@@ -125,14 +122,12 @@ ipcRenderer.on('websocket-message', (event, message) => {
               '</td><td>' + players[player2].name + '[' + players[player2].rank + ']' +
               '</td><td>' + timeControl +
               '</td><td>' + gameStatus + '</td></tr>';
-        document.getElementById('table').value = response.i[1];
       }
     }
   }
   
   if (response.i[0] == 73) {
     games[response.i[1]] = ['', ''];
-    document.getElementById('table').value = response.i[1];
     sendMessage('tg');
     sendMessage('tm');
     startInterval();

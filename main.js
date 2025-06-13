@@ -50,8 +50,7 @@ function createWindow() {
     minWidth:1720,
     height: 1000,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      preload: __dirname + '/preload.js'
     }
   });
 
@@ -70,8 +69,8 @@ function createWindow() {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   win.loadFile('index.html');
-  socket = connect(win);
   ipcMain.on('main', (event, messageData) => {
+    console.log('DATA FROM CLIENT:', messageData)
     if (messageData == 'connect') {
       socket = connect(win);
       console.log('created new socket');

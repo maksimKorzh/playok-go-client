@@ -1,4 +1,4 @@
-//window.playokAPI.connect()
+window.playokAPI.connect()
 
 var ranks = [
   {'min': 1800, 'max': 3000, 'rank': '9d'},
@@ -32,6 +32,8 @@ var games = {};
 var table = 100;
 var logs = '';
 var ratingLimit = 1100;
+var prevChallenge = '';
+var accepting = 0;
 
 function getRank(rating) {
   for (let entry of ranks) {
@@ -40,11 +42,20 @@ function getRank(rating) {
 }
 
 function joinGame(color, tableNum, info) {
+  if (prevChallenge == info) {
+    sendMessage('leave');
+    return;
+  }
+  if (!accepting) return
   table = tableNum;
   sendMessage('join');
   sendMessage(color);
-  if (confirm('Accept match "' + info + '" ?')) sendMessage('start');
-  else sendMessage('leave');
+  if (confirm('Accept match "' + info + ' as ' + color + '" ?')) sendMessage('start');
+  else {
+    sendMessage('leave');
+    prevChallenge = info;
+  }
+  // TODO: toggle automatch
 }
 
 function getUserInfo(label) {
@@ -64,10 +75,13 @@ function getUserInfo(label) {
 }
 
 window.playokAPI.onData((message) => {
-  if (message == 'open') { setTimeout(function() { logs = '&nbsp;Web socket connection is open<br>'}, 100); return; }
-  if (message == 'close') { logs = '&nbsp;Web socket connection is closed<br>'; return; }
+  if (message == 'open') return
+  if (message == 'close') {
+    logs += 'Web socket connection has  been closed<br>';
+    return
+  }
   let response = JSON.parse(message);
-  if (response.i[0] == 25) {
+  if (response.i[0] == 25) { // player info
     let player = response.s[0];
     let rating = response.i[3];
     players[player] = {
@@ -77,31 +91,20 @@ window.playokAPI.onData((message) => {
     }
   }
 
-  if (response.i[0] == 70) {
+  if (response.i[0] == 70) { // lobby & pairing
     let boardSize = response.s[0].split(',')[1];
     if (parseInt(boardSize) != 19) return;
-    if ((table in games) && response.i[1] != table) return; 
+    if ((table in games) && response.i[1] != table) return;
     let player1 = response.s[1];
     let player2 = response.s[2];
     let timeControl = response.s[0].split(',')[0];
     let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked';
     games[response.i[1]] = [player1, player2];
-    if (response.i[3] == 0 && response.i[4] == 0) {
-      logs += '<tr><td>#' + response.i[1] +
-              '</td><td>' + 'empty' +
-              '</td><td>' + 'empty' +
-              '</td><td>' + timeControl +
-              '</td><td>' + gameStatus + '</td></tr>';
-    }
-    else if (response.i[3] == 1 && response.i[4] == 0) {
+    if (response.i[3] == 1 && response.i[4] == 0) {
       if (players[player1] != undefined) {
         if (players[player1].rating > ratingLimit) return;
         let opponent = players[player1].name + '[' + players[player1].rank + ']';
-        logs += '<tr><td>#' + response.i[1] +
-                '</td><td>' + opponent +
-                '</td><td>' + 'empty' +
-                '</td><td>' + timeControl +
-                '</td><td>' + gameStatus + '</td></tr>';
+        logs += timeControl + ' ' + opponent + '<br>';
         joinGame('white', response.i[1], timeControl + ' ' + opponent);
       }
     }
@@ -109,27 +112,13 @@ window.playokAPI.onData((message) => {
       if (players[player2] != undefined) {
         if (players[player2].rating > ratingLimit) return;
         let opponent = players[player2].name + '[' + players[player2].rank + ']';
-        logs += '<tr><td>#' + response.i[1] +
-              '</td><td>' + 'empty' +
-              '</td><td>' + opponent +
-              '</td><td>' + timeControl +
-              '</td><td>' + gameStatus + '</td></tr>';
+        logs += timeControl + ' ' + opponent + '<br>';
         joinGame('black', response.i[1], timeControl + ' ' + opponent);
-      }
-    }
-    else if (response.i[3] == 1 && response.i[4] == 1) {
-      if (players[player1] != undefined && players[player2] != undefined) {
-        if (players[player1].rating > ratingLimit || players[player2].rating > ratingLimit) return;
-        logs += '<tr><td>#' + response.i[1] +
-              '</td><td>' + players[player1].name + '[' + players[player1].rank + ']' +
-              '</td><td>' + players[player2].name + '[' + players[player2].rank + ']' +
-              '</td><td>' + timeControl +
-              '</td><td>' + gameStatus + '</td></tr>';
       }
     }
   }
   
-  if (response.i[0] == 81 && response.i[1] == table) {
+  if (response.i[0] == 81 && response.i[1] == table) { // chat messages & system notifications
     logs += response.s[0] + '<br>';
     if (response.s[0].includes('resigns') ||
         response.s[0].includes('territory') ||
@@ -140,14 +129,14 @@ window.playokAPI.onData((message) => {
         }
   }
 
-  if (response.i[0] == 90 && response.i.length == 25) {
+  if (response.i[0] == 90 && response.i.length == 25) { // timer
     blackTime = response.i[22];
     whiteTime = response.i[24];
     updateTimer();
   }
   
   if (response.i[0] == 90 && response.i[2] == 53) logs += '+ dead stones removal phase<br>';
-  if (response.i[0] == 91) {
+  if (response.i[0] == 91) { // load game
     initGoban();
     let moves = response.s;
     if (moves != undefined) {
@@ -161,7 +150,7 @@ window.playokAPI.onData((message) => {
     } drawBoard();
   }
 
-  if (response.i[0] == 92) {
+  if (response.i[0] == 92) { // update move
     let move = response.s[0];
     if (move != undefined) {
       if (move == '-') {
@@ -177,7 +166,7 @@ window.playokAPI.onData((message) => {
   }
 
   let lobby = document.getElementById('lobby');
-  lobby.innerHTML = '<table style="width: 100%;">' + logs + '</table>';
+  lobby.innerHTML = logs
   lobby.scrollTop = lobby.scrollHeight;
 });
 

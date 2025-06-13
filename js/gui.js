@@ -93,16 +93,11 @@ function userInput(event) {
     if (gameOver || side != userSide) return;
     let move = {"i": [92, table, 0, (row * 19 + col), 0]};
     let message = JSON.stringify(move);
-    ipcRenderer.send('main', message);
+    window.playokAPI.send('main', message);
   }
 }
 
 function sendMessage(action) {
-  table = parseInt(document.getElementById('table').value);
-  if (!(table in games)) {
-    alert('Choose valid table');
-    return;
-  }
   let command = {"i": [], "s": []};
   switch (action) {
     case 'tg':
@@ -116,7 +111,6 @@ function sendMessage(action) {
     case 'join':
       startInterval();
       command.i = [72, table];
-      logs = '';
       break;
     case 'leave':
       stopInterval();
@@ -125,7 +119,6 @@ function sendMessage(action) {
       drawBoard();
       games = {};
       takePlace = 0;
-      logs = '';
       break;
     case 'black':
       userSide = BLACK;
@@ -156,7 +149,7 @@ function sendMessage(action) {
       break;
   }
   let message = JSON.stringify(command);
-  ipcRenderer.send('main', message);
+  window.playokAPI.send('main', message);
 }
 
 function playerInfo(userName) {
@@ -285,6 +278,7 @@ function resizeCanvas() {
     document.getElementById('lobby').style.height = (canvas.height-65) + 'px';
     document.getElementById('time').style.width = (window.innerWidth-canvas.height-30) + 'px';
     document.getElementById('actions').style.width = (window.innerWidth-canvas.height-30) + 'px';
+    document.getElementById('level').style.width = (window.innerWidth-canvas.height-30) + 'px';
   } catch(e) {}
 }
 
@@ -295,6 +289,11 @@ function handleSave() {
     handlePass();
     downloadSgf();
   }
+}
+
+function challengeToggle() {
+  accepting ^= 1;
+  logs += 'Accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
 }
 
 function initGUI() {
@@ -320,6 +319,25 @@ function initGUI() {
       <button onclick="sendMessage('resign');" style="font-size: 20px;">RESIGN</button>
       <button onclick="downloadSgf();" style="font-size: 20px;">DOWNLOAD</button>
       <button onclick="getUserInfo('User name:');" style="font-size: 20px;">STATS</button>
+    </div>
+    <div id="level" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
+      <button onclick="challengeToggle();" style="font-size: 20px;">MATCH</button>
+      <select id="rank" type="number" onchange="ratingLimit = this.value;" style="width: 105%; font-size: 20px;">
+        <option value="3000">All</option>
+        <option value="1450">1d</option>
+        <option value="1400">1k</option>
+        <option value="1350">2k</option>
+        <option value="1300">3k</option>
+        <option value="1250">4k</option>
+        <option value="1200">5k</option>
+        <option value="1150">6k</option>
+        <option value="1100" selected>7k</option>
+        <option value="1050">8k</option>
+        <option value="1000">9k</option>
+        <option value="950">10k</option>
+      </select>
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 102%; font-size: 20px;"/>
+      <button onclick="sendMessage('chat');" style="font-size: 20px;">SAY</button>
     </div>
   `;
 }

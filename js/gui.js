@@ -189,7 +189,7 @@ function playerInfo(userName) {
         '\nLosses:\t\t' + losses +
         '\nWinrate:\t\t' + winrate +
         '\nStreak:\t\t' + streak +
-        '\nLeaft:\t\t' + abandoned +
+        '\nLeft:\t\t' + abandoned +
         '\nLanguage:\t' + country +
         '\nStatus:\t\t' + online +
         '\nRecent:\t\t' + recentResults + '\n'
@@ -275,7 +275,7 @@ function resizeCanvas() {
   drawBoard();
   try {
     document.getElementById('lobby').style.width = (window.innerWidth-canvas.width-32) + 'px';
-    document.getElementById('lobby').style.height = (canvas.height-65) + 'px';
+    document.getElementById('lobby').style.height = (canvas.height-98) + 'px';
     document.getElementById('time').style.width = (window.innerWidth-canvas.height-30) + 'px';
     document.getElementById('actions').style.width = (window.innerWidth-canvas.height-30) + 'px';
     document.getElementById('level').style.width = (window.innerWidth-canvas.height-30) + 'px';
@@ -294,6 +294,7 @@ function handleSave() {
 function challengeToggle() {
   accepting ^= 1;
   logs += 'SYSTEM: accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
+  if (accepting) sendMessage('leave');
 }
 
 function initGUI() {
@@ -309,7 +310,7 @@ function initGUI() {
   initGoban();
   resizeCanvas();
   document.getElementById('panel').innerHTML = `
-    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (window.innerWidth - canvas.width - 32) + `px; height: ` + (canvas.height-65) + `px; border: 2px solid black;"></div>
+    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (window.innerWidth - canvas.width - 32) + `px; height: ` + (canvas.height-98) + `px; border: 2px solid black;"></div>
     <div id="time" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
       <label id="blackTime" style="font-size: 22px; background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00</label>
       <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00</label>
@@ -322,7 +323,7 @@ function initGUI() {
     </div>
     <div id="level" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
       <button onclick="challengeToggle();" style="font-size: 20px;">MATCH</button>
-      <select id="rank" type="number" onchange="ratingLimit = this.value;" style="width: 105%; font-size: 20px;">
+      <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 105%; font-size: 20px;">
         <option value="3000">All</option>
         <option value="1450">1d</option>
         <option value="1400">1k</option>

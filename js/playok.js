@@ -95,7 +95,6 @@ window.playokAPI.onData((message) => {
   if (response.i[0] == 70) { // lobby & pairing
     let boardSize = response.s[0].split(',')[1];
     if (parseInt(boardSize) != 19) return;
-    if ((table in games) && response.i[1] != table) return;
     let player1 = response.s[1];
     let player2 = response.s[2];
     let timeControl = response.s[0].split(',')[0];
@@ -105,7 +104,7 @@ window.playokAPI.onData((message) => {
       if (players[player1] != undefined) {
         if (players[player1].rating > ratingLimit) return;
         let opponent = players[player1].name + '[' + players[player1].rank + ']';
-        logs += ' MATCH: ' + timeControl + ' ' + opponent + '<br>';
+        logs += '&nbsp;MATCH: ' + timeControl + ' ' + opponent + '<br>';
         joinGame('white', response.i[1], timeControl + ' ' + opponent);
       }
     }
@@ -113,7 +112,7 @@ window.playokAPI.onData((message) => {
       if (players[player2] != undefined) {
         if (players[player2].rating > ratingLimit) return;
         let opponent = players[player2].name + '[' + players[player2].rank + ']';
-        logs += ' MATCH: ' + timeControl + ' ' + opponent + '<br>';
+        logs += '&nbsp;MATCH: ' + timeControl + ' ' + opponent + '<br>';
         joinGame('black', response.i[1], timeControl + ' ' + opponent);
       }
     }
@@ -136,7 +135,7 @@ window.playokAPI.onData((message) => {
     updateTimer();
   }
   
-  if (response.i[0] == 90 && response.i[2] == 53) logs += 'GAME: dead stones removal phase<br>';
+  if (response.i[0] == 90 && response.i[2] == 53) logs += '&nbsp;&nbsp;GAME: dead stones removal phase<br>';
   if (response.i[0] == 91) { // load game
     initGoban();
     let moves = response.s;

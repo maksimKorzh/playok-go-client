@@ -18,7 +18,6 @@ let imagesLoaded = false;
 bgImage.onload = blackStoneImage.onload = whiteStoneImage.onload = () => {
   if (bgImage.complete && blackStoneImage.complete && whiteStoneImage.complete) {
     imagesLoaded = true;
-    drawBoard();
   }
 };
 
@@ -160,36 +159,7 @@ function sendMessage(action) {
   ipcRenderer.send('main', message);
 }
 
-function createGame() {
-  let command = {"i": [71], "s": []};
-  let message = JSON.stringify(command);
-  ipcRenderer.send('main', message);
-  logs = '';
-}
-
-//const prompt = require('electron-prompt');
-
-/*prompt({
-    title: 'Prompt example',
-    label: 'URL:',
-    value: 'http://example.org',
-    inputAttrs: {
-        type: 'url'
-    },
-    type: 'input'
-})
-.then((r) => {
-    if(r === null) {
-        console.log('user cancelled');
-    } else {
-        console.log('result', r);
-    }
-})
-.catch(console.error);
-*/
-
-function playerInfo() {
-  userName = 'cft7821g';//prompt('Enter user name:');
+function playerInfo(userName) {
   fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go')
   .then(response => { return response.text(); })
   .then(html => {
@@ -224,7 +194,7 @@ function playerInfo() {
         '\nGames:\t\t' + games +
         '\nWins:\t\t' + wins +
         '\nLosses:\t\t' + losses +
-        '\nWinrate:\t' + winrate +
+        '\nWinrate:\t\t' + winrate +
         '\nStreak:\t\t' + streak +
         '\nLeaft:\t\t' + abandoned +
         '\nLanguage:\t' + country +
@@ -235,9 +205,8 @@ function playerInfo() {
   })
 }
 
-function copyGame() {
-  loadSgf(document.getElementById('chat').value);
-  userName = document.getElementById('info').value;
+function downloadSgf() {
+  userName = 'cft7821g';
   fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2')
   .then(response => { return response.text(); })
   .then(html => {
@@ -250,33 +219,15 @@ function copyGame() {
     fetch(lastGameUrl)
     .then( response => { return response.text(); })
     .then(sgf => {
-      navigator.clipboard.writeText(sgf);
+      const element = document.createElement('a');
+      const file = new Blob([sgf], { type: 'text/plain' });
+      element.href = URL.createObjectURL(file);
+      element.download = 'game.sgf';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
     });
   });
-}
-
-function handleEval() {
- (async () => {
-   if (editMode) alert(await evaluatePosition());
-   else {
-     if(table in games) alert(await evaluatePosition());
-     else alert('Choose valid table');
-   }
- })();
-}
-
-function handleAI() {
-  if (editMode) playMove();
-  else {
-    if (!gameOver && side == userSide) playMove();
-    else alert('Choose valid table');
-  }
-}
-
-function changeMode(btn) {
-  editMode ^= 1;
-  if (editMode) alert('Edit mode enabled');
-  else alert('Edit mode disabled');
 }
 
 function updateTimer() {
@@ -330,24 +281,11 @@ function resizeCanvas() {
   canvas.height = canvas.width;
   drawBoard();
   try {
-    document.getElementById('lobby').style.width = (canvas.width-200) + 'px';
-    document.getElementById('lobby').style.height = (canvas.height-127) + 'px';
-    document.getElementById('time').style.width = (canvas.height-198) + 'px';
-    document.getElementById('navigation').style.width = (canvas.height-198) + 'px';
-    document.getElementById('actions').style.width = (canvas.height-198) + 'px';
-    document.getElementById('ranks').style.width = (canvas.height-198) + 'px';
-    document.getElementById('table').value = table;
+    document.getElementById('lobby').style.width = (window.innerWidth-canvas.width-32) + 'px';
+    document.getElementById('lobby').style.height = (canvas.height-65) + 'px';
+    document.getElementById('time').style.width = (window.innerWidth-canvas.height-30) + 'px';
+    document.getElementById('actions').style.width = (window.innerWidth-canvas.height-30) + 'px';
   } catch(e) {}
-}
-
-function downloadSgf() {
-  const element = document.createElement('a');
-  const file = new Blob([saveSgf()], { type: 'text/plain' });
-  element.href = URL.createObjectURL(file);
-  element.download = 'game.sgf';
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
 }
 
 function handleSave() {
@@ -372,16 +310,16 @@ function initGUI() {
   initGoban();
   resizeCanvas();
   document.getElementById('panel').innerHTML = `
-    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (canvas.width-200) + `px; height: ` + (canvas.height-127) + `px; border: 2px solid black;"></div>
-    <div id="time" style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
+    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (window.innerWidth - canvas.width - 32) + `px; height: ` + (canvas.height-65) + `px; border: 2px solid black;"></div>
+    <div id="time" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
       <label id="blackTime" style="font-size: 22px; background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00</label>
       <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00</label>
     </div>
-    <div id="actions" style="display: flex; gap: 4px;  width: ` + (canvas.width-198) + `px; margin-bottom: 4px;">
+    <div id="actions" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('pass');" style="font-size: 20px;">PASS</button>
       <button onclick="sendMessage('resign');" style="font-size: 20px;">RESIGN</button>
-      <button onclick="copyGame();" style="font-size: 20px;">DOWNLOAD</button>
-      <button onclick="playerInfo();" style="font-size: 20px;">STATS</button>
+      <button onclick="downloadSgf();" style="font-size: 20px;">DOWNLOAD</button>
+      <button onclick="getUserInfo('User name:');" style="font-size: 20px;">STATS</button>
     </div>
   `;
 }

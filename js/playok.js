@@ -1,4 +1,4 @@
-window.playokAPI.connect()
+//window.playokAPI.connect()
 
 var ranks = [
   {'min': 1800, 'max': 3000, 'rank': '9d'},
@@ -40,24 +40,27 @@ function getRank(rating) {
 }
 
 function joinGame(color, tableNum, info) {
-  let command = {"i": [], "s": []};
-  command.i = [72, tableNum];
-  //window.playokAPI.send('main', JSON.stringify(command));
-  if (color == 'black') {
-    userSide = BLACK;
-    command.i = [(takePlace ? 84:83), tableNum, 0];
-    takePlace ^= 1;
-  } else if (color == 'white') {
-    userSide = WHITE;
-    command.i = [(takePlace ? 84:83), tableNum, 1];
-    takePlace ^= 1;
-  }
-  //window.playokAPI.send('main', JSON.stringify(command));
-//  if (confirm('Accept match "' + info + '" ?')) {
-//    command.i = [85, tableNum];
-//    gameOver = 0;
-//    window.playokAPI.send('main', JSON.stringify(command));
-//  }
+  table = tableNum;
+  sendMessage('join');
+  sendMessage(color);
+  if (confirm('Accept match "' + info + '" ?')) sendMessage('start');
+  else sendMessage('leave');
+}
+
+function getUserInfo(label) {
+  window.playokAPI.prompt({
+    title: 'PlayOK',
+    label: label,
+    type: 'input',
+    inputAttrs: {
+      type: 'text',
+      spellcheck: 'false',
+      placeholder: 'e.g. cft7821g'
+    }
+  }).then(result => {
+    if (result !== null) playerInfo(result);
+    else return 0;
+  });
 }
 
 window.playokAPI.onData((message) => {
@@ -126,14 +129,6 @@ window.playokAPI.onData((message) => {
     }
   }
   
-  if (response.i[0] == 73) {
-    games[response.i[1]] = ['', ''];
-    sendMessage('tg');
-    sendMessage('tm');
-    startInterval();
-    document.getElementById('rank').value = '3000';
-  }
-
   if (response.i[0] == 81 && response.i[1] == table) {
     logs += response.s[0] + '<br>';
     if (response.s[0].includes('resigns') ||

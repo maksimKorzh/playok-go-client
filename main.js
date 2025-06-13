@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const WebSocket = require('ws');
+const prompt = require('electron-prompt');
 var socket;
 
 function connect(win) {
@@ -70,11 +71,13 @@ function createWindow() {
   Menu.setApplicationMenu(menu);
   win.loadFile('index.html');
   ipcMain.on('main', (event, messageData) => {
-    console.log('DATA FROM CLIENT:', messageData)
     if (messageData == 'connect') {
       socket = connect(win);
       console.log('created new socket');
     } else socket.send(JSON.stringify(JSON.parse(messageData)));
+  });
+  ipcMain.handle('show-prompt', async (event, options) => {
+    return await prompt(options, win);
   });
 }
 

@@ -50,12 +50,13 @@ function joinGame(color, tableNum, info) {
   table = tableNum;
   sendMessage('join');
   sendMessage(color);
-  if (confirm('Accept match "' + info + ' as ' + color + '" ?')) sendMessage('start');
-  else {
+  if (confirm('Accept match "' + info + ' as ' + color + '" ?')) {
+    sendMessage('start');
+    challengeToggle();
+  } else {
     sendMessage('leave');
     prevChallenge = info;
   }
-  // TODO: toggle automatch
 }
 
 function getUserInfo(label) {
@@ -77,7 +78,7 @@ function getUserInfo(label) {
 window.playokAPI.onData((message) => {
   if (message == 'open') return
   if (message == 'close') {
-    logs += 'Web socket connection has  been closed<br>';
+    logs += 'SYSTEM: web socket connection has  been closed<br>';
     return
   }
   let response = JSON.parse(message);
@@ -104,7 +105,7 @@ window.playokAPI.onData((message) => {
       if (players[player1] != undefined) {
         if (players[player1].rating > ratingLimit) return;
         let opponent = players[player1].name + '[' + players[player1].rank + ']';
-        logs += timeControl + ' ' + opponent + '<br>';
+        logs += ' MATCH: ' + timeControl + ' ' + opponent + '<br>';
         joinGame('white', response.i[1], timeControl + ' ' + opponent);
       }
     }
@@ -112,7 +113,7 @@ window.playokAPI.onData((message) => {
       if (players[player2] != undefined) {
         if (players[player2].rating > ratingLimit) return;
         let opponent = players[player2].name + '[' + players[player2].rank + ']';
-        logs += timeControl + ' ' + opponent + '<br>';
+        logs += ' MATCH: ' + timeControl + ' ' + opponent + '<br>';
         joinGame('black', response.i[1], timeControl + ' ' + opponent);
       }
     }
@@ -135,7 +136,7 @@ window.playokAPI.onData((message) => {
     updateTimer();
   }
   
-  if (response.i[0] == 90 && response.i[2] == 53) logs += '+ dead stones removal phase<br>';
+  if (response.i[0] == 90 && response.i[2] == 53) logs += 'GAME: dead stones removal phase<br>';
   if (response.i[0] == 91) { // load game
     initGoban();
     let moves = response.s;

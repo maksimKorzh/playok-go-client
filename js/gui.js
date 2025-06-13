@@ -293,7 +293,7 @@ function handleSave() {
 
 function challengeToggle() {
   accepting ^= 1;
-  logs += 'Accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
+  logs += 'SYSTEM: accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
 }
 
 function initGUI() {

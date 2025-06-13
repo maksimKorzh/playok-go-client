@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=PlayOK
+Exec=/home/cmk/playok-go-client/playok.sh
+Icon=/home/cmk/playok-go-client/assets/icon.png
+Name[en_US]=PlayOK

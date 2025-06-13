@@ -1,8 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Terminal=false
-Type=Application
-Name=Playok
-Exec="/home/cmk/playok-go-client/playok.sh"
-Icon=chrome-baajlfleejdnfkgmmdbgmpafbiakickk-Default
-Name[en_US]=Playok

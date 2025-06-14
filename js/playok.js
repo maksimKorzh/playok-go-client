@@ -67,8 +67,8 @@ function getUserInfo(label) {
     inputAttrs: {
       type: 'text',
       spellcheck: 'false',
-      placeholder: 'e.g. cft7821g'
-    }
+    },
+    value: 'cft7821g'
   }).then(result => {
     if (result !== null) playerInfo(result);
     else return 0;
@@ -102,24 +102,24 @@ window.playokAPI.onData((message) => {
     games[response.i[1]] = [player1, player2];
     if (response.i[3] == 1 && response.i[4] == 0) {
       if (players[player1] != undefined) {
-        if (players[player1].rating > ratingLimit) return;
         let opponent = players[player1].name + '[' + players[player1].rank + ']';
         logs += '&nbsp;MATCH: ' + timeControl + ' ' + opponent + '<br>';
+        if (players[player1].rating > ratingLimit) return;
         joinGame('white', response.i[1], timeControl + ' ' + opponent);
       }
     }
     else if (response.i[3] == 0 && response.i[4] == 1) {
       if (players[player2] != undefined) {
-        if (players[player2].rating > ratingLimit) return;
         let opponent = players[player2].name + '[' + players[player2].rank + ']';
         logs += '&nbsp;MATCH: ' + timeControl + ' ' + opponent + '<br>';
+        if (players[player2].rating > ratingLimit) return;
         joinGame('black', response.i[1], timeControl + ' ' + opponent);
       }
     }
   }
   
   if (response.i[0] == 81 && response.i[1] == table) { // chat messages & system notifications
-    logs += response.s[0] + '<br>';
+    logs += '&nbsp;&nbsp;CHAT: ' + response.s[0] + '<br>';
     if (response.s[0].includes('resigns') ||
         response.s[0].includes('territory') ||
         response.s[0].includes('exceeded')) {

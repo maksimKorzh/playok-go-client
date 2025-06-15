@@ -29,6 +29,7 @@ var ranks = [
 
 var players = {};
 var games = {};
+var opponent = 'cft7821g';
 var table = 100;
 var logs = '';
 var ratingLimit = 1100;
@@ -46,7 +47,7 @@ function joinGame(color, tableNum, info) {
     sendMessage('leave');
     return;
   }
-  if (!accepting) return
+  if (!accepting) return;
   table = tableNum;
   sendMessage('join');
   sendMessage(color);
@@ -68,7 +69,7 @@ function getUserInfo(label) {
       type: 'text',
       spellcheck: 'false',
     },
-    value: 'cft7821g'
+    value: opponent.split('[')[0]
   }).then(result => {
     if (result !== null) playerInfo(result);
     else return 0;
@@ -101,16 +102,16 @@ window.playokAPI.onData((message) => {
     let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked';
     games[response.i[1]] = [player1, player2];
     if (response.i[3] == 1 && response.i[4] == 0) {
-      if (players[player1] != undefined) {
-        let opponent = players[player1].name + '[' + players[player1].rank + ']';
+      if (players[player1] != undefined && accepting) {
+        opponent = players[player1].name + '[' + players[player1].rank + ']';
         logs += '&nbsp;MATCH: ' + timeControl + ' ' + opponent + '<br>';
         if (players[player1].rating > ratingLimit) return;
         joinGame('white', response.i[1], timeControl + ' ' + opponent);
       }
     }
     else if (response.i[3] == 0 && response.i[4] == 1) {
-      if (players[player2] != undefined) {
-        let opponent = players[player2].name + '[' + players[player2].rank + ']';
+      if (players[player2] != undefined && accepting) {
+        opponent = players[player2].name + '[' + players[player2].rank + ']';
         logs += '&nbsp;MATCH: ' + timeControl + ' ' + opponent + '<br>';
         if (players[player2].rating > ratingLimit) return;
         joinGame('black', response.i[1], timeControl + ' ' + opponent);

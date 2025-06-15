@@ -294,7 +294,10 @@ function handleSave() {
 function challengeToggle() {
   accepting ^= 1;
   logs += 'SYSTEM: accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
-  if (accepting) sendMessage('leave');
+  if (accepting) {
+    sendMessage('leave');
+    opponent = 'cft7821g';
+  }
 }
 
 function initGUI() {

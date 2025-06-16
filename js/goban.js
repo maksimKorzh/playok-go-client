@@ -99,6 +99,7 @@ function passMove() {
   moveCount = moveHistory.length-1;
   ko = EMPTY;
   side = 3 - side;
+  moveSound.play();
 }
 
 function countLiberties(sq, color) {

@@ -333,9 +333,9 @@ function initGUI() {
         <option value="1350">2k</option>
         <option value="1300">3k</option>
         <option value="1250">4k</option>
-        <option value="1200">5k</option>
+        <option value="1200" selected>5k</option>
         <option value="1150">6k</option>
-        <option value="1100" selected>7k</option>
+        <option value="1100">7k</option>
         <option value="1050">8k</option>
         <option value="1000">9k</option>
         <option value="950">10k</option>

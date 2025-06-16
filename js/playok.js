@@ -32,7 +32,7 @@ var games = {};
 var opponent = 'cft7821g';
 var table = 100;
 var logs = '';
-var ratingLimit = 1100;
+var ratingLimit = 1200;
 var prevChallenge = '';
 var accepting = 0;
 

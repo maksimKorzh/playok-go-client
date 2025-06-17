@@ -199,7 +199,7 @@ function playerInfo(userName) {
 }
 
 function downloadSgf() {
-  userName = opponent;
+  userName = opponent.split('[')[0];
   fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2')
   .then(response => { return response.text(); })
   .then(html => {

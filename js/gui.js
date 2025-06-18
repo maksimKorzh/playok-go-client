@@ -349,7 +349,7 @@ function challengeToggle() {
   logs += 'SYSTEM: accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
   if (accepting) {
     sendMessage('leave');
-    opponent = 'cft7821g';
+    opponent = me;
   }
 }
 

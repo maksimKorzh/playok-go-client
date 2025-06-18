@@ -1,5 +1,3 @@
-window.playokAPI.connect()
-
 var ranks = [
   {'min': 1800, 'max': 3000, 'rank': '9d'},
   {'min': 1750, 'max': 1800, 'rank': '8d'},
@@ -29,7 +27,7 @@ var ranks = [
 
 var players = {};
 var games = {};
-var opponent = 'cft7821g';
+var opponent = '';
 var table = 100;
 var logs = '';
 var ratingLimit = 1200;
@@ -79,7 +77,11 @@ function getUserInfo(label) {
 
 window.playokAPI.onData((message) => {
   if (DEBUG) logs += message + '<br>';
-  if (message == 'open') return
+  if (message.includes('username')) {
+    opponent = message.split(':')[1];
+    logs += 'Logged in as "' + opponent + '"<br>';
+    return;
+  }
   if (message == 'close') {
     logs += 'SYSTEM: web socket connection has  been closed<br>';
     return

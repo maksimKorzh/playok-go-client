@@ -110,7 +110,7 @@ function createWindow() {
           label: 'Reconnect',
           accelerator: 'Ctrl+r',
           click: () => {
-            socket.close();
+            try { socket.close(); } catch {}
             const focusedWindow = BrowserWindow.getFocusedWindow();
             if (focusedWindow) {
               focusedWindow.loadFile('login.html');

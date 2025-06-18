@@ -5,6 +5,12 @@ var socket;
 var me = '';
 
 function login(win, username, password) {
+  if (username == '' && password == '') {
+    me = '';
+    win.loadFile('index.html');
+    socket = connect(win, me);
+    return;
+  }
   const axios = require('axios');
   const tough = require('tough-cookie');
   const { wrapper } = require('axios-cookiejar-support');
@@ -69,7 +75,7 @@ function connect(win, ksession) {
     );
 
     socket.send(initialMessage);
-    win.webContents.send('websocket-message', 'username:' + me);
+    win.webContents.send('websocket-message', 'username:' + (me == '' ? 'cft7821g' : me));
     console.log('Connected to the WebSocket server.');
     setInterval(function() {
       const keepAliveMessage = JSON.stringify({ "i": [] }); // Sending an empty array as a heartbeat
@@ -104,6 +110,7 @@ function createWindow() {
           label: 'Reconnect',
           accelerator: 'Ctrl+r',
           click: () => {
+            socket.close();
             const focusedWindow = BrowserWindow.getFocusedWindow();
             if (focusedWindow) {
               focusedWindow.loadFile('login.html');
@@ -121,7 +128,10 @@ function createWindow() {
   Menu.setApplicationMenu(menu);
   win.loadFile('login.html');
   ipcMain.on('main', (event, messageData) => {
-    if (messageData.username && messageData.password) {
+    if (messageData.username == 'guest') {
+      console.log('GUEST LOGIN');
+      login(win, '', '');
+    } else if (messageData.username || messageData.password) {
       console.log('LOGIN:', messageData);
       login(win, messageData.username, messageData.password);
     } else socket.send(JSON.stringify(JSON.parse(messageData)));

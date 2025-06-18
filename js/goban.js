@@ -89,7 +89,6 @@ function setStone(sq, color, user) {
 }
 
 function passMove() {
-  alert('PASS');
   moveHistory.push({
     'ply': moveCount+1,
     'side': (3-side),

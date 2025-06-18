@@ -35,6 +35,7 @@ var logs = '';
 var ratingLimit = 1200;
 var prevChallenge = '';
 var accepting = 0;
+var DEBUG = 0;
 
 function getRank(rating) {
   for (let entry of ranks) {
@@ -77,6 +78,7 @@ function getUserInfo(label) {
 }
 
 window.playokAPI.onData((message) => {
+  if (DEBUG) logs += message + '<br>';
   if (message == 'open') return
   if (message == 'close') {
     logs += 'SYSTEM: web socket connection has  been closed<br>';
@@ -121,6 +123,7 @@ window.playokAPI.onData((message) => {
   
   if (response.i[0] == 81 && response.i[1] == table) { // chat messages & system notifications
     logs += '&nbsp;&nbsp;CHAT: ' + response.s[0] + '<br>';
+    if (response.s[0].includes('does not agree')) drawBoard();
     if (response.s[0].includes('resigns') ||
         response.s[0].includes('territory') ||
         response.s[0].includes('exceeded')) {
@@ -136,8 +139,14 @@ window.playokAPI.onData((message) => {
     updateTimer();
   }
   
-  if (response.i[0] == 90 && response.i[2] == 53) logs += '&nbsp;&nbsp;GAME: dead stones removal phase<br>';
+  if (response.i[0] == 90 && response.i[2] == 53) {
+    drawBoard();
+    drawDeadStones(response.i);
+  }
+
   if (response.i[0] == 91) { // load game
+    table = response.i[1];
+    gameOver = 0;
     initGoban();
     let moves = response.s;
     if (moves != undefined) {

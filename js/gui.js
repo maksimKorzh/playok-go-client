@@ -10,10 +10,12 @@ var intervalId;
 const bgImage = new Image();
 const blackStoneImage = new Image();
 const whiteStoneImage = new Image();
+const deadStoneImage = new Image();
 const moveSound = new Audio('./assets/112-2052.wav');
 bgImage.src = './assets/board_fox.png';
 blackStoneImage.src = './assets/stone_b_fox.png';
 whiteStoneImage.src = './assets/stone_w_fox.png';
+deadStoneImage.src = './assets/dead.png';
 let imagesLoaded = false;
 bgImage.onload = blackStoneImage.onload = whiteStoneImage.onload = () => {
   if (bgImage.complete && blackStoneImage.complete && whiteStoneImage.complete) {
@@ -78,6 +80,53 @@ function drawBoard() {
   }
 }
 
+function drawDeadStones(data) {
+  const colLetters = "abcdefghjklmnopqrst"; // 'i' is skipped visually
+  const BOARD_SIZE = 19;
+  const BIT_SECTION_START = 15;
+  const deadStones = [];
+  for (let row = 0; row < BOARD_SIZE; row++) {
+    const low = data[BIT_SECTION_START + row * 2];
+    const high = data[BIT_SECTION_START + row * 2 + 1];
+    const y = row + 1; // row index in 21x21 (1-based)
+    for (let col = 0; col < 16; col++) {
+      if ((low & (1 << col)) !== 0) {
+        const x = col + 1; // col index in 21x21 (1-based)
+        const coord = `${colLetters[col]}${19 - row}`;
+        deadStones.push({ coord, index: y * 21 + x });
+      }
+    }
+    for (let col = 0; col < 3; col++) {
+      if ((high & (1 << col)) !== 0) {
+        const x = col + 16;
+        const coord = `${colLetters[col + 16]}${19 - row}`;
+        deadStones.push({ coord, index: y * 21 + x });
+      }
+    }
+  }
+  if (deadStones.length == 0) {
+    alert('Dead stone removal phase');
+    return;
+  }  
+  for (let row = 0; row < size-2; row++) {
+    for (let col = 0; col < size-2; col++) {
+      let sq = (row+1) * size + (col+1);
+      const crossImage = deadStoneImage;
+      for (let i of deadStones) {
+        if (sq == i.index) {
+          ctx.drawImage(
+            crossImage,
+            col * cell + cell / 2 - cell / 2,
+            row * cell + cell / 2 - cell / 2,
+            cell,
+            cell
+          );
+        }
+      }
+    }
+  }
+}
+
 function userInput(event) {
   let rect = canvas.getBoundingClientRect();
   let mouseX = event.clientX - rect.left;
@@ -89,8 +138,8 @@ function userInput(event) {
     setStone(sq, side);
     drawBoard();
   } else {
-    if (board[sq] != EMPTY) side = userSide;
-    if (gameOver || side != userSide) return;
+    //if (board[sq] != EMPTY) side = userSide;
+    if (gameOver) return;
     let move = {"i": [92, table, 0, (row * 19 + col), 0]};
     let message = JSON.stringify(move);
     window.playokAPI.send('main', message);
@@ -136,6 +185,10 @@ function sendMessage(action) {
       break;
     case 'pass':
       command.i = [92, table, 0, 400, 0];
+      break;
+    case 'continue':
+      command.i = [92, table, 0, 441, 0];
+      drawBoard();
       break;
     case 'resign':
       command.i = [93, table, 4, 0];
@@ -325,8 +378,9 @@ function initGUI() {
       <button onclick="getUserInfo('User name:');" style="font-size: 20px;">STATS</button>
     </div>
     <div id="level" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
+      <button onclick="sendMessage('continue');" style="font-size: 20px;">CONTINUE</button>
       <button onclick="challengeToggle();" style="font-size: 20px;">MATCH</button>
-      <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 105%; font-size: 20px;">
+      <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 50%; font-size: 20px;">
         <option value="3000">All</option>
         <option value="1450">1d</option>
         <option value="1400">1k</option>
@@ -340,7 +394,7 @@ function initGUI() {
         <option value="1000">9k</option>
         <option value="950">10k</option>
       </select>
-      <input id="chat" type="text" value="" spellcheck="false" style="width: 102%; font-size: 20px;"/>
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 50%; font-size: 20px;"/>
       <button onclick="sendMessage('chat');" style="font-size: 20px;">SAY</button>
     </div>
   `;

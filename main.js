@@ -45,12 +45,13 @@ function login(win, username, password) {
       me = username;
       console.log('Login successful.');
       win.loadFile('index.html');
-      cookies.forEach(function(c) { if (c.key == 'ksession') socket = connect(win, c.value); });
+      cookies.forEach(function(c) { if (c.key == 'ksession') socket = connect(win, c.value.split(':')[0]); });
     }
   })();
 }
 
 function connect(win, ksession) {
+  console.log('KSESSION:', ksession);
   const socket = new WebSocket('wss://x.playok.com:17003/ws/', {
     headers: {
      'Origin': 'null',

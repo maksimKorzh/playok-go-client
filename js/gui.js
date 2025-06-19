@@ -104,10 +104,6 @@ function drawDeadStones(data) {
       }
     }
   }
-  if (deadStones.length == 0) {
-    alert('Dead stone removal phase');
-    return;
-  }  
   for (let row = 0; row < size-2; row++) {
     for (let col = 0; col < size-2; col++) {
       let sq = (row+1) * size + (col+1);
@@ -307,6 +303,7 @@ function startInterval() {
   if (!intervalId) { // Prevent multiple intervals from being set
     intervalId = setInterval(() => {
       side == BLACK ? (blackTime -= 1) :(whiteTime -= 1);
+      if (blackTime == 0 || whiteTime == 0) alert('Byo-yomi');
       updateTimer();
     }, 1000);
   }
@@ -319,6 +316,8 @@ function stopInterval() {
       blackTime = 0;
       whiteTime = 0;
       updateTimer();
+      document.getElementById('blackTime').innerHTML = '00:00';
+      document.getElementById('whiteTime').innerHTML = '00:00';
     }
 }
 
@@ -372,7 +371,7 @@ function initGUI() {
       <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00</label>
     </div>
     <div id="actions" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
-      <button onclick="sendMessage('pass');" style="font-size: 20px;">PASS</button>
+      <button onclick="sendMessage('pass');" style="font-size: 20px;">PASS / DONE</button>
       <button onclick="sendMessage('resign');" style="font-size: 20px;">RESIGN</button>
       <button onclick="downloadSgf();" style="font-size: 20px;">DOWNLOAD</button>
       <button onclick="getUserInfo('User name:');" style="font-size: 20px;">STATS</button>

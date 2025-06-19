@@ -79,7 +79,7 @@ window.playokAPI.onData((message) => {
   if (DEBUG) logs += message + '<br>';
   if (message.includes('username')) {
     opponent = message.split(':')[1];
-    logs += 'Logged in as "' + opponent + '"<br>';
+    logs += 'SYSTEM: logged in as "' + opponent + '"<br>';
     return;
   }
   if (message == 'close') {

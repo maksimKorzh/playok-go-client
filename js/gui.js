@@ -303,7 +303,6 @@ function startInterval() {
   if (!intervalId) { // Prevent multiple intervals from being set
     intervalId = setInterval(() => {
       side == BLACK ? (blackTime -= 1) :(whiteTime -= 1);
-      if (blackTime == 0 || whiteTime == 0) alert('Byo-yomi');
       updateTimer();
     }, 1000);
   }

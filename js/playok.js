@@ -28,6 +28,7 @@ var ranks = [
 var players = {};
 var games = {};
 var opponent = '';
+var me = '';
 var table = 100;
 var logs = '';
 var ratingLimit = 1200;
@@ -79,6 +80,7 @@ window.playokAPI.onData((message) => {
   if (DEBUG) logs += message + '<br>';
   if (message.includes('username')) {
     opponent = message.split(':')[1];
+    me = opponent;
     logs += 'SYSTEM: logged in as "' + opponent + '"<br>';
     return;
   }

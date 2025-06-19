@@ -96,7 +96,7 @@ function drawDeadStones(data) {
         deadStones.push({ coord, index: y * 21 + x });
       }
     }
-    for (let col = 0; col < 3; col++) {
+    for (let col = 0; col < 4; col++) {
       if ((high & (1 << col)) !== 0) {
         const x = col + 16;
         const coord = `${colLetters[col + 16]}${19 - row}`;

@@ -328,7 +328,7 @@ function resizeCanvas() {
   drawBoard();
   try {
     document.getElementById('lobby').style.width = (window.innerWidth-canvas.width-32) + 'px';
-    document.getElementById('lobby').style.height = (canvas.height-98) + 'px';
+    document.getElementById('lobby').style.height = (canvas.height-131) + 'px';
     document.getElementById('time').style.width = (window.innerWidth-canvas.height-30) + 'px';
     document.getElementById('actions').style.width = (window.innerWidth-canvas.height-30) + 'px';
     document.getElementById('level').style.width = (window.innerWidth-canvas.height-30) + 'px';
@@ -366,7 +366,7 @@ function initGUI() {
   initGoban();
   resizeCanvas();
   document.getElementById('panel').innerHTML = `
-    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (window.innerWidth - canvas.width - 32) + `px; height: ` + (canvas.height-98) + `px; border: 2px solid black;"></div>
+    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (window.innerWidth - canvas.width - 32) + `px; height: ` + (canvas.height-131) + `px; border: 2px solid black;"></div>
     <div id="time" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
       <label id="blackTime" style="font-size: 22px; background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00</label>
       <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00</label>
@@ -378,9 +378,9 @@ function initGUI() {
       <button onclick="getUserInfo('User name:');" style="font-size: 20px;">STATS</button>
     </div>
     <div id="level" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
-      <button onclick="sendMessage('continue');" style="font-size: 20px;">CONTINUE</button>
-      <button onclick="challengeToggle();" style="font-size: 20px;">MATCH</button>
-      <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 50%; font-size: 20px;">
+      <button onclick="sendMessage('continue');">CONTINUE</button>
+      <button onclick="challengeToggle();">MATCH</button>
+      <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 50%;">
         <option value="3000">All</option>
         <option value="1450">1d</option>
         <option value="1400">1k</option>
@@ -394,8 +394,8 @@ function initGUI() {
         <option value="1000">9k</option>
         <option value="950">10k</option>
       </select>
-      <input id="chat" type="text" value="" spellcheck="false" style="width: 50%; font-size: 20px;"/>
-      <button onclick="sendMessage('chat');" style="font-size: 20px;">SAY</button>
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 36%;" />
+      <button onclick="sendMessage('chat');">SAY</button>
     </div>
   `;
 }

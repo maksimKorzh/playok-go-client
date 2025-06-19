@@ -144,7 +144,7 @@ window.playokAPI.onData((message) => {
   if (response.i[0] == 90 && response.i[2] == 53) {
     drawBoard();
     drawDeadStones(response.i);
-    logs += 'SYSTEM: counting game';
+    logs += 'SYSTEM: counting game<br>';
   }
 
   if (response.i[0] == 91) { // load game

@@ -103,22 +103,20 @@ window.playokAPI.onData((message) => {
     if (parseInt(boardSize) != 19) return;
     let player1 = response.s[1];
     let player2 = response.s[2];
-    let timeControl = response.s[0].split(',')[0];
-    let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked';
     if (response.i[3] == 1 && response.i[4] == 0) {
       if (players[player1] != undefined && accepting) {
         opponent = players[player1].name + '[' + players[player1].rank + ']';
-        logs += '&nbsp;MATCH: ' + timeControl + ' ' + gameStatus + ' ' + opponent + '<br>';
+        logs += '&nbsp;MATCH: ' + response.s[0] + ' ' + opponent + '<br>';
         if (players[player1].rating > ratingLimit) return;
-        joinGame('white', response.i[1], timeControl + ' ' + gameStatus + ' ' + opponent);
+        joinGame('white', response.i[1], response.s[0] + ' ' + opponent);
       }
     }
     else if (response.i[3] == 0 && response.i[4] == 1) {
       if (players[player2] != undefined && accepting) {
         opponent = players[player2].name + '[' + players[player2].rank + ']';
-        logs += '&nbsp;MATCH: ' + timeControl + ' ' + gameStatus + ' ' + opponent + '<br>';
+        logs += '&nbsp;MATCH: ' + response.s[0] + ' ' + opponent + '<br>';
         if (players[player2].rating > ratingLimit) return;
-        joinGame('black', response.i[1], timeControl + ' ' + gameStatus + ' ' + opponent);
+        joinGame('black', response.i[1], response.s[0] + ' ' + opponent);
       }
     }
   }

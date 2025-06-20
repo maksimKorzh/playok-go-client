@@ -162,7 +162,6 @@ function sendMessage(action) {
       command.i = [73, table];
       initGoban();
       drawBoard();
-      games = {};
       takePlace = 0;
       break;
     case 'black':

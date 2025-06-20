@@ -26,7 +26,6 @@ var ranks = [
 ];
 
 var players = {};
-var games = {};
 var opponent = '';
 var me = '';
 var table = 100;
@@ -106,7 +105,6 @@ window.playokAPI.onData((message) => {
     let player2 = response.s[2];
     let timeControl = response.s[0].split(',')[0];
     let gameStatus = response.s[0].split(',').length == 3 ? 'free' : 'ranked';
-    games[response.i[1]] = [player1, player2];
     if (response.i[3] == 1 && response.i[4] == 0) {
       if (players[player1] != undefined && accepting) {
         opponent = players[player1].name + '[' + players[player1].rank + ']';

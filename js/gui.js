@@ -23,6 +23,8 @@ bgImage.onload = blackStoneImage.onload = whiteStoneImage.onload = () => {
   }
 };
 
+startInterval();
+
 function drawBoard() {
   cell = canvas.width / (size-2);
   ctx.clearRect(0, 0, canvas.width, canvas.height);

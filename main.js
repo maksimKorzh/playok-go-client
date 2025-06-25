@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const WebSocket = require('ws');
 const prompt = require('electron-prompt');
+const fs = require('fs');
+const https = require('https');
 var socket;
 var me = '';
 
@@ -135,6 +137,26 @@ function createWindow() {
     } else if (messageData.username || messageData.password) {
       console.log('LOGIN:', messageData);
       login(win, messageData.username, messageData.password);
+    } else if (messageData.includes('download')) {
+      const win = new BrowserWindow({autoHideMenuBar: true});
+      let userName = messageData.split('-')[1];
+      let url = 'https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2';
+      win.webContents.setWindowOpenHandler(({ url }) => {
+        const savePath = '/home/cmk/go-rank-estimator/game.sgf';
+        const file = fs.createWriteStream(savePath);
+        https.get(url, (response) => {
+          response.pipe(file);
+          file.on('finish', () => {
+            file.close();
+            console.log('Download completed:', savePath);
+          });
+        }).on('error', (err) => {
+          fs.unlink(savePath, () => {});
+          console.error('Download failed:', err.message);
+        });
+        return { action: 'allow'};
+      });
+      win.loadURL(url);
     } else socket.send(JSON.stringify(JSON.parse(messageData)));
   });
   ipcMain.handle('show-prompt', async (event, options) => {

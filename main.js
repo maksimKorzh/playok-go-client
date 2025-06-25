@@ -7,8 +7,8 @@ var me = '';
 function login(win, username, password) {
   if (username == '' && password == '') {
     me = '';
-    win.loadFile('index.html');
     socket = connect(win, me);
+    win.loadFile('index.html');
     return;
   }
   const axios = require('axios');

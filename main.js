@@ -3,6 +3,8 @@ const WebSocket = require('ws');
 const prompt = require('electron-prompt');
 const fs = require('fs');
 const https = require('https');
+const { spawn } = require('child_process');
+
 var socket;
 var me = '';
 
@@ -149,6 +151,8 @@ function createWindow() {
           file.on('finish', () => {
             file.close();
             console.log('Download completed:', savePath);
+            const command = 'python3 /home/cmk/go-rank-estimator/estimate_rank.py -katago-path /home/cmk/katago/katago -config-path /home/cmk/katago/gtp.cfg -model-path /home/cmk/katago/kata1-b10c128.txt.gz -sgf-file /home/cmk/go-rank-estimator/game.sgf';
+            spawn('x-terminal-emulator', ['-e', 'bash', '-c', `${command}; echo; echo "[Process finished]"; exec bash`]);
           });
         }).on('error', (err) => {
           fs.unlink(savePath, () => {});

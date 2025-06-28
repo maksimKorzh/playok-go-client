@@ -203,6 +203,7 @@ function sendMessage(action) {
 }
 
 function playerInfo(userName) {
+  opponent = userName;
   fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go')
   .then(response => { return response.text(); })
   .then(html => {
@@ -250,29 +251,17 @@ function playerInfo(userName) {
 
 function downloadSgf() {
   userName = opponent.split('[')[0];
-  window.playokAPI.send('main', 'download-' + userName);
-  
-//  fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2')
-//  .then(response => { return response.text(); })
-//  .then(html => {
-//    let lastGame = html.split('.txt')[0].split('go').slice(-1)[0];
-//    if (lastGame.length > 10) {
-//      alert('No such user');
-//      return;
-//    }
-//    let lastGameUrl = 'https://www.playok.com/p/?g=go' + lastGame + '.txt';
-//    fetch(lastGameUrl)
-//    .then( response => { return response.text(); })
-//    .then(sgf => {
-//      const element = document.createElement('a');
-//      const file = new Blob([sgf], { type: 'text/plain' });
-//      element.href = URL.createObjectURL(file);
-//      element.download = 'game.sgf';
-//      document.body.appendChild(element);
-//      element.click();
-//      document.body.removeChild(element);
-//    });
-//  });
+  fetch('https:www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2')
+  .then(response => { return response.text(); })
+  .then(html => {
+    let lastGame = html.split('.txt')[0].split('go').slice(-1)[0];
+    if (lastGame.length > 10) {
+      alert('No such user');
+      return;
+    }
+    let lastGameUrl = 'https:www.playok.com/p/?g=go' + lastGame + '.txt';
+    window.playokAPI.send('main', 'download-' + lastGameUrl);
+  });
 }
 
 function updateTimer() {

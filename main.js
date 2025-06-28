@@ -140,27 +140,20 @@ function createWindow() {
       console.log('LOGIN:', messageData);
       login(win, messageData.username, messageData.password);
     } else if (messageData.includes('download')) {
-      const win = new BrowserWindow({autoHideMenuBar: true});
-      let userName = messageData.split('-')[1];
-      let url = 'https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2';
-      win.webContents.setWindowOpenHandler(({ url }) => {
         const savePath = '/home/cmk/go-rank-estimator/game.sgf';
         const file = fs.createWriteStream(savePath);
-        https.get(url, (response) => {
+        https.get(messageData.split('-')[1], (response) => {
           response.pipe(file);
           file.on('finish', () => {
             file.close();
             console.log('Download completed:', savePath);
             const command = 'python3 /home/cmk/go-rank-estimator/estimate_rank.py -katago-path /home/cmk/katago/katago -config-path /home/cmk/katago/gtp.cfg -model-path /home/cmk/katago/kata1-b10c128.txt.gz -sgf-file /home/cmk/go-rank-estimator/game.sgf';
-            spawn('x-terminal-emulator', ['-e', 'bash', '-c', `${command}; echo; echo "[Process finished]"; exec bash`]);
+            spawn('x-terminal-emulator', ['-e', 'bash', '-c', `${command}; echo; exit; exec bash`]);
           });
         }).on('error', (err) => {
           fs.unlink(savePath, () => {});
           console.error('Download failed:', err.message);
         });
-        return { action: 'allow'};
-      });
-      win.loadURL(url);
     } else socket.send(JSON.stringify(JSON.parse(messageData)));
   });
   ipcMain.handle('show-prompt', async (event, options) => {

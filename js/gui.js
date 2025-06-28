@@ -337,6 +337,7 @@ function handleSave() {
 function challengeToggle() {
   accepting ^= 1;
   logs += 'SYSTEM: accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
+  updateLogs();
   if (accepting) {
     sendMessage('leave');
     opponent = me;

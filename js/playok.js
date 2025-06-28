@@ -75,6 +75,12 @@ function getUserInfo(label) {
   });
 }
 
+function updateLogs() {
+  let lobby = document.getElementById('lobby');
+  lobby.innerHTML = logs
+  lobby.scrollTop = lobby.scrollHeight;
+}
+
 window.playokAPI.onData((message) => {
   if (DEBUG) logs += message + '<br>';
   if (message.includes('username')) {
@@ -177,9 +183,6 @@ window.playokAPI.onData((message) => {
     }
   }
 
-  let lobby = document.getElementById('lobby');
-  lobby.innerHTML = logs
-  lobby.scrollTop = lobby.scrollHeight;
 });
 
 initGUI();

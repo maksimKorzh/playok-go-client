@@ -182,7 +182,7 @@ window.playokAPI.onData((message) => {
       }
     }
   }
-
+  updateLogs();
 });
 
 initGUI();

@@ -362,7 +362,7 @@ function initGUI() {
       <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00</label>
     </div>
     <div id="actions" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
-      <button onclick="sendMessage('pass');" style="font-size: 20px;">PASS / DONE</button>
+      <button onclick="sendMessage('pass');" style="font-size: 20px;">PASS</button>
       <button onclick="sendMessage('resign');" style="font-size: 20px;">RESIGN</button>
       <button onclick="downloadSgf();" style="font-size: 20px;">DOWNLOAD</button>
       <button onclick="getUserInfo('User name:');" style="font-size: 20px;">STATS</button>

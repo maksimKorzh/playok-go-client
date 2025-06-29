@@ -4,5 +4,7 @@ contextBridge.exposeInMainWorld('playokAPI', {
   connect: (s) => ipcRenderer.send('main', s),
   send: (channel, cmd) => ipcRenderer.send(channel, cmd),
   onData: (callback) => ipcRenderer.on('websocket-message', (_, data) => callback(data)),
-  prompt: (options) => ipcRenderer.invoke('show-prompt', options)
+  prompt: (options) => ipcRenderer.invoke('show-prompt', options),
+  showAlert: (message) => ipcRenderer.invoke('show-alert', message),
+  showConfirm: (message) => ipcRenderer.invoke('show-confirm', message),
 });

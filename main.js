@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
 const WebSocket = require('ws');
 const prompt = require('electron-prompt');
 const fs = require('fs');
@@ -159,7 +159,26 @@ function createWindow() {
   ipcMain.handle('show-prompt', async (event, options) => {
     return await prompt(options, win);
   });
+  ipcMain.handle('show-alert', async (_event, message) => {
+    dialog.showMessageBox(win, {
+      type: 'info',
+      buttons: ['OKkkkk'],
+      message,
+    });
+  });
+  ipcMain.handle('show-confirm', (event, message) => {
+    const result = dialog.showMessageBoxSync(win, {
+      type: 'question',
+      buttons: ['Yes', 'No'],
+      defaultId: 0,
+      cancelId: 1,
+      message,
+    });
+  
+    event.returnValue = result === 0; // true if Yes
+  });
 }
+
 
 app.whenReady().then(createWindow);
 app.on('window-all-closed', () => {

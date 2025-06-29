@@ -202,14 +202,14 @@ function sendMessage(action) {
   window.playokAPI.send('main', message);
 }
 
-function playerInfo(userName) {
+async function playerInfo(userName) {
   opponent = userName;
   fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go')
   .then(response => { return response.text(); })
   .then(html => {
     let rating = html.split('ranking: <b>').slice(-1)[0].split('</b>')[0];
     if (rating.length > 4) {
-      alert('No info available');
+      window.playokAPI.showAlert('No info available');
       return;
     }
     let games = html.split('games played: <b>').slice(-1)[0].split('</b>')[0];
@@ -232,7 +232,7 @@ function playerInfo(userName) {
           recentResults += value.replace('win', '🟢').replace('loss', '❌');
         } catch (e) {}
       }
-      alert(
+      window.playokAPI.showAlert(
         'Rank:\t\t' + getRank(parseInt(rating)) +
         '\nRating:\t\t' + rating +
         '\nGames:\t\t' + games +

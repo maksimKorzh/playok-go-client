@@ -50,7 +50,7 @@ function joinGame(color, tableNum, info) {
   table = tableNum;
   sendMessage('join');
   sendMessage(color);
-  if (confirm('Accept match "' + info + ' as ' + color + '" ?')) {
+  if (window.playokAPI.showConfirm('Accept match "' + info + ' as ' + color + '" ?')) {
     sendMessage('start');
     challengeToggle();
   } else {

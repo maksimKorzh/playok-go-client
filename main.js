@@ -162,7 +162,7 @@ function createWindow() {
   ipcMain.handle('show-alert', async (_event, message) => {
     dialog.showMessageBox(win, {
       type: 'info',
-      buttons: ['OKkkkk'],
+      buttons: ['OK'],
       message,
     });
   });

@@ -371,7 +371,7 @@ function initGUI() {
     <div id="level" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('continue');">CONTINUE</button>
       <button onclick="challengeToggle();">MATCH</button>
-      <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 50%;">
+      <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 100%;">
         <option value="3000">All</option>
         <option value="1450">1d</option>
         <option value="1400">1k</option>
@@ -385,8 +385,7 @@ function initGUI() {
         <option value="1000">9k</option>
         <option value="950">10k</option>
       </select>
-      <input id="chat" type="text" value="" spellcheck="false" style="width: 36%;" />
-      <button onclick="sendMessage('chat');">SAY</button>
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 98%;" />
     </div>
   `;
 }

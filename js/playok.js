@@ -188,3 +188,8 @@ window.playokAPI.onData((message) => {
 });
 
 initGUI();
+
+const input = document.getElementById('chat');                              
+input.addEventListener('keydown', (e) => {                                  
+  if (e.key == 'Enter') sendMessage('chat');                                
+});

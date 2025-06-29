@@ -134,7 +134,7 @@ window.playokAPI.onData((message) => {
         response.s[0].includes('territory') ||
         response.s[0].includes('exceeded')) {
           gameOver = 1;
-          alert(response.s[0]);
+          window.playokAPI.showAlert(response.s[0]);
           stopInterval();
         }
   }

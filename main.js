@@ -7,6 +7,7 @@ const { spawn } = require('child_process');
 
 var socket;
 var me = '';
+var isDialogOpen = false;
 
 function login(win, username, password) {
   if (username == '' && password == '') {
@@ -166,14 +167,18 @@ function createWindow() {
       message,
     });
   });
-  ipcMain.handle('show-confirm', (event, message) => {
-    const result = dialog.showMessageBoxSync(win, {
-      type: 'question',
-      buttons: ['Yes', 'No'],
-      message,
-    });
-  
-    event.returnValue = result === 0; // true if Yes
+  ipcMain.handle('show-confirm', async (event, message) => {
+    if (isDialogOpen) return null;
+    isDialogOpen = true;
+    try {
+      return await dialog.showMessageBox(win, {
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        message,
+      });
+    } finally {
+      isDialogOpen = false;
+    }
   });
 }
 

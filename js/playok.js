@@ -50,13 +50,15 @@ function joinGame(color, tableNum, info) {
   table = tableNum;
   sendMessage('join');
   sendMessage(color);
-  if (window.playokAPI.showConfirm('Accept match "' + info + ' as ' + color + '" ?') == 0) {
-    sendMessage('start');
-    challengeToggle();
-  } else {
-    sendMessage('leave');
-    prevChallenge = info;
-  }
+  window.playokAPI.showConfirm('Accept match "' + info + ' as ' + color + '" ?').then((choice) => {
+    if (choice.response == 0) {
+      sendMessage('start');
+      challengeToggle();
+    } else {
+      sendMessage('leave');
+      prevChallenge = info;
+    }
+  });
 }
 
 function getUserInfo(label) {

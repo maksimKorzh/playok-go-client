@@ -160,7 +160,7 @@ function createWindow() {
     return await prompt(options, win);
   });
   ipcMain.handle('show-alert', async (_event, message) => {
-    dialog.showMessageBox(win, {
+    dialog.showMessageBoxSync(win, {
       type: 'info',
       buttons: ['OK'],
       message,
@@ -170,8 +170,6 @@ function createWindow() {
     const result = dialog.showMessageBoxSync(win, {
       type: 'question',
       buttons: ['Yes', 'No'],
-      defaultId: 0,
-      cancelId: 1,
       message,
     });
   

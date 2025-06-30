@@ -385,7 +385,7 @@ function initGUI() {
         <option value="1000">9k</option>
         <option value="950">10k</option>
       </select>
-      <input id="chat" type="text" value="" spellcheck="false" placeholder="Chat" style="width: 98%;" />
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 98%;" />
     </div>
   `;
 }

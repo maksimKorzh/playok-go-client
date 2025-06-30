@@ -44,19 +44,21 @@ function getRank(rating) {
 function joinGame(color, tableNum, info) {
   if (prevChallenge == info) {
     sendMessage('leave');
+    accepting = 1;
     return;
   }
   if (!accepting) return;
   table = tableNum;
   sendMessage('join');
   sendMessage(color);
+  accepting = 0;
   window.playokAPI.showConfirm('Accept match "' + info + ' as ' + color + '" ?').then((choice) => {
     if (choice.response == 0) {
       sendMessage('start');
-      challengeToggle();
     } else {
       sendMessage('leave');
       prevChallenge = info;
+      accepting = 1;
     }
   });
 }

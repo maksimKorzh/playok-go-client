@@ -256,7 +256,7 @@ function downloadSgf() {
   .then(html => {
     let lastGame = html.split('.txt')[0].split('go').slice(-1)[0];
     if (lastGame.length > 10) {
-      alert('No such user');
+      window.playokAPI.showAlert('No such user');
       return;
     }
     let lastGameUrl = 'https:www.playok.com/p/?g=go' + lastGame + '.txt';

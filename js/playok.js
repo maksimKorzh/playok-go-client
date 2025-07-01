@@ -52,6 +52,7 @@ function joinGame(color, tableNum, info) {
   sendMessage('join');
   sendMessage(color);
   accepting = 0;
+  logs += 'SYSTEM: accepting challenges is OFF';
   window.playokAPI.showConfirm('Accept match "' + info + ' as ' + color + '" ?').then((choice) => {
     if (choice.response == 0) {
       sendMessage('start');

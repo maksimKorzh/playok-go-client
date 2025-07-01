@@ -335,6 +335,9 @@ function handleSave() {
 }
 
 function challengeToggle() {
+  blackTime = 0;
+  whiteTime = 0;
+  updateTimer();
   accepting ^= 1;
   logs += 'SYSTEM: accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
   updateLogs();

@@ -161,7 +161,7 @@ function createWindow() {
     return await prompt(options, win);
   });
   ipcMain.handle('show-alert', async (_event, message) => {
-    dialog.showMessageBoxSync(win, {
+    dialog.showMessageBox(win, {
       type: 'info',
       buttons: ['OK'],
       message,

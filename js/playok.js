@@ -60,6 +60,7 @@ function joinGame(color, tableNum, info) {
       sendMessage('leave');
       prevChallenge = info;
       accepting = 1;
+      logs += 'SYSTEM: accepting challenges is ON<br>';
     }
   });
 }

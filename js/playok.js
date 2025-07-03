@@ -117,17 +117,17 @@ window.playokAPI.onData((message) => {
     let player2 = response.s[2];
     if (response.i[3] == 1 && response.i[4] == 0) {
       if (players[player1] != undefined && accepting) {
+        if (players[player1].rating > ratingLimit) return;
         opponent = players[player1].name + '[' + players[player1].rank + ']';
         logs += '&nbsp;MATCH: ' + response.s[0] + ' ' + opponent + '<br>';
-        if (players[player1].rating > ratingLimit) return;
         joinGame('white', response.i[1], response.s[0] + ' ' + opponent);
       }
     }
     else if (response.i[3] == 0 && response.i[4] == 1) {
       if (players[player2] != undefined && accepting) {
+        if (players[player2].rating > ratingLimit) return;
         opponent = players[player2].name + '[' + players[player2].rank + ']';
         logs += '&nbsp;MATCH: ' + response.s[0] + ' ' + opponent + '<br>';
-        if (players[player2].rating > ratingLimit) return;
         joinGame('black', response.i[1], response.s[0] + ' ' + opponent);
       }
     }

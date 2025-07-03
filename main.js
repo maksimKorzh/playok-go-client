@@ -140,16 +140,18 @@ function createWindow() {
     } else if (messageData.username || messageData.password) {
       console.log('LOGIN:', messageData);
       login(win, messageData.username, messageData.password);
-    } else if (messageData.includes('download')) {
-        const savePath = '/home/cmk/go-rank-estimator/game.sgf';
+    } else if (messageData.includes('url')) {
+        console.log(messageData)
+        const savePath = messageData.split('path:')[1].split(':')[0];
         const file = fs.createWriteStream(savePath);
-        https.get(messageData.split('-')[1], (response) => {
+        https.get(messageData.split('url:')[1], (response) => {
           response.pipe(file);
           file.on('finish', () => {
             file.close();
             console.log('Download completed:', savePath);
             const command = 'python3 /home/cmk/go-rank-estimator/estimate_rank.py -katago-path /home/cmk/katago/katago -config-path /home/cmk/katago/gtp.cfg -model-path /home/cmk/katago/kata1-b10c128.txt.gz -sgf-file /home/cmk/go-rank-estimator/game.sgf';
-            spawn('x-terminal-emulator', ['-e', 'bash', '-c', `${command}; echo; exit; exec bash`]);
+            try { spawn('x-terminal-emulator', ['-e', 'bash', '-c', `${command}; echo; exit; exec bash`]); }
+            catch {}
           });
         }).on('error', (err) => {
           fs.unlink(savePath, () => {});
@@ -178,6 +180,20 @@ function createWindow() {
       });
     } finally {
       isDialogOpen = false;
+    }
+  });
+  ipcMain.handle('dialog:saveFile', async () => {
+    const result = await dialog.showSaveDialog(win, {
+      properties: ['saveFile'],
+      filters: [
+        { name: 'Go Games', extensions: ['sgf'] },
+        { name: 'All Files', extensions: ['*'] }
+      ]
+    });
+    if (result.canceled) {
+      return null;
+    } else {
+      return result.filePath;
     }
   });
 }

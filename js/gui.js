@@ -249,19 +249,22 @@ async function playerInfo(userName) {
   })
 }
 
-function downloadSgf() {
-  userName = opponent.split('[')[0];
-  fetch('https:www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2')
-  .then(response => { return response.text(); })
-  .then(html => {
-    let lastGame = html.split('.txt')[0].split('go').slice(-1)[0];
-    if (lastGame.length > 10) {
-      window.playokAPI.showAlert('No such user');
-      return;
-    }
-    let lastGameUrl = 'https:www.playok.com/p/?g=go' + lastGame + '.txt';
-    window.playokAPI.send('main', 'download-' + lastGameUrl);
-  });
+async function downloadSgf() {
+  const filePath = await window.playokAPI.saveFile();                       
+  if (filePath) {
+    userName = opponent.split('[')[0];
+    fetch('https:www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2')
+    .then(response => { return response.text(); })
+    .then(html => {
+      let lastGame = html.split('.txt')[0].split('go').slice(-1)[0];
+      if (lastGame.length > 10) {
+        window.playokAPI.showAlert('No such user');
+        return;
+      }
+      let lastGameUrl = 'https:www.playok.com/p/?g=go' + lastGame + '.txt';
+      window.playokAPI.send('main', 'path:' + filePath + ':url:' + lastGameUrl);
+    });
+  }
 }
 
 function updateTimer() {

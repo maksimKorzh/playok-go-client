@@ -7,4 +7,5 @@ contextBridge.exposeInMainWorld('playokAPI', {
   prompt: (options) => ipcRenderer.invoke('show-prompt', options),
   showAlert: (message) => ipcRenderer.invoke('show-alert', message),
   showConfirm: (message) => ipcRenderer.invoke('show-confirm', message),
+  saveFile: () => ipcRenderer.invoke('dialog:saveFile'),
 });

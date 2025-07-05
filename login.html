@@ -27,7 +27,7 @@
       const username = form.username.value;
       const password = form.password.value;
       window.playokAPI.connect({ username, password });
-      window.playokAPI.onData(message => { alert(message); });
+      window.playokAPI.onData(message => { window.playokAPI.showAlert(message); });
     });
   </script>
 </body>

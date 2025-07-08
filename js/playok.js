@@ -119,7 +119,7 @@ window.playokAPI.onData((message) => {
       if (players[player1] != undefined && accepting) {
         if (players[player1].rating > ratingLimit) return;
         opponent = players[player1].name + '[' + players[player1].rank + ']';
-        logs += '&nbsp;MATCH: ' + response.s[0] + ' ' + opponent + '<br>';
+        logs += '&nbsp;MATCH: #' + response.i[1] + ', ' + response.s[0] + ' ' + opponent + '<br>';
         joinGame('white', response.i[1], response.s[0] + ' ' + opponent);
       }
     }

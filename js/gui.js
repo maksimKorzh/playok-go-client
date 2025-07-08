@@ -254,7 +254,7 @@ async function playerInfo(userName) {
 async function downloadSgf() {
   const filePath = await window.playokAPI.saveFile();                       
   if (filePath) {
-    userName = opponent.split('[')[0];
+    userName = me;
     fetch('https:www.playok.com/en/stat.phtml?u=' + userName + '&g=go&sk=2')
     .then(response => { return response.text(); })
     .then(html => {

@@ -5,6 +5,8 @@ var gameOver = 1;
 var userSide = BLACK;
 var blackTime = 0;
 var whiteTime = 0;
+var blackByoStones = -1;
+var whiteByoStones = -1;
 var intervalId;
 
 const bgImage = new Image();
@@ -269,8 +271,10 @@ async function downloadSgf() {
 
 function updateTimer() {
   if (blackTime < 0 || whiteTime < 0) return;
-  document.getElementById('blackTime').innerHTML = secToMin(blackTime);
-  document.getElementById('whiteTime').innerHTML = secToMin(whiteTime);
+  let bbyo = blackByoStones == -1 ? '(main time)' : '(' + blackByoStones + ' stones)';
+  let wbyo = whiteByoStones == -1 ? '(main time)' : '(' + whiteByoStones + ' stones)';
+  document.getElementById('blackTime').innerHTML = secToMin(blackTime) + ' ' + bbyo;
+  document.getElementById('whiteTime').innerHTML = secToMin(whiteTime) + ' ' + wbyo;
 }
 
 function getTime(time) {
@@ -342,7 +346,7 @@ function challengeToggle() {
   whiteTime = 0;
   updateTimer();
   accepting ^= 1;
-  logs += 'SYSTEM: accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
+  logs += 'INFO: accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
   updateLogs();
   if (accepting) {
     sendMessage('leave');

@@ -29,7 +29,7 @@ var players = {};
 var opponent = '';
 var me = '';
 var table = 100;
-var logs = 'SYSTEM: connecting to web socket...<br>';
+var logs = 'INFO: connecting to web socket...<br>';
 var ratingLimit = 1200;
 var prevChallenge = '';
 var accepting = 0;
@@ -52,7 +52,7 @@ function joinGame(color, tableNum, info) {
   sendMessage('join');
   sendMessage(color);
   accepting = 0;
-  logs += 'SYSTEM: accepting challenges is OFF<br>';
+  logs += 'INFO: accepting challenges is OFF<br>';
   window.playokAPI.showConfirm('Accept match "' + info + ' as ' + color + '" ?').then((choice) => {
     if (choice.response == 0) {
       sendMessage('start');
@@ -60,7 +60,7 @@ function joinGame(color, tableNum, info) {
       sendMessage('leave');
       prevChallenge = info;
       accepting = 1;
-      logs += 'SYSTEM: accepting challenges is ON<br>';
+      logs += 'INFO: accepting challenges is ON<br>';
     }
   });
 }
@@ -92,11 +92,11 @@ window.playokAPI.onData((message) => {
   if (message.includes('username')) {
     opponent = message.split(':')[1];
     me = opponent;
-    logs += 'SYSTEM: logged in as "' + opponent + '"<br>';
+    logs += 'INFO: logged in as "' + opponent + '"<br>';
     return;
   }
   if (message == 'close') {
-    logs += 'SYSTEM: web socket connection has  been closed<br>';
+    logs += 'INFO: web socket connection has  been closed<br>';
     return
   }
   let response = JSON.parse(message);
@@ -119,7 +119,7 @@ window.playokAPI.onData((message) => {
       if (players[player1] != undefined && accepting) {
         if (players[player1].rating > ratingLimit) return;
         opponent = players[player1].name + '[' + players[player1].rank + ']';
-        logs += '&nbsp;MATCH: #' + response.i[1] + ', ' + response.s[0] + ' ' + opponent + '<br>';
+        logs += 'GAME: #' + response.i[1] + ', ' + response.s[0] + ' ' + opponent + '<br>';
         joinGame('white', response.i[1], response.s[0] + ' ' + opponent);
       }
     }
@@ -127,14 +127,14 @@ window.playokAPI.onData((message) => {
       if (players[player2] != undefined && accepting) {
         if (players[player2].rating > ratingLimit) return;
         opponent = players[player2].name + '[' + players[player2].rank + ']';
-        logs += '&nbsp;MATCH: ' + response.s[0] + ' ' + opponent + '<br>';
+        logs += 'GAME: #' + response.i[1] + ', ' + response.s[0] + ' ' + opponent + '<br>';
         joinGame('black', response.i[1], response.s[0] + ' ' + opponent);
       }
     }
   }
   
   if (response.i[0] == 81 && response.i[1] == table) { // chat messages & system notifications
-    logs += '&nbsp;&nbsp;CHAT: ' + response.s[0] + '<br>';
+    logs += 'CHAT: ' + response.s[0] + '<br>';
     if (response.s[0].includes('does not agree')) drawBoard();
     if (response.s[0].includes('resigns') ||
         response.s[0].includes('territory') ||
@@ -148,13 +148,15 @@ window.playokAPI.onData((message) => {
   if (response.i[0] == 90 && response.i.length == 25) { // timer
     blackTime = response.i[22];
     whiteTime = response.i[24];
+    blackByoStones = response.i[11];
+    blackByoStones = response.i[12];
     updateTimer();
   }
   
   if (response.i[0] == 90 && response.i[2] == 53) {
     drawBoard();
     drawDeadStones(response.i);
-    logs += 'SYSTEM: counting game<br>';
+    logs += 'INFO: counting game<br>';
   }
 
   if (response.i[0] == 91) { // load game

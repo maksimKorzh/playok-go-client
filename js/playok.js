@@ -149,7 +149,7 @@ window.playokAPI.onData((message) => {
     blackTime = response.i[22];
     whiteTime = response.i[24];
     blackByoStones = response.i[11];
-    blackByoStones = response.i[12];
+    whiteByoStones = response.i[12];
     updateTimer();
   }
   

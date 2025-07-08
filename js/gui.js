@@ -346,7 +346,7 @@ function challengeToggle() {
   whiteTime = 0;
   updateTimer();
   accepting ^= 1;
-  logs += 'INFO: accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
+  logs += '(INFO) accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
   updateLogs();
   if (accepting) {
     sendMessage('leave');

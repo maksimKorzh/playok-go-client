@@ -67,7 +67,7 @@ function connect(win, ksession) {
     const initialMessage = JSON.stringify({
       "i":[1721],
       "s":[
-        ksession + "+524199068774695233|1015759683|17056215",
+        ksession,
         "en",
         "b",
         "",

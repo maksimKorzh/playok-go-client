@@ -242,7 +242,7 @@ async function playerInfo(userName) {
         '\nLosses:\t\t' + losses +
         '\nWinrate:\t\t' + winrate +
         '\nStreak:\t\t' + streak +
-        '\nLeft:\t\t' + abandoned +
+        '\nLeaft:\t\t' + abandoned +
         '\nLanguage:\t' + country +
         '\nStatus:\t\t' + online +
         '\nRecent:\t\t' + recentResults + '\n'

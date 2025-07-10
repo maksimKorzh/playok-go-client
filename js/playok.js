@@ -144,6 +144,11 @@ window.playokAPI.onData((message) => {
           stopInterval();
         }
   }
+  
+  if (response.i[0] == 87 && response.i[1] == table) {
+    if (response.i[2] == 1) logs += '(GAME) #' + response.i[1] + ', opponent returned to the game<br>';
+    if (response.i[2] == 0) logs += '(GAME) #' + response.i[1] + ', opponent leaft game<br>';
+  }
 
   if (response.i[0] == 90 && response.i.length == 25) { // timer
     blackTime = response.i[22];

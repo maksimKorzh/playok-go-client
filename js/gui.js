@@ -273,10 +273,10 @@ async function downloadSgf() {
 
 function updateTimer() {
   if (blackTime < 0 || whiteTime < 0) return;
-  let bbyo = blackByoStones == -1 ? ' | ' : ' | (' + blackByoStones + ' stones) | ';
-  let wbyo = whiteByoStones == -1 ? ' | ' : ' | (' + whiteByoStones + ' stones) | ';
-  document.getElementById('blackTime').innerHTML = secToMin(blackTime) + bbyo + blackCaptured + ' captured';
-  document.getElementById('whiteTime').innerHTML = secToMin(whiteTime) + wbyo + whiteCaptured + ' captured';
+  let bbyo = blackByoStones == -1 ? '' : ' (' + blackByoStones + ' byo-yomi stones)';
+  let wbyo = whiteByoStones == -1 ? '' : ' (' + whiteByoStones + ' byo-yomi stones)';
+  document.getElementById('blackTime').innerHTML = secToMin(blackTime) + bbyo + '<br>' + blackCaptured + ' captured';
+  document.getElementById('whiteTime').innerHTML = secToMin(whiteTime) + wbyo + '<br>' + whiteCaptured + ' captured';
 }
 
 function getTime(time) {
@@ -316,8 +316,8 @@ function stopInterval() {
       blackTime = 0;
       whiteTime = 0;
       updateTimer();
-      document.getElementById('blackTime').innerHTML = '00:00 | 0 captured';
-      document.getElementById('whiteTime').innerHTML = '00:00 | 0 captured';
+      document.getElementById('blackTime').innerHTML = '00:00<br>0 captured';
+      document.getElementById('whiteTime').innerHTML = '00:00<br>0 captured';
     }
 }
 
@@ -327,7 +327,7 @@ function resizeCanvas() {
   drawBoard();
   try {
     document.getElementById('lobby').style.width = (window.innerWidth-canvas.width-32) + 'px';
-    document.getElementById('lobby').style.height = (canvas.height-131) + 'px';
+    document.getElementById('lobby').style.height = (canvas.height-157) + 'px';
     document.getElementById('time').style.width = (window.innerWidth-canvas.height-30) + 'px';
     document.getElementById('actions').style.width = (window.innerWidth-canvas.height-30) + 'px';
     document.getElementById('level').style.width = (window.innerWidth-canvas.height-30) + 'px';
@@ -369,10 +369,10 @@ function initGUI() {
   initGoban();
   resizeCanvas();
   document.getElementById('panel').innerHTML = `
-    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (window.innerWidth - canvas.width - 32) + `px; height: ` + (canvas.height-131) + `px; border: 2px solid black;"></div>
+    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (window.innerWidth - canvas.width - 32) + `px; height: ` + (canvas.height-157) + `px; border: 2px solid black;"></div>
     <div id="time" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
-      <label id="blackTime" style="font-size: 22px; background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00 | 0 captured</label>
-      <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00 | 0 captured</label>
+      <label id="blackTime" style="font-size: 22px; background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00<br>0 captured</label>
+      <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00<br>0 captured</label>
     </div>
     <div id="actions" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('pass');" style="font-size: 20px;">PASS</button>

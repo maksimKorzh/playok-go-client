@@ -184,6 +184,12 @@ function sendMessage(action) {
       command.i = [85, table];
       gameOver = 0;
       break;
+    case 'undo-request':
+      command.i = [93, table, 1, 2, 0];
+      break;
+    case 'undo-accept':
+      command.i = [93, table, 2, 2, 0];
+      break;
     case 'pass':
       command.i = [92, table, 0, 400, 0];
       break;
@@ -376,12 +382,14 @@ function initGUI() {
     </div>
     <div id="actions" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('pass');" style="font-size: 20px;">PASS</button>
+      <button onclick="sendMessage('undo-request');" style="font-size: 20px;">UNDO</button>
       <button onclick="sendMessage('resign');" style="font-size: 20px;">RESIGN</button>
       <button onclick="downloadSgf();" style="font-size: 20px;">DOWNLOAD</button>
       <button onclick="getUserInfo('User name:');" style="font-size: 20px;">STATS</button>
     </div>
     <div id="level" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('continue');">CONTINUE</button>
+      <button onclick="sendMessage('undo-accept');" style="font-size: 20px;">ACCEPT</button>
       <button onclick="challengeToggle();">MATCH</button>
       <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 100%;">
         <option value="3000">All</option>

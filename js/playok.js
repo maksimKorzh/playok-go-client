@@ -145,6 +145,7 @@ window.playokAPI.onData((message) => {
     }
     if (response.s[0].includes('resigns') ||
         response.s[0].includes('territory') ||
+        response.s[0].includes('offline') ||
         response.s[0].includes('exceeded')) {
           gameOver = 1;
           window.playokAPI.showAlert(response.s[0]);

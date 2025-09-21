@@ -154,6 +154,7 @@ window.playokAPI.onData((message) => {
   }
   
   if (response.i[0] == 87 && response.i[1] == table) {
+    window.playokAPI.showAlert('Opponent ' + (response.i[2] ? 'returned to the' : 'leaft') + ' game');
     if (response.i[2] == 1) logs += '#' + response.i[1] + ', opponent returned to the game<br>';
     if (response.i[2] == 0) logs += '#' + response.i[1] + ', opponent leaft game<br>';
   }

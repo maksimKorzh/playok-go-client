@@ -281,8 +281,8 @@ function updateTimer() {
   if (blackTime < 0 || whiteTime < 0) return;
   let bbyo = blackByoStones == -1 ? '' : ' (' + blackByoStones + ' byo-yomi stones)';
   let wbyo = whiteByoStones == -1 ? '' : ' (' + whiteByoStones + ' byo-yomi stones)';
-  document.getElementById('blackTime').innerHTML = secToMin(blackTime) + bbyo + ' | ' + blackCaptured + ' stones captured';
-  document.getElementById('whiteTime').innerHTML = secToMin(whiteTime) + wbyo + ' | ' + whiteCaptured + ' stones captured';
+  document.getElementById('blackTime').innerHTML = secToMin(blackTime) + bbyo + '<br>' + blackCaptured + ' stones captured';
+  document.getElementById('whiteTime').innerHTML = secToMin(whiteTime) + wbyo + '<br>' + whiteCaptured + ' stones captured';
 }
 
 function getTime(time) {
@@ -322,21 +322,21 @@ function stopInterval() {
       blackTime = 0;
       whiteTime = 0;
       updateTimer();
-      document.getElementById('blackTime').innerHTML = '00:00 | 0 stones captured';
-      document.getElementById('whiteTime').innerHTML = '00:00 | 0 stones captured';
+      document.getElementById('blackTime').innerHTML = '00:00<br>0 stones captured';
+      document.getElementById('whiteTime').innerHTML = '00:00<br>0 stones captured';
     }
 }
 
 function resizeCanvas() {
-  canvas.width = window.innerHeight-75;
+  canvas.width = window.innerHeight-34;
   canvas.height = canvas.width;
   drawBoard();
   try {
-    document.getElementById('whiteTime').style.width = canvas.width + 'px';
-    document.getElementById('whiteTime').style.marginTop = '4px';
-    document.getElementById('whiteTime').style.marginBottom = '4px';
-    document.getElementById('blackTime').style.width = canvas.width + 'px';
-    document.getElementById('panel').style.height = '99%';
+    document.getElementById('lobby').style.width = (window.innerWidth-canvas.width-32) + 'px';
+    document.getElementById('lobby').style.height = (canvas.height-157) + 'px';
+    document.getElementById('time').style.width = (window.innerWidth-canvas.height-30) + 'px';
+    document.getElementById('actions').style.width = (window.innerWidth-canvas.height-30) + 'px';
+    document.getElementById('level').style.width = (window.innerWidth-canvas.height-30) + 'px';
   } catch(e) {}
 }
 
@@ -365,7 +365,7 @@ function challengeToggle() {
 function initGUI() {
   let container = document.getElementById('goban');
   canvas = document.createElement('canvas');
-  canvas.style = 'border: 2px solid black;';
+  canvas.style = 'border: 2px solid black; margin: 4px; margin-top: 16px;';
   container.appendChild(canvas);
   canvas.addEventListener('click', userInput);
   ctx = canvas.getContext('2d');
@@ -375,13 +375,20 @@ function initGUI() {
   initGoban();
   resizeCanvas();
   document.getElementById('panel').innerHTML = `
-    <div id="actions" style="width: 200px;">
-      <button onclick="downloadSgf();">DOWNLOAD</button>
+    <div id="lobby" style="margin: 4px; margin-top: 16px; overflow: hidden; width: ` + (window.innerWidth - canvas.width - 32) + `px; height: ` + (canvas.height-157) + `px; border: 2px solid black;"></div>
+    <div id="time" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
+      <label id="blackTime" style="font-size: 22px; background-color: black; color: white; width: 100%; border: 1px solid black; text-align: center">00:00<br>0 stones captured</label>
+      <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; width: 100%; border: 1px solid black; text-align: center">00:00<br>0 stones captured</label>
+    </div>
+    <div id="actions" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
+      <button onclick="sendMessage('pass');" style="font-size: 20px;">PASS</button>
+      <button onclick="sendMessage('resign');" style="font-size: 20px;">RESIGN</button>
+      <button onclick="downloadSgf();" style="font-size: 20px;">DOWNLOAD</button>
+      <button onclick="getUserInfo('User name:');" style="font-size: 20px;">STATS</button>
+    </div>
+    <div id="level" style="display: flex; gap: 4px;  width: ` + (window.innerWidth - canvas.width - 30) + `px; margin-bottom: 4px;">
       <button onclick="sendMessage('continue');">CONTINUE</button>
-      <button onclick="sendMessage('resign');">RESIGN</button>
       <button onclick="challengeToggle();">MATCH</button>
-      <button onclick="getUserInfo('User name:');">STATS</button>
-      <button onclick="sendMessage('pass');">PASS</button>
       <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 100%;">
         <option value="3000">All</option>
         <option value="1450">1d</option>
@@ -396,8 +403,7 @@ function initGUI() {
         <option value="1000">9k</option>
         <option value="950">10k</option>
       </select>
+      <input id="chat" type="text" value="" spellcheck="false" style="width: 98%;" />
     </div>
-    <div id="lobby" style="font-size: 12px; margin: 6px; overflow: hidden; width: 200px; height: 100%; border: 2px solid black;"></div>
-    <input id="chat" type="text" value="" spellcheck="false" style="width: 198px;"/>
   `;
 }

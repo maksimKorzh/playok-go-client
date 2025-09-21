@@ -12,7 +12,11 @@
         color: #aaa;
       }
     </style>
-    <div class="container-center"><div id="goban"></div></div>
+    <div class="container-center">
+      <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; border: 1px solid black; text-align: center">00:00 | 0 stones captured</label>
+      <div id="goban"></div>
+      <label id="blackTime" style="font-size: 22px; background-color: black; color: white; border: 1px solid black; text-align: center">00:00 | 0 stones captured</label>
+    </div>
     <div id="panel" class="container-center"></div>
     <script src="js/goban.js"></script>
     <script src="js/gui.js"></script>

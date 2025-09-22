@@ -56,6 +56,9 @@ function joinGame(color, tableNum, info) {
   window.playokAPI.showConfirm('Accept match "' + info + ' as ' + color + '" ?').then((choice) => {
     if (choice.response == 0) {
       sendMessage('start');
+      setTimeout(function() {
+        if (gameOver) accepting = 1;
+      }, 5000);
     } else {
       sendMessage('leave');
       prevChallenge = info;
@@ -135,6 +138,8 @@ window.playokAPI.onData((message) => {
   
   if (response.i[0] == 81 && response.i[1] == table) { // chat messages & system notifications
     logs += response.s[0] + '<br>';
+    if (response.s[0].includes('passes')) accepting = window.playokAPI.showAlert('PASS');
+    if (response.s[0].includes('table operator')) accepting = 1;
     if (response.s[0].includes('does not agree')) drawBoard();
     if (response.s[0].includes('asks to undo')) {
       window.playokAPI.showConfirm('Opponent asks to undo the turn, accept?').then((choice) => {
@@ -154,7 +159,6 @@ window.playokAPI.onData((message) => {
   }
   
   if (response.i[0] == 87 && response.i[1] == table) {
-    window.playokAPI.showAlert('Opponent ' + (response.i[2] ? 'returned to the' : 'leaft') + ' game');
     if (response.i[2] == 1) logs += '#' + response.i[1] + ', opponent returned to the game<br>';
     if (response.i[2] == 0) logs += '#' + response.i[1] + ', opponent leaft game<br>';
   }

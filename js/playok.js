@@ -45,6 +45,7 @@ function joinGame(color, tableNum, info) {
   if (prevChallenge == info) {
     sendMessage('leave');
     accepting = 1;
+    logs += 'accepting challenges is ON<br>';
     return;
   }
   if (!accepting) return;
@@ -56,9 +57,6 @@ function joinGame(color, tableNum, info) {
   window.playokAPI.showConfirm('Accept match "' + info + ' as ' + color + '" ?').then((choice) => {
     if (choice.response == 0) {
       sendMessage('start');
-      setTimeout(function() {
-        if (gameOver) accepting = 1;
-      }, 5000);
     } else {
       sendMessage('leave');
       prevChallenge = info;

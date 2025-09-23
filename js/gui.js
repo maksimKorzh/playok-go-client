@@ -337,6 +337,7 @@ function resizeCanvas() {
     document.getElementById('whiteTime').style.marginBottom = '4px';
     document.getElementById('blackTime').style.width = canvas.width + 'px';
     document.getElementById('panel').style.height = '99%';
+    document.getElementById('panel').style.marginTop = '5px';
   } catch(e) {}
 }
 
@@ -354,7 +355,7 @@ function challengeToggle() {
   whiteTime = 0;
   updateTimer();
   accepting ^= 1;
-  logs += '(INFO) accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
+  logs += 'accepting challenges is ' + (accepting ? 'ON': 'OFF') + '<br>';
   updateLogs();
   if (accepting) {
     sendMessage('leave');
@@ -397,7 +398,7 @@ function initGUI() {
         <option value="950">10k</option>
       </select>
     </div>
-    <div id="lobby" style="font-size: 12px; margin: 6px; overflow: hidden; width: 200px; height: 100%; border: 2px solid black;"></div>
-    <input id="chat" type="text" value="" spellcheck="false" style="width: 198px;"/>
+    <div id="lobby" style="font-size: 12px; margin: 6px; margin-left: 0px; overflow: hidden; width: 196px; height: 100%; border: 2px solid black;"></div>
+    <input id="chat" type="text" value="" spellcheck="false" style="width: 194px;"/>
   `;
 }

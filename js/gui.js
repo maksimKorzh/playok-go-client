@@ -398,7 +398,7 @@ function initGUI() {
         <option value="950">10k</option>
       </select>
     </div>
-    <div id="lobby" style="font-size: 12px; margin: 6px; margin-left: 0px; overflow: hidden; width: 196px; height: 100%; border: 2px solid black;"></div>
+    <div id="lobby" style="font-size: 12px; margin: 6px; margin-left: 0px; overflow: hidden; width: 196px; height: 100%; border: 1px solid #444;"></div>
     <input id="chat" type="text" value="" spellcheck="false" style="width: 194px;"/>
   `;
 }

@@ -136,7 +136,7 @@ window.playokAPI.onData((message) => {
   
   if (response.i[0] == 81 && response.i[1] == table) { // chat messages & system notifications
     logs += response.s[0] + '<br>';
-    if (response.s[0].includes('passes')) window.playokAPI.showAlert('PASS');
+    //if (response.s[0].includes('passes')) window.playokAPI.showAlert('PASS');
     if (response.s[0].includes('does not agree')) drawBoard();
     if (response.s[0].includes('asks to undo')) {
       window.playokAPI.showConfirm('Opponent asks to undo the turn, accept?').then((choice) => {

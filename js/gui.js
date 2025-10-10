@@ -385,17 +385,25 @@ function initGUI() {
       <button onclick="sendMessage('pass');">PASS</button>
       <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 100%;">
         <option value="3000">All</option>
-        <option value="1450">1d</option>
-        <option value="1400">1k</option>
-        <option value="1350">2k</option>
-        <option value="1300">3k</option>
-        <option value="1250">4k</option>
-        <option value="1200" selected>5k</option>
-        <option value="1150">6k</option>
-        <option value="1100">7k</option>
-        <option value="1050">8k</option>
-        <option value="1000">9k</option>
-        <option value="950">10k</option>
+        <option value="1600">9d</option>
+        <option value="1550">8d</option>
+        <option value="1500">7d</option>
+        <option value="1450">6d</option>
+        <option value="1400">5d</option>
+        <option value="1350">4d</option>
+        <option value="1300">3d</option>
+        <option value="1250">2d</option>
+        <option value="1200" selected>1d</option>
+        <option value="1150">1k</option>
+        <option value="1100">2k</option>
+        <option value="1050">3k</option>
+        <option value="1000">4k</option>
+        <option value="950">5k</option>
+        <option value="900">6k</option>
+        <option value="850">7k</option>
+        <option value="800">8k</option>
+        <option value="750">9k</option>
+        <option value="700">10k</option>
       </select>
     </div>
     <div id="lobby" style="font-size: 17px; margin: 6px; margin-left: 0px; overflow: hidden; width: 196px; height: 100%; border: 1px solid #444;"></div>

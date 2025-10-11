@@ -392,7 +392,7 @@ function initGUI() {
         <option value="1400">4d</option>
         <option value="1350">3d</option>
         <option value="1300">2d</option>
-        <option value="1250">1d</option>
+        <option value="1250" selected>1d</option>
         <option value="1200">1k</option>
         <option value="1150">2k</option>
         <option value="1100">3k</option>

@@ -20,6 +20,10 @@ var ranks = [
   {'min':  0, 'max': 750,    'rank': '10k'},
 ];
 
+var blackList = [
+  'yeqin'
+];
+
 var players = {};
 var opponent = '';
 var me = '';
@@ -113,6 +117,10 @@ window.playokAPI.onData((message) => {
     if (parseInt(boardSize) != 19) return;
     let player1 = response.s[1];
     let player2 = response.s[2];
+    if (blackList.includes(player1) || blackList.includes(player2)) {
+      logs += 'skipping banned player<br>';
+      return;
+    }
     if (response.i[3] == 1 && response.i[4] == 0) {
       if (players[player1] != undefined && accepting) {
         if (players[player1].rating > ratingLimit) return;

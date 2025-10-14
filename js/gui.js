@@ -2,6 +2,7 @@ var canvas, ctx, cell;
 var editMode = 0;
 var takePlace = 0;
 var gameOver = 1;
+var hideRank = 0;
 var userSide = BLACK;
 var blackTime = 0;
 var whiteTime = 0;
@@ -383,6 +384,7 @@ function initGUI() {
       <button onclick="challengeToggle();">MATCH</button>
       <button onclick="getUserInfo('User name:');">STATS</button>
       <button onclick="sendMessage('pass');">PASS</button>
+      <button onclick="hideRank ^= 1; logs += 'hide rank ' + (hideRank ? 'ON': 'OFF');">RANK</button>
       <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 100%;">
         <option value="3000">9d</option>
         <option value="1600">8d</option>

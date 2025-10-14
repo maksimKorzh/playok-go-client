@@ -32,7 +32,7 @@ var DEBUG = 0;
 
 function getRank(rating) {
   for (let entry of ranks) {
-    if (rating == 1200) return '?'
+    if (hideRank || rating == 1200) return '?'
     else if (rating >= entry.min && rating < entry.max) return entry.rank;
   } return 'N/A';
 }

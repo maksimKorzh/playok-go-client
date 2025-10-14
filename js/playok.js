@@ -118,7 +118,8 @@ window.playokAPI.onData((message) => {
     let player1 = response.s[1];
     let player2 = response.s[2];
     if (blackList.includes(player1) || blackList.includes(player2)) {
-      logs += 'skipping banned player<br>';
+      let banned = blackList.includes(player1) ? player1: player2;
+      logs += banned + ' is banned<br>';
       return;
     }
     if (response.i[3] == 1 && response.i[4] == 0) {

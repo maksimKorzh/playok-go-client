@@ -2,7 +2,7 @@ var canvas, ctx, cell;
 var editMode = 0;
 var takePlace = 0;
 var gameOver = 1;
-var hideRank = 1;
+var hideRank = 0;
 var userSide = BLACK;
 var blackTime = 0;
 var whiteTime = 0;

@@ -32,7 +32,7 @@ var DEBUG = 0;
 
 function getRank(rating) {
   for (let entry of ranks) {
-    if (hideRank || rating == 1200) return '?'
+    if (rating == 1200) return '?'
     else if (rating >= entry.min && rating < entry.max) return entry.rank;
   } return 'N/A';
 }
@@ -100,6 +100,7 @@ window.playokAPI.onData((message) => {
   if (response.i[0] == 25) { // player info
     let player = response.s[0];
     let rating = response.i[3];
+    if (hideRank) rating = 1200;
     players[player] = {
       'name': player,
       'rank': getRank(rating),

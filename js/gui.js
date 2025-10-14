@@ -219,7 +219,6 @@ async function playerInfo(userName) {
   .then(response => { return response.text(); })
   .then(html => {
     let rating = html.split('ranking: <b>').slice(-1)[0].split('</b>')[0];
-    if (hideRank) rating = '?';
     if (rating.length > 4) {
       window.playokAPI.showAlert('No info available');
       return;

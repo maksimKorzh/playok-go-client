@@ -2,7 +2,7 @@ var canvas, ctx, cell;
 var editMode = 0;
 var takePlace = 0;
 var gameOver = 1;
-var hideRank = 0;
+var hideRank = 1;
 var userSide = BLACK;
 var blackTime = 0;
 var whiteTime = 0;
@@ -219,6 +219,7 @@ async function playerInfo(userName) {
   .then(response => { return response.text(); })
   .then(html => {
     let rating = html.split('ranking: <b>').slice(-1)[0].split('</b>')[0];
+    if (hideRank) rating = '?';
     if (rating.length > 4) {
       window.playokAPI.showAlert('No info available');
       return;

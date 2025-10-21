@@ -244,7 +244,8 @@ async function playerInfo(userName) {
         } catch (e) {}
       }
       window.playokAPI.showAlert(
-        'Rank:\t\t' + getRank(parseInt(rating)) +
+        'User:\t\t' + userName +
+        '\nRank:\t\t' + getRank(parseInt(rating)) +
         '\nRating:\t\t' + rating +
         '\nGames:\t\t' + games +
         '\nWins:\t\t' + wins +

@@ -21,7 +21,8 @@ var ranks = [
 ];
 
 var blackList = [
-  'yeqin'
+  'yeqin',
+  'troivadat2000'
 ];
 
 var players = {};

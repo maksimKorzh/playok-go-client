@@ -3,20 +3,64 @@
 <head>
   <meta charset="UTF-8" http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';">
   <title>Login to PlayOK</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    html, body {
+      font-family: 'mono';
+      font-size: 20px;
+      height: 100%;
+      background-color: #111;
+      color: #aaa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+    }
+    
+    button {
+     -webkit-tap-highlight-color: transparent;
+      width: 100%;
+      padding: 3px;
+      margin-bottom: 4px;
+      font-size: 18px;
+      background-color: #111;
+      color: #aaa;
+      border: 1px solid #555;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background: #444;
+    }
+    
+    button:active {
+      background-color: black;
+      color: white;
+    }
+    
+    input, select {
+      padding: 2px;
+      font-size: 18px;
+      background: #111;
+      border: 1px solid #444;
+      color: #aaa;
+      border-radius: 5px;
+    }
+    
+    input:focus { outline: none }
+  </style>
 </head>
 <body>
-  <div class="container">
+  <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
     <h2>Login to PlayOK</h2>
-    <form id="login-form">
+    <form id="login-form" style="display: flex; flex-direction: column; width: 300px; gap: 15px;">
       <label for="username">Username:</label>
       <input id="username" name="username" type="text" spellcheck="false" autofocus required autocomplete="username" style="font-size: 20px; padding: 8px;" />
-
       <label for="password">Password:</label>
       <input id="password" name="password" type="password" required autocomplete="current-password" style="font-size: 20px; padding: 8px;" />
-      <div class="button-row">
-        <button style="font-size: 20px; padding: 8px;" type="submit">Login</button>
-      </div>
+      <button style="font-size: 20px; padding: 8px;" type="submit">Login</button>
     </form>
   </div>
 

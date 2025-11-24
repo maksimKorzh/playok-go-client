@@ -330,16 +330,15 @@ function stopInterval() {
 }
 
 function resizeCanvas() {
-  canvas.width = window.innerHeight-75;
+  canvas.width = window.innerWidth > innerHeight ? (window.innerHeight-200) : (window.innerWidth - 20);
   canvas.height = canvas.width;
   drawBoard();
   try {
     document.getElementById('whiteTime').style.width = canvas.width + 'px';
-    document.getElementById('whiteTime').style.marginTop = '4px';
-    document.getElementById('whiteTime').style.marginBottom = '4px';
     document.getElementById('blackTime').style.width = canvas.width + 'px';
-    document.getElementById('panel').style.height = '99%';
-    document.getElementById('panel').style.marginTop = '5px';
+    document.getElementById('lobby').style.width = canvas.width + 'px';
+    document.getElementById('actions').style.width = (canvas.width+2) + 'px';
+    document.getElementById('chat').style.width = (canvas.width-4) + 'px';
   } catch(e) {}
 }
 
@@ -368,7 +367,7 @@ function challengeToggle() {
 function initGUI() {
   let container = document.getElementById('goban');
   canvas = document.createElement('canvas');
-  canvas.style = 'border: 2px solid black;';
+  canvas.style = 'display: block; border: 2px solid black;';
   container.appendChild(canvas);
   canvas.addEventListener('click', userInput);
   ctx = canvas.getContext('2d');
@@ -377,37 +376,4 @@ function initGUI() {
   window.addEventListener('resize', resizeCanvas);
   initGoban();
   resizeCanvas();
-  document.getElementById('panel').innerHTML = `
-    <div id="actions" style="width: 200px;">
-      <button onclick="downloadSgf();">DOWNLOAD</button>
-      <button onclick="sendMessage('continue');">CONTINUE</button>
-      <button onclick="sendMessage('resign');">RESIGN</button>
-      <button onclick="challengeToggle();">MATCH</button>
-      <button onclick="getUserInfo('User name:');">STATS</button>
-      <button onclick="sendMessage('pass');">PASS</button>
-      <button onclick="hideRank ^= 1; logs += 'show rank ' + (hideRank ? 'OFF': 'ON') + '<br>'; updateLogs();">RANK</button>
-      <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 100%;">
-        <option value="3000">9d</option>
-        <option value="1600">8d</option>
-        <option value="1550">7d</option>
-        <option value="1500">6d</option>
-        <option value="1450">5d</option>
-        <option value="1400">4d</option>
-        <option value="1350">3d</option>
-        <option value="1300">2d</option>
-        <option value="1250">1d</option>
-        <option value="1200">1k</option>
-        <option value="1150">2k</option>
-        <option value="1100">3k</option>
-        <option value="1050">4k</option>
-        <option value="1000">5k</option>
-        <option value="950">6k</option>
-        <option value="900">7k</option>
-        <option value="850">8k</option>
-        <option value="800">9k</option>
-        <option value="750">10k</option>
-      </select>
-    </div>
-    <div id="lobby" style="font-size: 17px; margin: 6px; margin-left: 0px; overflow: hidden; width: 196px; height: 100%; border: 1px solid #444;"></div>
-    <input id="chat" type="text" value="" spellcheck="false" style="width: 194px; font-size: 17px;"/> `;
 }

@@ -62,7 +62,7 @@
         <button onclick="challengeToggle();">MATCH</button>
         <button onclick="getUserInfo('User name:');">STATS</button>
         <button onclick="sendMessage('pass');">PASS</button>
-        <button onclick="hideRank ^= 1; logs += 'show rank ' + (hideRank ? 'OFF': 'ON') + '<br>'; updateLogs();">RANK</button>
+        <button onclick="window.playokAPI.toggleFullscreen();">VIEW</button>
         <select id="rank" type="number" onchange="ratingLimit = parseInt(this.value);" style="width: 100%;">
           <option value="3000">9d</option>
           <option value="1600">8d</option>
@@ -91,11 +91,5 @@
     <script src="js/goban.js"></script>
     <script src="js/gui.js"></script>
     <script src="js/playok.js"></script>
-    <script>
-      document.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        window.playokAPI.toggleFullscreen();
-      });
-    </script>
   </body>
 </html>

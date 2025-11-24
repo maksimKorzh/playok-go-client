@@ -99,7 +99,7 @@ function connect(win, ksession) {
 
 function createWindow() {
   let win = new BrowserWindow({
-    fullscreen: true,
+    fullscreen: false,
     width: 1720,
     height: 1000,
     webPreferences: {

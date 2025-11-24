@@ -101,7 +101,6 @@ function createWindow() {
   let win = new BrowserWindow({
     fullscreen: true,
     width: 1720,
-    //minWidth:1720,
     height: 1000,
     webPreferences: {
       preload: __dirname + '/preload.js'
@@ -133,6 +132,9 @@ function createWindow() {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
   win.loadFile('login.html');
+  ipcMain.on('toggle-fullscreen', () => {
+    if (win) win.setFullScreen(!win.isFullScreen());
+  });
   ipcMain.on('main', (event, messageData) => {
     if (messageData.username == 'guest') {
       console.log('GUEST LOGIN');

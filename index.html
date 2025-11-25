@@ -54,8 +54,8 @@
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;  width: 100%; height: 100vh;">
       <label id="whiteTime" style="font-size: 22px; background-color: white; color: black; border: 1px solid black; text-align: center">00:00 | 0 stones captured</label>
       <div id="goban"></div>
-      <label id="blackTime" style="font-size: 22px; background-color: black; color: white; border: 1px solid black; text-align: center">00:00 | 0 stones captured</label>
-      <div id="actions" style="display: flex; justify-content: center; gap: 1px;">
+      <label id="blackTime" style="margin-bottom: 4px; font-size: 22px; background-color: black; color: white; border: 1px solid black; text-align: center">00:00 | 0 stones captured</label>
+      <div id="actions" style="display: flex; justify-content: center; gap: 4px;">
         <button onclick="downloadSgf();">DOWNLOAD</button>
         <button onclick="sendMessage('continue');">CONTINUE</button>
         <button onclick="sendMessage('resign');">RESIGN</button>
@@ -85,8 +85,8 @@
           <option value="750">10k</option>
         </select>
       </div>
-      <div id="lobby" style="flex: 1; min-height: 0; overflow: hidden; font-size: 17px; border: 1px solid #444;"></div>
-      <input id="chat" type="text" value="" spellcheck="false" style="font-size: 17px;"/>
+      <div id="lobby" style="margin-top: 4px; margin-bottom: 4px; flex: 1; min-height: 0; overflow: hidden; font-size: 17px; border: 1px solid #444;"></div>
+      <input id="chat" type="text" value="" spellcheck="false" style="margin-bottom: 4px; gont-size: 17px;"/>
     </div>
     <script src="js/goban.js"></script>
     <script src="js/gui.js"></script>

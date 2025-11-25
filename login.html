@@ -60,7 +60,10 @@
       <input id="username" name="username" type="text" spellcheck="false" autofocus required autocomplete="username" style="font-size: 20px; padding: 8px;" />
       <label for="password">Password:</label>
       <input id="password" name="password" type="password" required autocomplete="current-password" style="font-size: 20px; padding: 8px;" />
-      <button style="font-size: 20px; padding: 8px;" type="submit">Login</button>
+      <div style="display: flex; flex-direction: row; gap: 4px;">
+        <button style="font-size: 20px; padding: 8px;" type="submit">Login</button>
+        <button onclick="window.playokAPI.toggleFullscreen();" style="font-size: 20px; padding: 8px;">View</button>
+      </div>
     </form>
   </div>
 

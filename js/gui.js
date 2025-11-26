@@ -218,10 +218,7 @@ async function playerInfo(userName) {
   const r1 = await fetch('https://www.playok.com/en/stat.phtml?u=' + userName + '&g=go');
   const html1 = await r1.text();
   let rating = html1.split('ranking: <b>').slice(-1)[0].split('</b>')[0];
-  if (rating.length > 4) {
-    window.playokAPI.showAlert('No info available');
-    return null;
-  }
+  if (rating.length > 4) return 'No info available';
   let games     = html1.split('games played: <b>').slice(-1)[0].split('</b>')[0];
   let wins      = html1.split('wins: <b>').slice(-1)[0].split('</b>')[0];
   let losses    = html1.split('losses: <b>').slice(-1)[0].split('</b>')[0];

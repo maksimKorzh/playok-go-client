@@ -43,7 +43,7 @@ function getRank(rating) {
   } return 'N/A';
 }
 
-function joinGame(color, tableNum, info) {
+function joinGame(color, tableNum, info, opponent) {
   if (prevChallenge == info) {
     sendMessage('leave');
     accepting = 1;
@@ -56,15 +56,17 @@ function joinGame(color, tableNum, info) {
   sendMessage(color);
   accepting = 0;
   logs += 'accepting challenges is OFF<br>';
-  window.playokAPI.showConfirm('Accept match "' + info + ' as ' + color + '" ?').then((choice) => {
-    if (choice.response == 0) {
-      sendMessage('start');
-    } else {
-      sendMessage('leave');
-      prevChallenge = info;
-      accepting = 1;
-      logs += 'accepting challenges is ON<br>';
-    }
+  playerInfo(opponent.split('[')[0]).then(stats => {
+    window.playokAPI.showConfirm('Accept match "' + info + ' as ' + color + '" ?\n\n' + opponent + '\n\n' + stats).then((choice) => {
+      if (choice.response == 0) {
+        sendMessage('start');
+      } else {
+        sendMessage('leave');
+        prevChallenge = info;
+        accepting = 1;
+        logs += 'accepting challenges is ON<br>';
+      }
+    });
   });
 }
 
@@ -79,7 +81,8 @@ function getUserInfo(label) {
     },
     value: opponent.split('[')[0]
   }).then(result => {
-    if (result !== null) playerInfo(result);
+    if (result !== null)
+      playerInfo(result).then(info => { window.playokAPI.showAlert(info); });
     else return 0;
   });
 }
@@ -129,7 +132,7 @@ window.playokAPI.onData((message) => {
         if (players[player1].rating > ratingLimit) return;
         opponent = players[player1].name + '[' + players[player1].rank + ']';
         logs += '#' + response.i[1] + ', ' + response.s[0] + ' ' + opponent + '<br>';
-        joinGame('white', response.i[1], response.s[0] + ' ' + opponent);
+        joinGame('white', response.i[1], response.s[0], opponent);
       }
     }
     else if (response.i[3] == 0 && response.i[4] == 1) {
@@ -137,7 +140,7 @@ window.playokAPI.onData((message) => {
         if (players[player2].rating > ratingLimit) return;
         opponent = players[player2].name + '[' + players[player2].rank + ']';
         logs += '#' + response.i[1] + ', ' + response.s[0] + ' ' + opponent + '<br>';
-        joinGame('black', response.i[1], response.s[0] + ' ' + opponent);
+        joinGame('black', response.i[1], response.s[0], opponent);
       }
     }
   }
